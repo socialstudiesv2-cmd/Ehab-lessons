@@ -4,43 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>طلاب مستر إيهاب</title>
-  <link rel="stylesheet" href="styles.css">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gradient-to-br from-blue-100 to-blue-200 flex flex-col min-h-screen">
 
   <!-- Navbar -->
-  <nav>
-    <h1>طلاب مستر إيهاب</h1>
-    <div>
-      <a href="index.html">الرئيسية</a>
-      <a href="grade4.html">الصف 4</a>
-      <a href="grade5.html">الصف 5</a>
-      <a href="grade6.html">الصف 6</a>
-      <a href="grade1.html">الإعدادي 1</a>
-      <a href="grade2.html">الإعدادي 2</a>
-      <a href="grade3.html">الإعدادي 3</a>
-      <a href="grade10.html">الثانوي 1</a>
-      <a href="contact.html">اتصل بنا</a>
+  <nav class="bg-blue-800 text-white shadow-lg p-4 flex flex-wrap justify-between items-center">
+    <h1 class="text-2xl font-bold">طلاب مستر إيهاب</h1>
+    <div class="space-x-3 mt-2 sm:mt-0">
+      <a href="index.html" class="hover:underline">الرئيسية</a>
+      <a href="grade4.html" class="hover:underline">الصف 4</a>
+      <a href="grade5.html" class="hover:underline">الصف 5</a>
+      <a href="grade6.html" class="hover:underline">الصف 6</a>
+      <a href="grade1.html" class="hover:underline">الإعدادي 1</a>
+      <a href="grade2.html" class="hover:underline">الإعدادي 2</a>
+      <a href="grade3.html" class="hover:underline">الإعدادي 3</a>
+      <a href="grade10.html" class="hover:underline">الثانوي 1</a>
+      <a href="contact.html" class="hover:underline">اتصل بنا</a>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main>
-    <h2>مرحباً بكم في منصة طلاب مستر إيهاب</h2>
-    <p>اختر صفك لتبدأ رحلة التعلم في مادة الدراسات الاجتماعية:</p>
-
-    <div class="grid">
-      <a href="grade4.html" class="card">الصف الرابع الابتدائي</a>
-      <a href="grade5.html" class="card">الصف الخامس الابتدائي</a>
-      <a href="grade6.html" class="card">الصف السادس الابتدائي</a>
-      <a href="grade1.html" class="card">الصف الأول الإعدادي</a>
-      <a href="grade2.html" class="card">الصف الثاني الإعدادي</a>
-      <a href="grade3.html" class="card">الصف الثالث الإعدادي</a>
-      <a href="grade10.html" class="card">الصف الأول الثانوي</a>
+  <!-- Hero Section -->
+  <section class="flex flex-col items-center justify-center text-center py-20 bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg">
+    <h2 class="text-4xl sm:text-5xl font-extrabold mb-4">مرحباً بكم في منصة طلاب مستر إيهاب</h2>
+    <p class="text-lg sm:text-xl mb-6">اختر صفك لتبدأ رحلة التعلم في مادة الدراسات الاجتماعية</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
+      <a href="grade4.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الرابع الابتدائي</a>
+      <a href="grade5.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الخامس الابتدائي</a>
+      <a href="grade6.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف السادس الابتدائي</a>
+      <a href="grade1.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الأول الإعدادي</a>
+      <a href="grade2.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الثاني الإعدادي</a>
+      <a href="grade3.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الثالث الإعدادي</a>
+      <a href="grade10.html" class="bg-white text-blue-700 font-bold py-6 rounded-lg shadow-lg hover:scale-105 transform transition">الصف الأول الثانوي</a>
     </div>
-  </main>
+  </section>
 
-  <footer>
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center p-4 mt-auto">
     &copy; 2025 طلاب مستر إيهاب | الهاتف: 01559116736
   </footer>
 
