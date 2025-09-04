@@ -1,61 +1,116 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>طلاب مستر إيهاب</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex flex-col min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200 text-blue-900">
+<body class="bg-gray-50 text-gray-900">
 
-  <!-- Sidebar منسدلة على اليمين -->
-  <div class="fixed top-4 right-4 z-50">
-    <div class="relative inline-block text-left">
-      <button id="menuButton" class="bg-white text-blue-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        القائمة
-      </button>
-      <div id="menuItems" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
-        <div class="py-1">
-          <a href="index.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">الرئيسية</a>
-          <a href="exams.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">امتحانات إلكترونية</a>
-          <a href="contact.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">اتصل بنا</a>
-        </div>
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-xl font-bold text-blue-600">طلاب مستر إيهاب</span>
+      </div>
+      <div class="flex-1 mx-6">
+        <input type="text" placeholder="ابحث عن دروس التاريخ والجغرافيا..."
+               class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-400">
+      </div>
+      <div class="flex items-center space-x-4">
+        <button class="text-blue-600">🔔</button>
+        <button class="text-blue-600">👤</button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Hero Section مع الصفوف تحتها مباشرة -->
-  <section class="flex flex-col items-center justify-center text-center py-20 px-6">
-    <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 drop-shadow-lg text-white">طلاب مستر إيهاب</h1>
-    <p class="text-lg sm:text-xl mb-8 max-w-2xl drop-shadow-md text-white">
-      منصة تعليمية حديثة لمادة الدراسات الاجتماعية لجميع الصفوف من الرابع الابتدائي وحتى الأول الثانوي.
-    </p>
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-blue-600 to-blue-400 text-white py-16">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">تعلم التاريخ والجغرافيا مع مستر إيهاب أشرف</h1>
+      <p class="text-lg sm:text-xl mb-6">أفضل شروحات التاريخ والجغرافيا للثانوية العامة بخبرة أكثر من 15 عامًا في التدريس</p>
+      <button class="bg-white text-blue-600 font-bold px-6 py-3 rounded-lg shadow hover:scale-105 transition">ابدأ الدروس</button>
 
-    <!-- الصفوف كبطاقات أزرار بيضاء مع نص أزرق متدرج -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
-      <a href="grade4.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الرابع الابتدائي</a>
-      <a href="grade5.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الخامس الابتدائي</a>
-      <a href="grade6.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف السادس الابتدائي</a>
-      <a href="grade1.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الأول الإعدادي</a>
-      <a href="grade2.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الثاني الإعدادي</a>
-      <a href="grade3.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الثالث الإعدادي</a>
-      <a href="grade10.html" class="bg-white py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700">الصف الأول الثانوي</a>
+      <!-- إحصائيات -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+        <div class="bg-white text-blue-600 rounded-lg p-6 shadow font-bold">+500 درس</div>
+        <div class="bg-white text-blue-600 rounded-lg p-6 shadow font-bold">+25K طالب</div>
+        <div class="bg-white text-blue-600 rounded-lg p-6 shadow font-bold">+15 سنة خبرة</div>
+      </div>
+
+      <!-- صورة -->
+      <div class="mt-10">
+        <img src="https://via.placeholder.com/800x300" alt="طلاب" class="mx-auto rounded-lg shadow-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- المواد -->
+  <section class="max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold mb-6 text-center">المواد والموضوعات</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6 text-center">
+      <div class="bg-yellow-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">🏛️</span>
+        <p class="mt-2 font-bold">التاريخ القديم</p>
+      </div>
+      <div class="bg-blue-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">🕰️</span>
+        <p class="mt-2 font-bold">التاريخ الحديث</p>
+      </div>
+      <div class="bg-green-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">🌍</span>
+        <p class="mt-2 font-bold">الجغرافيا الطبيعية</p>
+      </div>
+      <div class="bg-purple-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">👥</span>
+        <p class="mt-2 font-bold">الجغرافيا البشرية</p>
+      </div>
+      <div class="bg-pink-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">🕌</span>
+        <p class="mt-2 font-bold">التاريخ الإسلامي</p>
+      </div>
+      <div class="bg-red-100 p-4 rounded-lg shadow hover:scale-105 transition">
+        <span class="text-2xl">🏙️</span>
+        <p class="mt-2 font-bold">المدن والعواصم</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- أحدث الدروس -->
+  <section class="bg-gray-100 py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-2xl font-bold mb-6 text-center">أحدث دروس التاريخ والجغرافيا</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+          <div class="bg-gray-200 h-40"></div>
+          <div class="p-4">
+            <h3 class="font-bold mb-2">الحضارة المصرية القديمة – الدرس الأول</h3>
+            <p class="text-sm text-gray-600">مدة الفيديو: 52 دقيقة</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+          <div class="bg-gray-200 h-40"></div>
+          <div class="p-4">
+            <h3 class="font-bold mb-2">جغرافيا مصر الطبيعية – النيل والفيضان</h3>
+            <p class="text-sm text-gray-600">مدة الفيديو: 1 ساعة</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+          <div class="bg-gray-200 h-40"></div>
+          <div class="p-4">
+            <h3 class="font-bold mb-2">التاريخ الحديث – الحملة الفرنسية</h3>
+            <p class="text-sm text-gray-600">مدة الفيديو: 45 دقيقة</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white text-center p-6 mt-auto shadow-inner">
+  <footer class="bg-blue-600 text-white text-center p-6 mt-12">
     &copy; 2025 طلاب مستر إيهاب | الهاتف: 01559116736
   </footer>
-
-  <!-- Script لتفعيل القائمة المنسدلة -->
-  <script>
-    const menuButton = document.getElementById('menuButton');
-    const menuItems = document.getElementById('menuItems');
-    menuButton.addEventListener('click', () => {
-      menuItems.classList.toggle('hidden');
-    });
-  </script>
 
 </body>
 </html>
