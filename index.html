@@ -6,34 +6,56 @@
   <title>طلاب مستر إيهاب</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-yellow-700 via-yellow-500 to-yellow-300 text-white">
+<body class="flex flex-col min-h-screen bg-gradient-to-br from-blue-200 via-blue-100 to-blue-300 text-blue-900">
 
-  <!-- Hero Section -->
+  <!-- Sidebar منسدلة على اليمين -->
+  <div class="fixed top-4 right-4 z-50">
+    <div class="relative inline-block text-left">
+      <button id="menuButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        القائمة
+      </button>
+      <div id="menuItems" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+        <div class="py-1">
+          <a href="index.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">الرئيسية</a>
+          <a href="exams.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">امتحانات إلكترونية</a>
+          <a href="contact.html" class="block px-4 py-2 text-blue-700 hover:bg-blue-100">اتصل بنا</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section مع الصفوف مباشرة تحته -->
   <section class="flex flex-col items-center justify-center text-center py-20 px-6">
-    <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">طلاب مستر إيهاب</h1>
-    <p class="text-lg sm:text-xl mb-6 max-w-2xl">
+    <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 drop-shadow-lg">طلاب مستر إيهاب</h1>
+    <p class="text-lg sm:text-xl mb-8 max-w-2xl drop-shadow-md">
       منصة تعليمية حديثة لمادة الدراسات الاجتماعية لجميع الصفوف من الرابع الابتدائي وحتى الأول الثانوي.
     </p>
+
+    <!-- الصفوف كبطاقات تحت رسالة الترحيب مباشرة -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+      <a href="grade4.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الرابع الابتدائي</a>
+      <a href="grade5.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الخامس الابتدائي</a>
+      <a href="grade6.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف السادس الابتدائي</a>
+      <a href="grade1.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الأول الإعدادي</a>
+      <a href="grade2.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الثاني الإعدادي</a>
+      <a href="grade3.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الثالث الإعدادي</a>
+      <a href="grade10.html" class="bg-gradient-to-r from-blue-400 to-blue-200 font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center">الصف الأول الثانوي</a>
+    </div>
   </section>
 
-  <!-- الصفوف كبطاقات تفاعلية -->
-  <main class="py-10 px-4 max-w-6xl mx-auto">
-    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8">اختر صفك</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <a href="grade4.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الرابع الابتدائي</a>
-      <a href="grade5.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الخامس الابتدائي</a>
-      <a href="grade6.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف السادس الابتدائي</a>
-      <a href="grade1.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الأول الإعدادي</a>
-      <a href="grade2.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الثاني الإعدادي</a>
-      <a href="grade3.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الثالث الإعدادي</a>
-      <a href="grade10.html" class="bg-gradient-to-r from-yellow-800 to-yellow-600 text-white font-bold py-5 rounded-lg shadow-lg hover:scale-105 transform transition-all text-center hover:shadow-2xl">الصف الأول الثانوي</a>
-    </div>
-  </main>
-
   <!-- Footer -->
-  <footer class="bg-yellow-900 text-white text-center p-6 mt-auto shadow-inner">
+  <footer class="bg-blue-600 text-white text-center p-6 mt-auto shadow-inner">
     &copy; 2025 طلاب مستر إيهاب | الهاتف: 01559116736
   </footer>
+
+  <!-- Script لتفعيل القائمة المنسدلة -->
+  <script>
+    const menuButton = document.getElementById('menuButton');
+    const menuItems = document.getElementById('menuItems');
+    menuButton.addEventListener('click', () => {
+      menuItems.classList.toggle('hidden');
+    });
+  </script>
 
 </body>
 </html>
