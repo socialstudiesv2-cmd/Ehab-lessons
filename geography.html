@@ -2,50 +2,24 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>الجغرافيا - منصة مستر إيهاب أشرف</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>دروس الجغرافيا</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-[#2a1b12] to-[#cfa84c] text-white font-sans">
+<body>
+  <div class="container">
+    <h1>🌍 دروس الجغرافيا</h1>
 
-  <header class="bg-black/70 backdrop-blur-md sticky top-0 z-50 shadow-md">
-    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
-      <h1 class="text-lg sm:text-xl font-bold text-yellow-400">📚 مستر إيهاب أشرف</h1>
-      <nav class="space-x-2 sm:space-x-4 space-x-reverse text-sm sm:text-base">
-        <a href="index.html" class="text-yellow-300 hover:text-white">الرئيسية</a>
-        <a href="subjects.html" class="text-yellow-300 hover:text-white">المواد</a>
-        <a href="contact.html" class="text-yellow-300 hover:text-white">اتصل بنا</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="max-w-5xl mx-auto px-4 py-10">
-    <h2 class="text-3xl font-extrabold text-yellow-300 mb-6 text-center">🌍 دروس مادة الجغرافيا</h2>
-
-    <!-- زر الرجوع -->
-    <div class="text-center my-6">
-      <button onclick="window.history.back()" 
-        class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg shadow-md transition">
-        ⬅ رجوع
-      </button>
+    <div class="video">
+      <h2>الدرس 1: تضاريس مصر</h2>
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID3" allowfullscreen></iframe>
     </div>
 
-    <!-- درس 1 -->
-    <div class="bg-white/10 p-5 rounded-lg shadow-md mb-6">
-      <h3 class="text-xl font-bold mb-3">الدرس 1: تضاريس مصر</h3>
-      <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/VIDEO_ID3" frameborder="0" allowfullscreen></iframe>
-      <p class="text-sm text-gray-200 mt-3">شرح مبسط للجبال والسهول والوديان في مصر.</p>
+    <div class="video">
+      <h2>الدرس 2: المناخ</h2>
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID4" allowfullscreen></iframe>
     </div>
 
-    <!-- درس 2 -->
-    <div class="bg-white/10 p-5 rounded-lg shadow-md">
-      <h3 class="text-xl font-bold mb-3">الدرس 2: المناخ</h3>
-      <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/VIDEO_ID4" frameborder="0" allowfullscreen></iframe>
-      <p class="text-sm text-gray-200 mt-3">كيف يؤثر المناخ على الزراعة والحياة اليومية.</p>
-    </div>
-  </section>
-
-  <footer class="bg-black/80 py-6 text-center text-xs sm:text-sm text-gray-300">
-    جميع الحقوق محفوظة © 2025 مستر إيهاب أشرف
-  </footer>
+    <a href="subjects.html" class="back-btn">⬅ رجوع</a>
+  </div>
 </body>
 </html>
