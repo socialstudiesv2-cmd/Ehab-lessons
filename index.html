@@ -1,16 +1,67 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>منصة مستر إيهاب أشرف</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طلاب مستر إيهاب</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="container">
-    <h1>📚 منصة مستر إيهاب أشرف</h1>
-    <a href="subjects.html" class="button">🚀 ابدأ التعلّم الآن</a>
-    <a href="tel:01559116736" class="button">📞 01559116736</a>
-    <a href="https://wa.me/201559116736" class="button">💬 واتساب</a>
-  </div>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-800 text-white p-4 flex justify-between flex-wrap">
+    <h1 class="font-bold text-xl">طلاب مستر إيهاب</h1>
+    <div class="space-x-2 mt-2 sm:mt-0">
+      <a href="index.html" class="hover:underline">الرئيسية</a>
+      <a href="grade4.html" class="hover:underline">الصف 4</a>
+      <a href="grade5.html" class="hover:underline">الصف 5</a>
+      <a href="grade6.html" class="hover:underline">الصف 6</a>
+      <a href="grade1.html" class="hover:underline">الإعدادي 1</a>
+      <a href="grade2.html" class="hover:underline">الإعدادي 2</a>
+      <a href="grade3.html" class="hover:underline">الإعدادي 3</a>
+      <a href="grade10.html" class="hover:underline">الثانوي 1</a>
+      <a href="contact.html" class="hover:underline">اتصل بنا</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow p-6">
+    <h2 class="text-3xl font-bold mb-6 text-center">مرحباً بكم في منصة طلاب مستر إيهاب</h2>
+    <p class="mb-6 text-center">اختر صفك لتبدأ رحلة التعلم في مادة الدراسات الاجتماعية:</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- الصفوف الابتدائية -->
+      <a href="grade4.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الرابع الابتدائي</h3>
+      </a>
+      <a href="grade5.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الخامس الابتدائي</h3>
+      </a>
+      <a href="grade6.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف السادس الابتدائي</h3>
+      </a>
+
+      <!-- الصفوف الإعدادية -->
+      <a href="grade1.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الأول الإعدادي</h3>
+      </a>
+      <a href="grade2.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الثاني الإعدادي</h3>
+      </a>
+      <a href="grade3.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الثالث الإعدادي</h3>
+      </a>
+
+      <!-- الصف الثانوي -->
+      <a href="grade10.html" class="block border rounded-lg p-6 shadow hover:shadow-lg transition bg-white text-center">
+        <h3 class="text-xl font-bold mb-2">الصف الأول الثانوي</h3>
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white text-center p-4">
+    &copy; 2025 طلاب مستر إيهاب | الهاتف: 01559116736
+  </footer>
 </body>
 </html>
