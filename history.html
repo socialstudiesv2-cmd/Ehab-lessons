@@ -22,21 +22,32 @@
   <!-- دروس التاريخ -->
   <section class="max-w-5xl mx-auto px-4 py-10">
     <h2 class="text-3xl font-extrabold text-yellow-300 mb-6 text-center">📜 دروس مادة التاريخ</h2>
-    <div class="space-y-4">
-      <div class="bg-white/10 p-5 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-2">الدرس 1: الحضارة الفرعونية</h3>
-        <p class="text-sm text-gray-200">فيديو يشرح نشأة الحضارة المصرية القديمة وأهم إنجازاتها.</p>
-      </div>
-      <div class="bg-white/10 p-5 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-2">الدرس 2: الفتح الإسلامي لمصر</h3>
-        <p class="text-sm text-gray-200">توضيح لأحداث دخول عمرو بن العاص لمصر وأثره التاريخي.</p>
-      </div>
+
+    <!-- زر الرجوع -->
+    <div class="text-center my-6">
+      <button onclick="window.history.back()" 
+        class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg shadow-md transition">
+        ⬅ رجوع
+      </button>
+    </div>
+
+    <!-- درس 1 -->
+    <div class="bg-white/10 p-5 rounded-lg shadow-md mb-6">
+      <h3 class="text-xl font-bold mb-3">الدرس 1: الحضارة الفرعونية</h3>
+      <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/VIDEO_ID1" frameborder="0" allowfullscreen></iframe>
+      <p class="text-sm text-gray-200 mt-3">شرح مبسط عن نشأة الحضارة المصرية القديمة وأهم إنجازاتها.</p>
+    </div>
+
+    <!-- درس 2 -->
+    <div class="bg-white/10 p-5 rounded-lg shadow-md">
+      <h3 class="text-xl font-bold mb-3">الدرس 2: الفتح الإسلامي لمصر</h3>
+      <iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/VIDEO_ID2" frameborder="0" allowfullscreen></iframe>
+      <p class="text-sm text-gray-200 mt-3">توضيح لأحداث دخول عمرو بن العاص لمصر وأثره التاريخي.</p>
     </div>
   </section>
 
   <footer class="bg-black/80 py-6 text-center text-xs sm:text-sm text-gray-300">
     جميع الحقوق محفوظة © 2025 مستر إيهاب أشرف
   </footer>
-
 </body>
 </html>
