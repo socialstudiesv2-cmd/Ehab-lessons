@@ -3,40 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>التاريخ - منصة مستر إيهاب أشرف</title>
-
-    <link rel="stylesheet" href="style.css">
-  
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header>
-    <h2>📚 منصة مستر إيهاب أشرف</h2>
-    <nav>
-      <a href="index.html">الرئيسية</a>
-      <a href="subjects.html">المواد</a>
-      <a href="contact.html">اتصل بنا</a>
-    </nav>
+<body class="bg-gradient-to-br from-[#2a1b12] to-[#cfa84c] text-white font-sans">
+
+  <!-- الهيدر -->
+  <header class="bg-black/70 backdrop-blur-md sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <h1 class="text-lg sm:text-xl font-bold text-yellow-400">📚 مستر إيهاب أشرف</h1>
+      <nav class="space-x-2 sm:space-x-4 space-x-reverse text-sm sm:text-base">
+        <a href="index.html" class="text-yellow-300 hover:text-white">الرئيسية</a>
+        <a href="subjects.html" class="text-yellow-300 hover:text-white">المواد</a>
+        <a href="contact.html" class="text-yellow-300 hover:text-white">اتصل بنا</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="content">
-    <h1>📖 دروس التاريخ</h1>
-
-    <div class="lesson">
-      <h3>الدرس الأول: نشأة الحضارة المصرية القديمة</h3>
-      <div class="video">
-        <!-- مثال لفيديو يوتيوب -->
-        <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+  <!-- دروس التاريخ -->
+  <section class="max-w-5xl mx-auto px-4 py-10">
+    <h2 class="text-3xl font-extrabold text-yellow-300 mb-6 text-center">📜 دروس مادة التاريخ</h2>
+    <div class="space-y-4">
+      <div class="bg-white/10 p-5 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-2">الدرس 1: الحضارة الفرعونية</h3>
+        <p class="text-sm text-gray-200">فيديو يشرح نشأة الحضارة المصرية القديمة وأهم إنجازاتها.</p>
       </div>
-      <p>شرح الحضارة المصرية القديمة وأهم مراحل تطورها.</p>
-    </div>
-
-    <div class="lesson">
-      <h3>الدرس الثاني: الحملة الفرنسية على مصر</h3>
-      <div class="video">
-        <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+      <div class="bg-white/10 p-5 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-2">الدرس 2: الفتح الإسلامي لمصر</h3>
+        <p class="text-sm text-gray-200">توضيح لأحداث دخول عمرو بن العاص لمصر وأثره التاريخي.</p>
       </div>
-      <p>دراسة شاملة لأحداث الحملة الفرنسية وأثرها.</p>
     </div>
-
   </section>
+
+  <footer class="bg-black/80 py-6 text-center text-xs sm:text-sm text-gray-300">
+    جميع الحقوق محفوظة © 2025 مستر إيهاب أشرف
+  </footer>
+
 </body>
 </html>
