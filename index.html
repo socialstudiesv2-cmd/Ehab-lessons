@@ -3,29 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <title>منصة مستر إيهاب أشرف</title>
-  
-  <link rel="stylesheet" href="style.css">
-  
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header>
-    <h2>📚 منصة مستر إيهاب أشرف</h2>
-    <nav>
-      <a href="index.html">الرئيسية</a>
-      <a href="subjects.html">المواد</a>
-      <a href="contact.html">اتصل بنا</a>
-    </nav>
+<body class="bg-gradient-to-br from-[#1e130c] to-[#9a8478] text-white font-sans">
+  
+  <!-- الهيدر -->
+  <header class="bg-black/60 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between p-4">
+      <h1 class="text-2xl font-bold text-yellow-400">📚 منصة مستر إيهاب أشرف</h1>
+      <nav class="mt-2 md:mt-0">
+        <a href="index.html" class="mx-3 text-yellow-300 hover:text-white transition">الرئيسية</a>
+        <a href="subjects.html" class="mx-3 text-yellow-300 hover:text-white transition">المواد</a>
+        <a href="contact.html" class="mx-3 text-yellow-300 hover:text-white transition">اتصل بنا</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="hero">
-    <h1>تعلم التاريخ والجغرافيا مع مستر إيهاب أشرف</h1>
-    <p>أفضل دروس التاريخ والجغرافيا للثانوية العامة بخبرة أكثر من 15 سنة.</p>
-    <a href="subjects.html" class="btn">ابدأ التعلم الآن</a>
+  <!-- بانر رئيسي -->
+  <section class="text-center py-24 bg-gradient-to-r from-[#3b2a20] to-yellow-600 rounded-b-[50px] shadow-xl">
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-6">أهلاً بكم في منصة مستر إيهاب أشرف</h2>
+    <p class="max-w-2xl mx-auto text-lg text-gray-100">
+      دروس تعليمية بالفيديو في الدراسات الاجتماعية بطريقة عصرية وسهلة الفهم.
+    </p>
+    <a href="subjects.html" 
+       class="mt-8 inline-block px-8 py-4 bg-yellow-400 text-black font-bold rounded-full shadow-lg hover:bg-yellow-300 transition">
+       🚀 ابدأ التعلّم الآن
+    </a>
   </section>
 
-  <footer>
-    <p>جميع الحقوق محفوظة © 2025 — مستر إيهاب أشرف</p>
-    <p>📞 01559116736</p>
+  <!-- فوتر -->
+  <footer class="bg-black/70 mt-16 py-6 text-center text-gray-300 text-sm">
+    جميع الحقوق محفوظة © 2025 مستر إيهاب أشرف
   </footer>
+
 </body>
 </html>
