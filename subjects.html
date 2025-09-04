@@ -3,34 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>المواد - منصة مستر إيهاب أشرف</title>
-
-    <link rel="stylesheet" href="style.css">
-
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header>
-    <h2>📚 منصة مستر إيهاب أشرف</h2>
-    <nav>
-      <a href="index.html">الرئيسية</a>
-      <a href="subjects.html">المواد</a>
-      <a href="contact.html">اتصل بنا</a>
-    </nav>
+<body class="bg-gradient-to-br from-[#2a1b12] to-[#cfa84c] text-white font-sans">
+
+  <!-- الهيدر -->
+  <header class="bg-black/70 backdrop-blur-md sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+      <h1 class="text-lg sm:text-xl font-bold text-yellow-400">📚 مستر إيهاب أشرف</h1>
+      <nav class="space-x-2 sm:space-x-4 space-x-reverse text-sm sm:text-base">
+        <a href="index.html" class="text-yellow-300 hover:text-white">الرئيسية</a>
+        <a href="subjects.html" class="text-yellow-300 hover:text-white">المواد</a>
+        <a href="contact.html" class="text-yellow-300 hover:text-white">اتصل بنا</a>
+      </nav>
+    </div>
   </header>
 
-  <section>
-    <h1>المواد المتاحة</h1>
-    <div class="subjects">
-      <div class="card">
-        <h3>📖 التاريخ</h3>
-        <p>دروس شاملة للتاريخ بأسلوب مبسط.</p>
-        <a href="history.html" class="btn">ابدأ الآن</a>
-      </div>
-      <div class="card">
-        <h3>🌍 الجغرافيا</h3>
-        <p>دروس جغرافيا تفاعلية وعملية.</p>
-        <a href="geography.html" class="btn">ابدأ الآن</a>
-      </div>
-    </div>
+  <!-- عنوان -->
+  <section class="text-center px-4 py-10">
+    <h2 class="text-3xl font-extrabold text-yellow-300 mb-4">📚 المواد الدراسية</h2>
+    <p class="text-gray-100">اختر المادة لعرض الدروس المتاحة.</p>
   </section>
+
+  <!-- شبكة المواد -->
+  <section class="max-w-6xl mx-auto px-4 py-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <a href="history.html" class="bg-white/10 p-6 rounded-xl shadow-md hover:scale-105 transition text-center">
+      <h3 class="text-xl font-bold text-yellow-300 mb-2">📜 التاريخ</h3>
+      <p class="text-sm text-gray-200">دروس التاريخ مبسطة وسهلة الفهم.</p>
+    </a>
+    <a href="geography.html" class="bg-white/10 p-6 rounded-xl shadow-md hover:scale-105 transition text-center">
+      <h3 class="text-xl font-bold text-yellow-300 mb-2">🌍 الجغرافيا</h3>
+      <p class="text-sm text-gray-200">دروس شيقة لفهم الجغرافيا بطريقة جديدة.</p>
+    </a>
+    <a href="contact.html" class="bg-white/10 p-6 rounded-xl shadow-md hover:scale-105 transition text-center">
+      <h3 class="text-xl font-bold text-yellow-300 mb-2">📞 تواصل معنا</h3>
+      <p class="text-sm text-gray-200">للاستفسارات وحجز الدروس.</p>
+    </a>
+  </section>
+
+  <!-- فوتر -->
+  <footer class="bg-black/80 py-6 text-center text-xs sm:text-sm text-gray-300">
+    جميع الحقوق محفوظة © 2025 مستر إيهاب أشرف
+  </footer>
+
 </body>
 </html>
