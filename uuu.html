@@ -3,62 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الكتب الدراسية | رفع ومشاركة الكتب</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>عالم الفراعنة الفضائي - مستر إيهاب أشرف</title>
     <style>
-        :root {
-            --primary: #4a6fa5;
-            --secondary: #6b8cbc;
-            --accent: #ff7e5f;
-            --light: #f8f9fa;
-            --dark: #2d3e50;
-            --success: #28a745;
-        }
-        
+        /* أنماط التصميم العامة */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a3a, #0a0a2a);
+            color: #fff;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%230a0a2a" width="100" height="100"/><path fill="%231a1a3a" d="M0,0 L100,100"/><circle fill="%23264d73" cx="50" cy="50" r="30"/></svg>');
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        .container {
+        /* النجوم في الخلفية */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
         }
         
-        /* التصميم للشريط العلوي */
+        /* الهيدر */
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header-content {
+            background: rgba(10, 10, 42, 0.8);
+            border-bottom: 2px solid #d4af37;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
         }
         
-        .logo i {
-            margin-left: 10px;
-            font-size: 1.8rem;
+        .logo h1 {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #d4af37, #f5e9bc);
+            border-radius: 50%;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,15 L60,40 L85,40 L65,55 L75,85 L50,70 L25,85 L35,55 L15,40 L40,40 Z'/%3E%3C/svg%3E") center/cover;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,15 L60,40 L85,40 L65,55 L75,85 L50,70 L25,85 L35,55 L15,40 L40,40 Z'/%3E%3C/svg%3E") center/cover;
         }
         
         nav ul {
@@ -67,317 +76,231 @@
         }
         
         nav ul li {
-            margin-left: 20px;
+            margin: 0 10px;
         }
         
         nav ul li a {
-            color: white;
+            color: #fff;
             text-decoration: none;
-            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
             transition: all 0.3s ease;
         }
         
         nav ul li a:hover {
-            color: var(--accent);
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
         }
         
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-        }
-        
-        .btn {
-            padding: 8px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .btn-outline {
-            border: 2px solid white;
-            color: white;
-            background: transparent;
-            margin-left: 10px;
-        }
-        
-        .btn-outline:hover {
-            background: white;
-            color: var(--primary);
-        }
-        
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #ff6b4a;
-        }
-        
-        /* قسم الهيرو */
+        /* المحتوى الرئيسي */
         .hero {
-            padding: 4rem 0;
             text-align: center;
-            background: white;
-            margin-bottom: 2rem;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 80px 5%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%231a1a3a" width="100" height="100"/><path fill="%23264d73" d="M0,0 L100,100"/></svg>');
+            position: relative;
+            overflow: hidden;
         }
         
-        .hero h1 {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 20%, #0a0a2a 70%);
+        }
+        
+        .hero h2 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
+            margin-bottom: 20px;
+            color: #d4af37;
+            position: relative;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
         }
         
         .hero p {
             font-size: 1.2rem;
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-        
-        .search-box {
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
             position: relative;
         }
         
-        .search-box input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 50px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .search-box button {
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--primary);
-            color: white;
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #d4af37, #f5e9bc);
+            color: #0a0a2a;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
             border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
             cursor: pointer;
         }
         
-        /* قسم الكتب المميزة */
-        .featured {
-            padding: 2rem 0;
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
         
-        .section-title {
+        /* الأقسام */
+        .section {
+            padding: 60px 5%;
             text-align: center;
-            margin-bottom: 2rem;
-            color: var(--dark);
-            position: relative;
-            padding-bottom: 10px;
         }
         
-        .section-title:after {
+        .section h3 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #d4af37;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section h3::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--accent);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
         }
         
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-        }
-        
-        .book-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .book-cover {
-            height: 200px;
-            background: linear-gradient(45deg, #6b8cbc, #4a6fa5);
+        /* البطاقات */
+        .cards-container {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-        
-        .book-details {
-            padding: 1.2rem;
-        }
-        
-        .book-details h3 {
-            margin-bottom: 8px;
-            color: var(--dark);
-        }
-        
-        .book-meta {
-            color: #777;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        
-        .book-actions {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        /* قسم رفع الكتاب */
-        .upload-section {
-            background: white;
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            margin: 3rem auto;
-            max-width: 800px;
-        }
-        
-        .upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .upload-area:hover {
-            border-color: var(--primary);
-        }
-        
-        .upload-area i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .upload-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        
-        /* التذييل */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 0 1.5rem;
-            margin-top: 4rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
-            margin-bottom: 2rem;
+            margin-top: 30px;
         }
         
-        .footer-section h3 {
-            margin-bottom: 1.2rem;
+        .card {
+            background: rgba(26, 26, 58, 0.8);
+            border: 1px solid #34495e;
+            border-radius: 15px;
+            padding: 25px;
+            width: 300px;
+            transition: all 0.3s ease;
             position: relative;
-            padding-bottom: 10px;
+            overflow: hidden;
         }
         
-        .footer-section h3:after {
+        .card::before {
             content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            width: 50px;
-            height: 2px;
-            background: var(--accent);
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #d4af37, #f5e9bc);
         }
         
-        .footer-links {
-            list-style: none;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
         
-        .footer-links li {
-            margin-bottom: 10px;
+        .card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #d4af37;
         }
         
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        .card p {
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
         
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .copyright {
+        /* الفوتر */
+        footer {
+            background: rgba(10, 10, 42, 0.9);
+            border-top: 2px solid #d4af37;
+            padding: 30px 5%;
             text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid #4a5568;
-            color: #ccc;
-            font-size: 0.9rem;
         }
         
-        /* responsive design */
+        .contact-info {
+            margin-bottom: 20px;
+        }
+        
+        .contact-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #d4af37;
+        }
+        
+        .phone-number {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-number:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: #d4af37;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+            border-radius: 50%;
+            line-height: 40px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: #d4af37;
+            color: #0a0a2a;
+            transform: translateY(-5px);
+        }
+        
+        /* تأثيرات الحركة */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
         @media (max-width: 768px) {
-            .header-content {
+            header {
                 flex-direction: column;
                 text-align: center;
             }
             
             nav ul {
-                margin: 1rem 0;
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .upload-form {
-                grid-template-columns: 1fr;
+            nav ul li {
+                margin: 5px;
             }
             
-            .hero h1 {
+            .hero h2 {
                 font-size: 2rem;
             }
             
@@ -386,241 +309,112 @@
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- الشريط العلوي -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-book-open"></i>
-                    <span>منصة الكتب</span>
-                </div>
-                
-                <nav>
-                    <ul>
-                        <li><a href="#">الرئيسية</a></li>
-                        <li><a href="#">الكتب</a></li>
-                        <li><a href="#">المقررات</a></li>
-                        <li><a href="#">المساعدة</a></li>
-                    </ul>
-                </nav>
-                
-                <div class="auth-buttons">
-                    <button class="btn btn-outline">تسجيل الدخول</button>
-                    <button class="btn btn-primary">إنشاء حساب</button>
-                </div>
-            </div>
+        <div class="logo">
+            <div class="logo-img"></div>
+            <h1>عالم الفراعنة الفضائي</h1>
         </div>
+        <nav>
+            <ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#about">عن الأستاذ</a></li>
+                <li><a href="#subjects">المواد الدراسية</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul>
+        </nav>
     </header>
-    
-    <!-- قسم البطل -->
-    <section class="hero">
-        <div class="container">
-            <h1>منصة رفع ومشاركة الكتب الدراسية</h1>
-            <p>مكانك الأمثل لرفع ومشاركة الكتب الدراسية مع الطلاب والمدرسين في مختلف التخصصات</p>
-            
-            <div class="search-box">
-                <input type="text" placeholder="ابحث عن كتاب أو مقرر دراسي...">
-                <button><i class="fas fa-search"></i> بحث</button>
+
+    <section id="home" class="hero">
+        <h2 class="floating">مرحباً بكم في عالم الفراعنة الفضائي</h2>
+        <p>منصة تعليمية تفاعلية تجمع بين التاريخ والجغرافيا في رحلة خيال علمي مذهلة عبر العصور المصرية القديمة والعالم الفضائي</p>
+        <a href="#subjects" class="cta-button">ابدأ الرحلة التعليمية</a>
+        <a href="#contact" class="cta-button">تواصل مع الأستاذ</a>
+    </section>
+
+    <section id="about" class="section">
+        <h3>مستر إيهاب أشرف</h3>
+        <div class="cards-container">
+            <div class="card">
+                <h4>خبرة تعليمية واسعة</h4>
+                <p>مدرس الدراسات الاجتماعية بمدرسة المستقبل النموذجية، متخصص في تدريس التاريخ والجغرافيا بأسلوب شيق ومبتكر.</p>
+            </div>
+            <div class="card">
+                <h4>أسلوب تدريس فريد</h4>
+                <p>يجمع بين الأصالة التاريخية وتقنيات التعليم الحديثة في قالب خيال علمي يجذب انتباه الطلاب ويحفزهم على التعلم.</p>
+            </div>
+            <div class="card">
+                <h4>رؤية تعليمية</h4>
+                <p>نسعى لجعل عملية التعلم رحلة ممتعة عبر الزمان والمكان، نستكشف فيها أسرار الحضارات القديمة وعلاقتها بالعالم الحديث.</p>
             </div>
         </div>
     </section>
-    
-    <!-- الكتب المميزة -->
-    <section class="featured">
-        <div class="container">
-            <h2 class="section-title">أحدث الكتب المضافة</h2>
-            
-            <div class="books-grid">
-                <!-- كتاب 1 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="book-details">
-                        <h3>الرياضيات المتقدمة</h3>
-                        <div class="book-meta">
-                            <span>د. أحمد محمد</span> |
-                            <span>الرياضيات</span>
-                        </div>
-                        <div class="book-actions">
-                            <a href="#" class="btn btn-primary">تحميل</a>
-                            <a href="#"><i class="far fa-eye"></i> 120</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- كتاب 2 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="book-details">
-                        <h3>أسس الفيزياء الحديثة</h3>
-                        <div class="book-meta">
-                            <span>أ. سارة عبد الله</span> |
-                            <span>الفيزياء</span>
-                        </div>
-                        <div class="book-actions">
-                            <a href="#" class="btn btn-primary">تحميل</a>
-                            <a href="#"><i class="far fa-eye"></i> 95</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- كتاب 3 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="book-details">
-                        <h3>قواعد اللغة العربية</h3>
-                        <div class="book-meta">
-                            <span>د. خالد السعدي</span> |
-                            <span>اللغة العربية</span>
-                        </div>
-                        <div class="book-actions">
-                            <a href="#" class="btn btn-primary">تحميل</a>
-                            <a href="#"><i class="far fa-eye"></i> 210</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- كتاب 4 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="book-details">
-                        <h3>تاريخ الأدب العربي</h3>
-                        <div class="book-meta">
-                            <span>د. فاطمة الزهراء</span> |
-                            <span>الأدب</span>
-                        </div>
-                        <div class="book-actions">
-                            <a href="#" class="btn btn-primary">تحميل</a>
-                            <a href="#"><i class="far fa-eye"></i> 156</a>
-                        </div>
-                    </div>
-                </div>
+
+    <section id="subjects" class="section">
+        <h3>المواد الدراسية</h3>
+        <div class="cards-container">
+            <div class="card">
+                <h4>تاريخ مصر القديمة</h4>
+                <p>رحلة عبر الزمن إلى عصر الفراعنة، نستكشف فيها الأسر الحاكمة، والأهرامات، والمعابد، والأساطير المصرية القديمة.</p>
+                <a href="#" class="cta-button">ادخل إلى الرحلة</a>
+            </div>
+            <div class="card">
+                <h4>جغرافيا العالم الفضائي</h4>
+                <p>استكشاف الكواكب والنجوم والمجرات من منظور جغرافي فريد، مع ربطها بالمعتقدات المصرية القديمة عن الفلك.</p>
+                <a href="#" class="cta-button">ابدأ الاستكشاف</a>
+            </div>
+            <div class="card">
+                <h4>الحضارة المصرية والفضاء</h4>
+                <p>كيف نظر المصريون القدماء إلى النجوم والكواكب؟ وهل حقاً زاروا كواكب أخرى؟ اكتشف الإجابة في هذه الرحلة المثيرة.</p>
+                <a href="#" class="cta-button">انطلق في المغامرة</a>
             </div>
         </div>
     </section>
-    
-    <!-- قسم رفع الكتاب -->
-    <section class="container">
-        <div class="upload-section">
-            <h2 class="section-title">رفع كتاب جديد</h2>
-            
-            <div class="upload-area">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <h3>انقر أو اسحب الكتاب هنا للرفع</h3>
-                <p>يدعم الصيغ: PDF, DOC, DOCX, PPT, PPTX (الحجم الأقصى: 25MB)</p>
-            </div>
-            
-            <form class="upload-form">
-                <div class="form-group">
-                    <label for="book-title">عنوان الكتاب</label>
-                    <input type="text" id="book-title" placeholder="أدخل عنوان الكتاب">
-                </div>
-                
-                <div class="form-group">
-                    <label for="book-author">اسم المؤلف</label>
-                    <input type="text" id="book-author" placeholder="اسم المؤلف">
-                </div>
-                
-                <div class="form-group">
-                    <label for="book-category">التصنيف</label>
-                    <select id="book-category">
-                        <option value="">اختر التصنيف</option>
-                        <option value="math">الرياضيات</option>
-                        <option value="physics">الفيزياء</option>
-                        <option value="arabic">اللغة العربية</option>
-                        <option value="science">العلوم</option>
-                        <option value="history">التاريخ</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="book-level">المستوى الدراسي</label>
-                    <select id="book-level">
-                        <option value="">اختر المستوى</option>
-                        <option value="elementary">الابتدائي</option>
-                        <option value="middle">المتوسط</option>
-                        <option value="high">الثانوي</option>
-                        <option value="university">الجامعي</option>
-                    </select>
-                </div>
-                
-                <div class="form-group full-width">
-                    <label for="book-description">وصف الكتاب</label>
-                    <textarea id="book-description" placeholder="أدخل وصفاً مختصراً للكتاب"></textarea>
-                </div>
-                
-                <div class="form-group full-width">
-                    <button type="submit" class="btn btn-primary" style="width: 100%">
-                        <i class="fas fa-upload"></i> رفع الكتاب
-                    </button>
-                </div>
-            </form>
+
+    <footer id="contact">
+        <div class="contact-info">
+            <h4>للتواصل مع مستر إيهاب أشرف</h4>
+            <a href="tel:01559116736" class="phone-number">01559116736</a>
         </div>
-    </section>
-    
-    <!-- التذييل -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>عن المنصة</h3>
-                    <p>منصة الكتب الدراسية هي منصة عربية تهدف إلى تسهيل مشاركة الكتب والمراجع الدراسية بين الطلاب والمعلمين في العالم العربي.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">الرئيسية</a></li>
-                        <li><a href="#">الكتب</a></li>
-                        <li><a href="#">المقررات</a></li>
-                        <li><a href="#">سياسة الخصوصية</a></li>
-                        <li><a href="#">شروط الاستخدام</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>التواصل معنا</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-envelope"></i> info@example.com</li>
-                        <li><i class="fas fa-phone"></i> +966 12 345 6789</li>
-                        <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>جميع الحقوق محفوظة &copy; 2023 منصة الكتب الدراسية</p>
-            </div>
+        <div class="social-links">
+            <a href="#">فيسبوك</a>
+            <a href="#">يوتيوب</a>
+            <a href="#">انستجرام</a>
+            <a href="#">واتساب</a>
         </div>
+        <p>© 2023 عالم الفراعنة الفضائي. جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
-        // كود جافاسكريبت بسيط للتحكم في عملية الرفع
+        // تأثيرات تفاعلية بسيطة
         document.addEventListener('DOMContentLoaded', function() {
-            const uploadArea = document.querySelector('.upload-area');
+            const cards = document.querySelectorAll('.card');
             
-            uploadArea.addEventListener('click', function() {
-                alert('ستفتح نافذة لاختيار الملفات في التطبيق الكامل');
-            });
-            
-            // تأثيرات عند المرور على بطاقات الكتب
-            const bookCards = document.querySelectorAll('.book-card');
-            bookCards.forEach(card => {
+            cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
                 });
                 
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // تأثير التمرير السلس للروابط
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
                 });
             });
         });
