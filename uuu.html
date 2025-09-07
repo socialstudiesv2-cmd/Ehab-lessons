@@ -3,49 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عالم الفراعنة - مستر إيهاب أشرف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>متجري الإلكتروني</title>
     <style>
+        :root {
+            --primary-color: #4a6da7;
+            --secondary-color: #e9ecef;
+            --accent-color: #28a745;
+            --text-color: #333;
+            --light-color: #f8f9fa;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(to bottom, #0a0a2a, #1a1a3a, #2d2d4a);
-            color: #fff;
-            min-height: 100vh;
-            background-image: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%230a0a2a" width="100" height="100"/><path fill="%231a1a3a" d="M0,0 L100,100"/></svg>');
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle fill="%23d4af37" opacity="0.3" cx="10" cy="10" r="1"/></svg>');
-            z-index: -1;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
         }
         
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
         }
         
-        /* Header Styles */
+        /* التصميم العام */
         header {
-            background: rgba(20, 20, 40, 0.9);
-            border-bottom: 3px solid #d4af37;
-            padding: 15px 0;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -55,35 +45,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px 0;
         }
         
         .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-img {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #d4af37, #f5e9bc);
-            border-radius: 50%;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,15 L60,40 L85,40 L65,55 L75,85 L50,70 L25,85 L35,55 L15,40 L40,40 Z'/%3E%3C/svg%3E") center/cover;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,15 L60,40 L85,40 L65,55 L75,85 L50,70 L25,85 L35,55 L15,40 L40,40 Z'/%3E%3C/svg%3E") center/cover;
-        }
-        
-        .logo-text {
-            margin-right: 15px;
-        }
-        
-        .logo-text h1 {
-            font-size: 1.8rem;
-            color: #d4af37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-        
-        .logo-text p {
-            font-size: 0.9rem;
-            color: #f5e9bc;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
         }
         
         nav ul {
@@ -92,559 +60,348 @@
         }
         
         nav ul li {
-            margin: 0 5px;
+            margin-left: 20px;
         }
         
         nav ul li a {
-            color: #fff;
             text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            display: block;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
         }
         
         nav ul li a:hover {
-            background: rgba(212, 175, 55, 0.2);
-            color: #d4af37;
+            color: var(--primary-color);
         }
         
-        /* Hero Section */
-        .hero {
-            padding: 100px 0 70px;
-            text-align: center;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%231a1a3a" width="100" height="100"/><path fill="%23264d73" d="M0,0 L100,100"/></svg>');
+        .cart-icon {
             position: relative;
+            cursor: pointer;
         }
         
-        .hero::before {
-            content: '';
+        .cart-count {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 30%, #0a0a2a 80%);
+            top: -10px;
+            right: -10px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
         }
         
-        .hero-content {
-            position: relative;
-            z-index: 1;
+        /* قسم الهيرو */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1500x500');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
         }
         
-        .hero h2 {
-            font-size: 3rem;
+        .hero h1 {
+            font-size: 2.5rem;
             margin-bottom: 20px;
-            color: #d4af37;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
         }
         
         .hero p {
             font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .cta-buttons {
-            margin-top: 30px;
-        }
-        
-        .cta-button {
+        .btn {
             display: inline-block;
-            background: linear-gradient(45deg, #d4af37, #f5e9bc);
-            color: #0a0a2a;
-            padding: 12px 30px;
-            border-radius: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
-            margin: 10px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            transition: background-color 0.3s;
         }
         
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        .btn:hover {
+            background-color: #3a5a8f;
         }
         
-        .cta-button.outline {
-            background: transparent;
-            border: 2px solid #d4af37;
-            color: #d4af37;
+        /* قسم المنتجات */
+        .products-section {
+            padding: 40px 0;
         }
         
-        .cta-button.outline:hover {
-            background: rgba(212, 175, 55, 0.1);
-        }
-        
-        /* Sections */
-        .section {
-            padding: 80px 0;
+        .section-title {
             text-align: center;
-        }
-        
-        .section h3 {
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: #d4af37;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section h3::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-        }
-        
-        /* Cards */
-        .cards-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .card {
-            background: rgba(26, 26, 58, 0.8);
-            border: 1px solid #34495e;
-            border-radius: 15px;
-            padding: 25px;
-            width: 300px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #d4af37, #f5e9bc);
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .card-icon {
-            font-size: 2.5rem;
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-        
-        .card h4 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #d4af37;
-        }
-        
-        .card p {
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        /* Teacher Section */
-        .teacher-section {
-            background: rgba(20, 20, 40, 0.6);
-            border-top: 2px solid #d4af37;
-            border-bottom: 2px solid #d4af37;
-        }
-        
-        .teacher-profile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-top: 40px;
-        }
-        
-        .teacher-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #d4af37, #f5e9bc);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .teacher-img::before {
-            content: '';
-            position: absolute;
-            inset: -10px;
-            border: 3px solid #d4af37;
-            border-radius: 50%;
-            opacity: 0.5;
-        }
-        
-        .teacher-img i {
-            font-size: 5rem;
-            color: #1a1a3a;
-        }
-        
-        .teacher-info {
-            max-width: 600px;
-            text-align: right;
-        }
-        
-        .teacher-info h4 {
+            margin-bottom: 40px;
             font-size: 2rem;
-            color: #d4af37;
-            margin-bottom: 15px;
+            color: var(--primary-color);
         }
         
-        .teacher-info p {
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-        
-        /* Contact Section */
-        .contact-section {
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%231a1a3a" width="100" height="100"/><path fill="%23264d73" d="M0,0 L100,100"/></svg>');
-        }
-        
-        .contact-methods {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 30px;
-            margin-top: 40px;
         }
         
-        .contact-card {
-            background: rgba(26, 26, 58, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            width: 300px;
-            transition: all 0.3s ease;
-            border: 1px solid #34495e;
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
         
-        .contact-card:hover {
+        .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
         }
         
-        .contact-card i {
-            font-size: 2.5rem;
-            color: #d4af37;
-            margin-bottom: 20px;
+        .product-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
         }
         
-        .contact-card h4 {
-            font-size: 1.5rem;
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--primary-color);
             margin-bottom: 15px;
-            color: #d4af37;
-        }
-        
-        .contact-card p {
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .phone-number {
-            display: inline-block;
-            background: rgba(212, 175, 55, 0.1);
-            padding: 10px 20px;
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            direction: ltr;
-            margin-top: 10px;
-        }
-        
-        .phone-number:hover {
-            background: rgba(212, 175, 55, 0.2);
-            color: #d4af37;
-        }
-        
-        /* Footer */
-        footer {
-            background: rgba(10, 10, 42, 0.9);
-            border-top: 3px solid #d4af37;
-            padding: 40px 0 20px;
-            text-align: center;
-        }
-        
-        .social-links {
-            margin: 20px 0;
-        }
-        
-        .social-links a {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 0 10px;
-            border-radius: 50%;
-            line-height: 50px;
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s ease;
             font-size: 1.2rem;
         }
         
-        .social-links a:hover {
-            background: #d4af37;
-            color: #0a0a2a;
-            transform: translateY(-5px);
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #218838;
+        }
+        
+        /* التذييل */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
         }
         
         .copyright {
-            margin-top: 30px;
+            text-align: center;
+            margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #f5e9bc;
-            font-size: 0.9rem;
+            border-top: 1px solid #555;
         }
         
-        /* Responsive Design */
+        /* تصميم متجاوب */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
                 text-align: center;
             }
             
-            .logo {
-                margin-bottom: 20px;
-            }
-            
             nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
+                margin-top: 15px;
             }
             
-            nav ul li {
-                margin: 5px;
-            }
-            
-            .hero h2 {
-                font-size: 2.2rem;
+            .hero h1 {
+                font-size: 2rem;
             }
             
             .hero p {
                 font-size: 1rem;
             }
-            
-            .teacher-profile {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .teacher-info {
-                text-align: center;
-            }
         }
-        
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .floating {
-            animation: float 5s ease-in-out infinite;
-        }
-        
-        .hieroglyph {
-            position: absolute;
-            font-size: 3rem;
-            opacity: 0.2;
-            color: #d4af37;
-            z-index: -1;
-        }
-        
-        .h1 { top: 20%; left: 10%; }
-        .h2 { top: 60%; right: 15%; }
-        .h3 { bottom: 20%; left: 20%; }
-        .h4 { top: 30%; right: 5%; }
     </style>
 </head>
 <body>
-    <!-- Hieroglyphics Decorations -->
-    <div class="hieroglyph h1">𓀀</div>
-    <div class="hieroglyph h2">𓃀</div>
-    <div class="hieroglyph h3">𓅓</div>
-    <div class="hieroglyph h4">𓆓</div>
-    
+    <!-- الرأس -->
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <div class="logo-img"></div>
-                    <div class="logo-text">
-                        <h1>عالم الفراعنة</h1>
-                        <p>مستر إيهاب أشرف - الدراسات الاجتماعية</p>
-                    </div>
-                </div>
+                <div class="logo">متجري الإلكتروني</div>
                 <nav>
                     <ul>
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#about">عن الأستاذ</a></li>
-                        <li><a href="#subjects">المواد الدراسية</a></li>
-                        <li><a href="#contact">اتصل بنا</a></li>
+                        <li><a href="#">الرئيسية</a></li>
+                        <li><a href="#">المنتجات</a></li>
+                        <li><a href="#">الفئات</a></li>
+                        <li><a href="#">عنا</a></li>
+                        <li><a href="#">اتصل بنا</a></li>
+                        <li class="cart-icon">
+                            🛒
+                            <span class="cart-count">0</span>
+                        </li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <section id="home" class="hero">
+    <!-- قسم البطل -->
+    <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h2 class="floating">مرحباً بكم في عالم الفراعنة</h2>
-                <p>منصة تعليمية تجمع بين الأصالة الفرعونية والحداثة العالمية لاستكشاف التاريخ والجغرافيا بطريقة تفاعلية شيقة</p>
-                <div class="cta-buttons">
-                    <a href="#subjects" class="cta-button">اكتشف المواد الدراسية</a>
-                    <a href="#contact" class="cta-button outline">تواصل معنا</a>
-                </div>
-            </div>
+            <h1>متجرك الإلكتروني لكل ما تحتاجه</h1>
+            <p>اكتشف أحدث المنتجات وعروضنا المميزة مع خيارات دفع آمنة وتوصيل سريع</p>
+            <a href="#products" class="btn">تسوق الآن</a>
         </div>
     </section>
 
-    <section id="about" class="section teacher-section">
+    <!-- قسم المنتجات -->
+    <section class="products-section" id="products">
         <div class="container">
-            <h3>مستر إيهاب أشرف</h3>
-            <div class="teacher-profile">
-                <div class="teacher-img">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <div class="teacher-info">
-                    <h4>مدرس الدراسات الاجتماعية</h4>
-                    <p>مختص في تدريس التاريخ والجغرافيا بأسلوب مبتكر يجمع بين الأصالة الفرعونية والحداثة العالمية. حاصل على درجة الماجستير في التاريخ القديم وعلى عدة شهادات في أساليب التعليم التفاعلي.</p>
-                    <p>يهدف إلى جعل عملية التعلم رحلة ممتعة عبر الزمان والمكان، نستكشف فيها أسرار الحضارات القديمة وعلاقتها بالعالم الحديث.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="subjects" class="section">
-        <div class="container">
-            <h3>المواد الدراسية</h3>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-monument"></i>
+            <h2 class="section-title">منتجاتنا</h2>
+            <div class="products-grid">
+                <!-- منتج 1 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">سماعات رأس لاسلكية</h3>
+                        <p class="product-price">250 ج.م</p>
+                        <button class="add-to-cart">أضف إلى السلة</button>
                     </div>
-                    <h4>تاريخ مصر القديمة</h4>
-                    <p>رحلة عبر الزمن إلى عصر الفراعنة، نستكشف فيها الأسر الحاكمة، والأهرامات، والمعابد، والأساطير المصرية القديمة.</p>
-                    <a href="#" class="cta-button">ادخل إلى الرحلة</a>
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-globe-africa"></i>
+                
+                <!-- منتج 2 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">هاتف ذكي حديث</h3>
+                        <p class="product-price">4500 ج.م</p>
+                        <button class="add-to-cart">أضف إلى السلة</button>
                     </div>
-                    <h4>جغرافيا العالم</h4>
-                    <p>استكشاف القارات والبلدان والمحيطات من منظور جغرافي فريد، مع التركيز على الموقع الجغرافي المميز لمصر.</p>
-                    <a href="#" class="cta-button">ابدأ الاستكشاف</a>
                 </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-scroll"></i>
+                
+                <!-- منتج 3 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">ساعة ذكية</h3>
+                        <p class="product-price">1200 ج.م</p>
+                        <button class="add-to-cart">أضف إلى السلة</button>
                     </div>
-                    <h4>الحضارات العالمية</h4>
-                    <p>مقارنة بين الحضارة المصرية القديمة وغيرها من الحضارات العالمية من حيث الإنجازات والتأثير الثقافي.</p>
-                    <a href="#" class="cta-button">انطلق في المغامرة</a>
+                </div>
+                
+                <!-- منتج 4 -->
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة مفاتيح ميكانيكية</h3>
+                        <p class="product-price">800 ج.م</p>
+                        <button class="add-to-cart">أضف إلى السلة</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="section contact-section">
-        <div class="container">
-            <h3>اتصل بنا</h3>
-            <div class="contact-methods">
-                <div class="contact-card">
-                    <i class="fas fa-phone"></i>
-                    <h4>اتصل هاتفياً</h4>
-                    <p>يمكنك الاتصال مباشرة بمستر إيهاب أشرف للاستفسار عن الدروس أو الحصول على استشارة تعليمية</p>
-                    <a href="tel:01559116736" class="phone-number">01559116736</a>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-envelope"></i>
-                    <h4>راسلنا عبر البريد</h4>
-                    <p>أرسل استفسارك أو رسالتك عبر البريد الإلكتروني وسيتم الرد عليك في أقرب وقت ممكن</p>
-                    <a href="mailto:info@example.com" class="cta-button">إرسال رسالة</a>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h4>حدد موعد</h4>
-                    <p>يمكنك تحديد موعد لمناقشة أي موضوع تعليمي أو الحصول على جلسة تعليمية خاصة</p>
-                    <a href="#" class="cta-button">احجز موعد</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- التذييل -->
     <footer>
         <div class="container">
-            <div class="logo">
-                <div class="logo-img"></div>
-                <div class="logo-text">
-                    <h1>عالم الفراعنة</h1>
-                    <p>منصة تعليمية فرعونية عالمية</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>عن المتجر</h3>
+                    <p>متجرنا يقدم أفضل المنتجات بأعلى جودة وأسعار تنافسية مع خدمة عملاء متميزة.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#">الرئيسية</a></li>
+                        <li><a href="#">المنتجات</a></li>
+                        <li><a href="#">عنا</a></li>
+                        <li><a href="#">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>وسائل التواصل</h3>
+                    <ul>
+                        <li><a href="#">فيسبوك</a></li>
+                        <li><a href="#">تويتر</a></li>
+                        <li><a href="#">إنستجرام</a></li>
+                        <li><a href="#">يوتيوب</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>معلومات الاتصال</h3>
+                    <ul>
+                        <li>العنوان: مدينة القاهرة، مصر</li>
+                        <li>الهاتف: 0123456789</li>
+                        <li>البريد: info@mystore.com</li>
+                    </ul>
                 </div>
             </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-            </div>
+            
             <div class="copyright">
-                <p>© 2023 عالم الفراعنة - مستر إيهاب أشرف. جميع الحقوق محفوظة.</p>
-                <p>رقم الهاتف: 01559116736</p>
+                <p>جميع الحقوق محفوظة © متجري الإلكتروني 2023</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // تأثيرات تفاعلية بسيطة
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px)';
-                    this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
-                });
+        // دالة لإضافة منتج إلى السلة
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const countElement = document.querySelector('.cart-count');
+                let count = parseInt(countElement.textContent);
+                count++;
+                countElement.textContent = count;
                 
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = 'none';
-                });
-            });
-            
-            // تأثير التمرير السلس للروابط
-            document.querySelectorAll('nav a, .cta-button[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                });
+                // رسالة تأكيد
+                alert('تمت إضافة المنتج إلى سلة التسوق!');
             });
         });
     </script>
