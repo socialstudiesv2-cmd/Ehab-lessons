@@ -3,407 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجري الإلكتروني</title>
+    <title>نظام عرض النتائج المدرسية</title>
     <style>
-        :root {
-            --primary-color: #4a6da7;
-            --secondary-color: #e9ecef;
-            --accent-color: #28a745;
-            --text-color: #333;
-            --light-color: #f8f9fa;
-        }
-        
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: #f5f5f5;
-            color: var(--text-color);
+            color: #333;
             line-height: 1.6;
         }
         
         .container {
-            width: 90%;
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
         }
         
-        /* التصميم العام */
         header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 20px;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--accent-color);
+            background-color: #4CAF50;
             color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-        }
-        
-        /* قسم الهيرو */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1500x500');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 80px 0;
             text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 25px;
+            padding: 1rem;
             border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        .btn:hover {
-            background-color: #3a5a8f;
-        }
-        
-        /* قسم المنتجات */
-        .products-section {
-            padding: 40px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2rem;
-            color: var(--primary-color);
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .product-card {
+        .search-box {
             background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
         }
         
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .product-image {
-            height: 200px;
-            width: 100%;
-            object-fit: cover;
-        }
-        
-        .product-info {
-            padding: 15px;
-        }
-        
-        .product-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .product-price {
-            font-weight: bold;
-            color: var(--primary-color);
+        .form-group {
             margin-bottom: 15px;
-            font-size: 1.2rem;
         }
         
-        .add-to-cart {
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
             width: 100%;
             padding: 10px;
-            background-color: var(--accent-color);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            display: block;
+            width: 100%;
         }
         
-        .add-to-cart:hover {
-            background-color: #218838;
+        button:hover {
+            background-color: #45a049;
         }
         
-        /* التذييل */
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 40px 0;
-            margin-top: 60px;
+        .result {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
         }
         
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section ul li a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-section ul li a:hover {
-            color: white;
-        }
-        
-        .copyright {
+        .result h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #555;
         }
         
-        /* تصميم متجاوب */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 15px;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .info-item strong {
+            display: inline-block;
+            width: 120px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .total {
+            font-weight: bold;
+            background-color: #e8f5e9;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #777;
+        }
+        
+        @media (max-width: 600px) {
+            .student-info {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- الرأس -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">متجري الإلكتروني</div>
-                <nav>
-                    <ul>
-                        <li><a href="#">الرئيسية</a></li>
-                        <li><a href="#">المنتجات</a></li>
-                        <li><a href="#">الفئات</a></li>
-                        <li><a href="#">عنا</a></li>
-                        <li><a href="#">اتصل بنا</a></li>
-                        <li class="cart-icon">
-                            🛒
-                            <span class="cart-count">0</span>
-                        </li>
-                    </ul>
-                </nav>
+    <div class="container">
+        <header>
+            <h1>نظام عرض النتائج المدرسية</h1>
+        </header>
+        
+        <div class="search-box">
+            <div class="form-group">
+                <label for="seat-number">رقم الجلوس</label>
+                <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس">
             </div>
+            <button onclick="searchResult()">عرض النتيجة</button>
         </div>
-    </header>
-
-    <!-- قسم البطل -->
-    <section class="hero">
-        <div class="container">
-            <h1>متجرك الإلكتروني لكل ما تحتاجه</h1>
-            <p>اكتشف أحدث المنتجات وعروضنا المميزة مع خيارات دفع آمنة وتوصيل سريع</p>
-            <a href="#products" class="btn">تسوق الآن</a>
-        </div>
-    </section>
-
-    <!-- قسم المنتجات -->
-    <section class="products-section" id="products">
-        <div class="container">
-            <h2 class="section-title">منتجاتنا</h2>
-            <div class="products-grid">
-                <!-- منتج 1 -->
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">سماعات رأس لاسلكية</h3>
-                        <p class="product-price">250 ج.م</p>
-                        <button class="add-to-cart">أضف إلى السلة</button>
-                    </div>
+        
+        <div class="result" id="result">
+            <h2>النتيجة</h2>
+            
+            <div class="student-info">
+                <div class="info-item">
+                    <strong>اسم الطالب:</strong> <span id="student-name">-</span>
                 </div>
-                
-                <!-- منتج 2 -->
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">هاتف ذكي حديث</h3>
-                        <p class="product-price">4500 ج.م</p>
-                        <button class="add-to-cart">أضف إلى السلة</button>
-                    </div>
+                <div class="info-item">
+                    <strong>الصف:</strong> <span id="student-grade">-</span>
                 </div>
-                
-                <!-- منتج 3 -->
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">ساعة ذكية</h3>
-                        <p class="product-price">1200 ج.م</p>
-                        <button class="add-to-cart">أضف إلى السلة</button>
-                    </div>
+                <div class="info-item">
+                    <strongالمدرسة:</strong> <span id="student-school">-</span>
                 </div>
-                
-                <!-- منتج 4 -->
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200" alt="منتج" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">لوحة مفاتيح ميكانيكية</h3>
-                        <p class="product-price">800 ج.م</p>
-                        <button class="add-to-cart">أضف إلى السلة</button>
-                    </div>
+                <div class="info-item">
+                    <strong>المجموع:</strong> <span id="total">-</span>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- التذييل -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>عن المتجر</h3>
-                    <p>متجرنا يقدم أفضل المنتجات بأعلى جودة وأسعار تنافسية مع خدمة عملاء متميزة.</p>
+                <div class="info-item">
+                    <strong>النسبة المئوية:</strong> <span id="percentage">-</span>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <ul>
-                        <li><a href="#">الرئيسية</a></li>
-                        <li><a href="#">المنتجات</a></li>
-                        <li><a href="#">عنا</a></li>
-                        <li><a href="#">اتصل بنا</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>وسائل التواصل</h3>
-                    <ul>
-                        <li><a href="#">فيسبوك</a></li>
-                        <li><a href="#">تويتر</a></li>
-                        <li><a href="#">إنستجرام</a></li>
-                        <li><a href="#">يوتيوب</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>معلومات الاتصال</h3>
-                    <ul>
-                        <li>العنوان: مدينة القاهرة، مصر</li>
-                        <li>الهاتف: 0123456789</li>
-                        <li>البريد: info@mystore.com</li>
-                    </ul>
+                <div class="info-item">
+                    <strong>التقدير:</strong> <span id="grade">-</span>
                 </div>
             </div>
             
-            <div class="copyright">
-                <p>جميع الحقوق محفوظة © متجري الإلكتروني 2023</p>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>المادة</th>
+                        <th>الدرجة</th>
+                        <th>الدرجة الكاملة</th>
+                    </tr>
+                </thead>
+                <tbody id="subjects-table">
+                    <!-- سيتم ملء هذا الجدول ديناميكيًا -->
+                </tbody>
+            </table>
         </div>
-    </footer>
+        
+        <footer>
+            <p>جميع الحقوق محفوظة © 2023 - نظام النتائج المدرسية</p>
+        </footer>
+    </div>
 
     <script>
-        // دالة لإضافة منتج إلى السلة
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const countElement = document.querySelector('.cart-count');
-                let count = parseInt(countElement.textContent);
-                count++;
-                countElement.textContent = count;
+        // بيانات وهمية للنتائج (في التطبيق الحقيقي، سيتم جلبها من قاعدة بيانات)
+        const resultsData = {
+            "12345": {
+                name: "أحمد محمد علي",
+                grade: "الصف الأول الثانوي",
+                school: "مدرسة النجاح الثانوية",
+                subjects: [
+                    { name: "اللغة العربية", score: 85, fullScore: 100 },
+                    { name: "اللغة الإنجليزية", score: 90, fullScore: 100 },
+                    { name: "الرياضيات", score: 95, fullScore: 100 },
+                    { name: "الفيزياء", score: 80, fullScore: 100 },
+                    { name: "الكيمياء", score: 88, fullScore: 100 },
+                    { name: "الأحياء", score: 92, fullScore: 100 }
+                ]
+            },
+            "67890": {
+                name: "فاطمة إبراهيم حسين",
+                grade: "الصف الثاني الثانوي",
+                school: "مدرسة الأمل الثانوية",
+                subjects: [
+                    { name: "اللغة العربية", score: 78, fullScore: 100 },
+                    { name: "اللغة الإنجليزية", score: 85, fullScore: 100 },
+                    { name: "الرياضيات", score: 92, fullScore: 100 },
+                    { name: "التاريخ", score: 88, fullScore: 100 },
+                    { name: "الجغرافيا", score: 90, fullScore: 100 },
+                    { name: "الفلسفة", score: 84, fullScore: 100 }
+                ]
+            }
+        };
+
+        function searchResult() {
+            const seatNumber = document.getElementById('seat-number').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!seatNumber) {
+                alert('يرجى إدخال رقم الجلوس');
+                return;
+            }
+            
+            if (resultsData[seatNumber]) {
+                const student = resultsData[seatNumber];
                 
-                // رسالة تأكيد
-                alert('تمت إضافة المنتج إلى سلة التسوق!');
-            });
-        });
+                // عرض معلومات الطالب
+                document.getElementById('student-name').textContent = student.name;
+                document.getElementById('student-grade').textContent = student.grade;
+                document.getElementById('student-school').textContent = student.school;
+                
+                // حساب المجموع والنسبة المئوية
+                let total = 0;
+                let fullTotal = 0;
+                
+                student.subjects.forEach(subject => {
+                    total += subject.score;
+                    fullTotal += subject.fullScore;
+                });
+                
+                const percentage = ((total / fullTotal) * 100).toFixed(2);
+                
+                document.getElementById('total').textContent = `${total} / ${fullTotal}`;
+                document.getElementById('percentage').textContent = `${percentage}%`;
+                
+                // تحديد التقدير
+                let grade;
+                if (percentage >= 90) grade = "امتياز";
+                else if (percentage >= 80) grade = "جيد جدًا";
+                else if (percentage >= 70) grade = "جيد";
+                else if (percentage >= 60) grade = "مقبول";
+                else grade = "راسب";
+                
+                document.getElementById('grade').textContent = grade;
+                
+                // ملء جدول المواد
+                const subjectsTable = document.getElementById('subjects-table');
+                subjectsTable.innerHTML = '';
+                
+                student.subjects.forEach(subject => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${subject.name}</td>
+                        <td>${subject.score}</td>
+                        <td>${subject.fullScore}</td>
+                    `;
+                    subjectsTable.appendChild(row);
+                });
+                
+                // إضافة صف المجموع
+                const totalRow = document.createElement('tr');
+                totalRow.className = 'total';
+                totalRow.innerHTML = `
+                    <td>المجموع</td>
+                    <td>${total}</td>
+                    <td>${fullTotal}</td>
+                `;
+                subjectsTable.appendChild(totalRow);
+                
+                // عرض النتيجة
+                resultDiv.style.display = 'block';
+            } else {
+                alert('رقم الجلوس غير صحيح أو لا توجد نتيجة لهذا الرقم');
+                resultDiv.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
