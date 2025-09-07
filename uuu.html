@@ -5,44 +5,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام عرض النتائج المدرسية</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f5f5f5; color: #333; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        header { background-color: #4CAF50; color: white; text-align: center; padding: 1rem; border-radius: 5px; margin-bottom: 2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .search-box { background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 2rem; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
-        button { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; display: block; width: 100%; margin-top: 10px; }
-        button:hover { background-color: #45a049; }
-        .result { background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: none; }
-        .result h2 { color: #4CAF50; margin-bottom: 15px; text-align: center; }
-        .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .info-item { padding: 10px; background-color: #f9f9f9; border-radius: 4px; }
-        .info-item strong { display: inline-block; width: 120px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 12px; text-align: center; }
-        th { background-color: #4CAF50; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .total { font-weight: bold; background-color: #e8f5e9; }
-        footer { text-align: center; margin-top: 2rem; padding: 1rem; color: #777; }
-        @media (max-width: 600px) { .student-info { grid-template-columns: 1fr; } }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        body { 
+            background-color: #f5f5f5; 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        header { 
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white; 
+            text-align: center; 
+            padding: 1.5rem; 
+            border-radius: 10px; 
+            margin-bottom: 2rem; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .search-box { 
+            background-color: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+            margin-bottom: 2rem; 
+            border: 1px solid #e0e0e0;
+        }
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+            color: #2E7D32;
+            font-size: 1.1rem;
+        }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 14px; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+        button { 
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white; 
+            border: none; 
+            padding: 14px 24px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 18px; 
+            display: block; 
+            width: 100%; 
+            margin-top: 15px; 
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result { 
+            background-color: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+            display: none; 
+            margin-top: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        .result h2 { 
+            color: #2E7D32; 
+            margin-bottom: 20px; 
+            text-align: center; 
+            font-size: 1.8rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .student-info { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 25px; 
+        }
+        .info-item { 
+            padding: 12px 15px; 
+            background-color: #f9f9f9; 
+            border-radius: 8px; 
+            border-left: 4px solid #4CAF50;
+        }
+        .info-item strong { 
+            display: inline-block; 
+            width: 120px; 
+            color: #2E7D32;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 25px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        table, th, td { 
+            border: 1px solid #ddd; 
+        }
+        th, td { 
+            padding: 14px; 
+            text-align: center; 
+        }
+        th { 
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white; 
+            font-weight: bold;
+        }
+        tr:nth-child(even) { 
+            background-color: #f9f9f9; 
+        }
+        .total { 
+            font-weight: bold; 
+            background-color: #e8f5e9; 
+            font-size: 1.1rem;
+        }
+        .print-btn {
+            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
+            margin-top: 25px;
+        }
+        footer { 
+            text-align: center; 
+            margin-top: 2rem; 
+            padding: 1.5rem; 
+            color: #777; 
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        .loading { 
+            display: none; 
+            text-align: center; 
+            margin: 25px 0; 
+        }
+        .loading-spinner { 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid #4CAF50; 
+            border-radius: 50%; 
+            width: 50px; 
+            height: 50px; 
+            animation: spin 1s linear infinite; 
+            margin: 0 auto 15px; 
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        .error { 
+            color: #d32f2f; 
+            background-color: #ffebee; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 15px 0; 
+            display: none; 
+            text-align: center;
+            border-right: 4px solid #d32f2f;
+        }
+        @media (max-width: 650px) { 
+            .student-info { grid-template-columns: 1fr; } 
+            .container { padding: 15px; }
+            h1 { font-size: 1.8rem; }
+        }
+        @media print {
+            .search-box, button { display: none; }
+            .result { display: block !important; box-shadow: none; border: none; }
+            footer { position: fixed; bottom: 0; width: 100%; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>نظام عرض النتائج المدرسية</h1>
+            <p class="description">استعلم عن نتائجك باستخدام رقم الجلوس فقط</p>
         </header>
         
         <div class="search-box">
             <div class="form-group">
                 <label for="seat-number">رقم الجلوس</label>
-                <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس">
+                <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس المكون من 6 أرقام">
             </div>
-            <button onclick="searchResult()">عرض النتيجة</button>
+            <button onclick="searchResult()" id="search-btn">عرض النتيجة</button>
         </div>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>جاري البحث عن النتيجة...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
         
         <div class="result" id="result">
             <h2>النتيجة</h2>
@@ -52,8 +237,6 @@
                 <div class="info-item"><strong>الصف:</strong> <span id="student-grade">-</span></div>
                 <div class="info-item"><strong>المدرسة:</strong> <span id="student-school">-</span></div>
                 <div class="info-item"><strong>المجموع:</strong> <span id="total">-</span></div>
-                <div class="info-item"><strong>النسبة المئوية:</strong> <span id="percentage">-</span></div>
-                <div class="info-item"><strong>التقدير:</strong> <span id="grade">-</span></div>
             </div>
             
             <table>
@@ -67,7 +250,7 @@
                 <tbody id="subjects-table"></tbody>
             </table>
 
-            <button onclick="window.print()">طباعة النتيجة</button>
+            <button class="print-btn" onclick="window.print()">طباعة النتيجة</button>
         </div>
         
         <footer>
@@ -76,94 +259,141 @@
     </div>
 
     <script>
-        // جلب البيانات من Google Sheets CSV
-        async function fetchResults() {
-            const response = await fetch("https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv");
-            const data = await response.text();
-
-            const rows = data.split("\n").map(r => r.split(","));
-            const resultsData = {};
-
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                const seatNumber = row[0];
-                if (!seatNumber) continue;
-
-                resultsData[seatNumber] = {
-                    name: row[1],
-                    grade: row[2],
-                    school: row[3],
-                    subjects: []
-                };
-
-                for (let j = 4; j < row.length; j += 3) {
-                    if (row[j]) {
-                        resultsData[seatNumber].subjects.push({
-                            name: row[j],
-                            score: parseInt(row[j + 1]),
-                            fullScore: parseInt(row[j + 2])
-                        });
-                    }
-                }
+        // بيانات تجريبية لمحاكاة نتائج الطلاب
+        const mockResultsData = {
+            "123456": {
+                name: "أحمد محمد علي",
+                grade: "الصف الثالث الإعدادي",
+                school: "مدرسة النصر الإعدادية",
+                subjects: [
+                    { name: "اللغة العربية", score: 85, fullScore: 100 },
+                    { name: "اللغة الإنجليزية", score: 90, fullScore: 100 },
+                    { name: "الرياضيات", score: 78, fullScore: 100 },
+                    { name: "العلوم", score: 92, fullScore: 100 },
+                    { name: "الدراسات الاجتماعية", score: 88, fullScore: 100 },
+                    { name: "التربية الدينية", score: 95, fullScore: 100 }
+                ]
+            },
+            "654321": {
+                name: "فاطمة إبراهيم حسين",
+                grade: "الصف الثاني الثانوي",
+                school: "مدرسة السلام الثانوية",
+                subjects: [
+                    { name: "اللغة العربية", score: 92, fullScore: 100 },
+                    { name: "اللغة الإنجليزية", score: 88, fullScore: 100 },
+                    { name: "الرياضيات", score: 95, fullScore: 100 },
+                    { name: "الفيزياء", score: 90, fullScore: 100 },
+                    { name: "الكيمياء", score: 87, fullScore: 100 },
+                    { name: "الأحياء", score: 93, fullScore: 100 }
+                ]
+            },
+            "112233": {
+                name: "يوسف خالد أمين",
+                grade: "الصف الأول الثانوي",
+                school: "مدرسة المستقبل الثانوية",
+                subjects: [
+                    { name: "اللغة العربية", score: 75, fullScore: 100 },
+                    { name: "اللغة الإنجليزية", score: 80, fullScore: 100 },
+                    { name: "الرياضيات", score: 85, fullScore: 100 },
+                    { name: "العلوم", score: 78, fullScore: 100 },
+                    { name: "التاريخ", score: 82, fullScore: 100 },
+                    { name: "الجغرافيا", score: 79, fullScore: 100 }
+                ]
             }
-            return resultsData;
+        };
+
+        // دالة محاكاة جلب البيانات من الخادم
+        async function fetchResults() {
+            // في التطبيق الحقيقي، هنا سيتم جلب البيانات من الخادم
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(mockResultsData);
+                }, 1500);
+            });
         }
 
         async function searchResult() {
             const seatNumber = document.getElementById('seat-number').value.trim();
             const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const loadingDiv = document.getElementById('loading');
+            const searchBtn = document.getElementById('search-btn');
+            
+            // إخفاء الرسائل السابقة
+            errorDiv.style.display = 'none';
+            resultDiv.style.display = 'none';
             
             if (!seatNumber) {
-                alert('يرجى إدخال رقم الجلوس');
+                showError('يرجى إدخال رقم الجلوس');
+                return;
+            }
+            
+            if (!/^\d{6}$/.test(seatNumber)) {
+                showError('رقم الجلوس يجب أن يتكون من 6 أرقام فقط');
                 return;
             }
 
-            const resultsData = await fetchResults();
+            // عرض مؤشر التحميل وتعطيل زر البحث
+            loadingDiv.style.display = 'block';
+            searchBtn.disabled = true;
             
-            if (resultsData[seatNumber]) {
-                const student = resultsData[seatNumber];
+            try {
+                const data = await fetchResults();
                 
-                document.getElementById('student-name').textContent = student.name;
-                document.getElementById('student-grade').textContent = student.grade;
-                document.getElementById('student-school').textContent = student.school;
+                if (data[seatNumber]) {
+                    const student = data[seatNumber];
+                    
+                    document.getElementById('student-name').textContent = student.name;
+                    document.getElementById('student-grade').textContent = student.grade;
+                    document.getElementById('student-school').textContent = student.school;
 
-                let total = 0, fullTotal = 0;
-                student.subjects.forEach(subject => {
-                    total += subject.score;
-                    fullTotal += subject.fullScore;
-                });
+                    let total = 0, fullTotal = 0;
+                    student.subjects.forEach(subject => {
+                        total += subject.score;
+                        fullTotal += subject.fullScore;
+                    });
 
-                const percentage = ((total / fullTotal) * 100).toFixed(2);
-                document.getElementById('total').textContent = `${total} / ${fullTotal}`;
-                document.getElementById('percentage').textContent = `${percentage}%`;
+                    document.getElementById('total').textContent = `${total} / ${fullTotal}`;
 
-                let grade;
-                if (percentage >= 90) grade = "امتياز";
-                else if (percentage >= 80) grade = "جيد جدًا";
-                else if (percentage >= 70) grade = "جيد";
-                else if (percentage >= 60) grade = "مقبول";
-                else grade = "راسب";
-                document.getElementById('grade').textContent = grade;
+                    const subjectsTable = document.getElementById('subjects-table');
+                    subjectsTable.innerHTML = '';
+                    student.subjects.forEach(subject => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${subject.name}</td><td>${subject.score}</td><td>${subject.fullScore}</td>`;
+                        subjectsTable.appendChild(row);
+                    });
 
-                const subjectsTable = document.getElementById('subjects-table');
-                subjectsTable.innerHTML = '';
-                student.subjects.forEach(subject => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${subject.name}</td><td>${subject.score}</td><td>${subject.fullScore}</td>`;
-                    subjectsTable.appendChild(row);
-                });
+                    const totalRow = document.createElement('tr');
+                    totalRow.className = 'total';
+                    totalRow.innerHTML = `<td>المجموع</td><td>${total}</td><td>${fullTotal}</td>`;
+                    subjectsTable.appendChild(totalRow);
 
-                const totalRow = document.createElement('tr');
-                totalRow.className = 'total';
-                totalRow.innerHTML = `<td>المجموع</td><td>${total}</td><td>${fullTotal}</td>`;
-                subjectsTable.appendChild(totalRow);
-
-                resultDiv.style.display = 'block';
-            } else {
-                alert('رقم الجلوس غير صحيح أو لا توجد نتيجة لهذا الرقم');
-                resultDiv.style.display = 'none';
+                    resultDiv.style.display = 'block';
+                } else {
+                    showError('رقم الجلوس غير صحيح أو لا توجد نتيجة لهذا الرقم');
+                }
+            } catch (error) {
+                console.error("Error in search:", error);
+                showError('حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.');
+            } finally {
+                // إخفاء مؤشر التحميل وتمكين زر البحث
+                loadingDiv.style.display = 'none';
+                searchBtn.disabled = false;
             }
         }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // السماح بالبحث عند الضغط على Enter
+        document.getElementById('seat-number').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchResult();
+            }
+        });
     </script>
 </body>
 </html>
