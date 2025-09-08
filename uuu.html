@@ -1,648 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نتيجة الطالب</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl">
+    <h1 class="text-2xl font-bold mb-4 text-center">نتيجة الطالب</h1>
 
-<!DOCTYPE html>  <html lang="ar" dir="rtl">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>نظام عرض النتائج المدرسية</title>  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
-    <style>  
-        * {  
-            box-sizing: border-box;  
-            margin: 0;  
-            padding: 0;  
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
-        }  
-        body {  
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);  
-            color: #333;  
-            line-height: 1.6;  
-            padding: 20px;  
-            min-height: 100vh;  
-        }  
-        .container {  
-            max-width: 1000px;  
-            margin: 0 auto;  
-            padding: 20px;  
-        }  
-        header {  
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);  
-            color: white;  
-            text-align: center;  
-            padding: 1.5rem;  
-            border-radius: 10px;  
-            margin-bottom: 2rem;  
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);  
-        }  
-        h1 {  
-            font-size: 2.5rem;  
-            margin-bottom: 0.5rem;  
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);  
-        }  
-        .description {  
-            font-size: 1.2rem;  
-            opacity: 0.9;  
-        }  
-        .instructions {  
-            background-color: #e8f5e9;  
-            padding: 20px;  
-            border-radius: 10px;  
-            margin-bottom: 20px;  
-            border-right: 4px solid #4CAF50;  
-        }  
-        .instructions h3 {  
-            color: #2E7D32;  
-            margin-bottom: 15px;  
-            padding-bottom: 10px;  
-            border-bottom: 2px solid #a5d6a7;  
-        }  
-        .instructions ol {  
-            padding-right: 20px;  
-        }  
-        .instructions li {  
-            margin-bottom: 10px;  
-            line-height: 1.5;  
-        }  
-        .sheet-config {  
-            background-color: #e3f2fd;  
-            padding: 20px;  
-            border-radius: 10px;  
-            margin-bottom: 20px;  
-            border-right: 4px solid #2196F3;  
-        }  
-        .sheet-config h3 {  
-            color: #1565C0;  
-            margin-bottom: 15px;  
-        }  
-        .search-box {  
-            background-color: white;  
-            padding: 25px;  
-            border-radius: 10px;  
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  
-            margin-bottom: 2rem;  
-            border: 1px solid #e0e0e0;  
-        }  
-        .form-group {  
-            margin-bottom: 20px;  
-            position: relative;  
-        }  
-        label {  
-            display: block;  
-            margin-bottom: 8px;  
-            font-weight: bold;  
-            color: #2E7D32;  
-            font-size: 1.1rem;  
-        }  
-        input[type="text"] {  
-            width: 100%;  
-            padding: 15px 15px 15px 45px;  
-            border: 2px solid #ddd;  
-            border-radius: 8px;  
-            font-size: 18px;  
-            transition: border-color 0.3s;  
-        }  
-        input[type="text"]:focus {  
-            border-color: #4CAF50;  
-            outline: none;  
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);  
-        }  
-        .input-icon {  
-            position: absolute;  
-            left: 15px;  
-            top: 43px;  
-            color: #4CAF50;  
-            font-size: 20px;  
-        }  
-        button {  
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);  
-            color: white;  
-            border: none;  
-            padding: 16px 28px;  
-            border-radius: 8px;  
-            cursor: pointer;  
-            font-size: 20px;  
-            display: block;  
-            width: 100%;  
-            margin-top: 15px;  
-            transition: transform 0.2s, box-shadow 0.2s;  
-            font-weight: bold;  
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);  
-        }  
-        button:hover {  
-            transform: translateY(-3px);  
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);  
-        }  
-        button:active {  
-            transform: translateY(0);  
-        }  
-        .config-btn {  
-            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);  
-        }  
-        .result {  
-            background-color: white;  
-            padding: 25px;  
-            border-radius: 10px;  
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  
-            display: none;  
-            margin-top: 20px;  
-            border: 1px solid #e0e0e0;  
-            animation: fadeIn 0.5s ease;  
-        }  
-        @keyframes fadeIn {  
-            from { opacity: 0; transform: translateY(20px); }  
-            to { opacity: 1; transform: translateY(0); }  
-        }  
-        .result h2 {  
-            color: #2E7D32;  
-            margin-bottom: 20px;  
-            text-align: center;  
-            font-size: 2rem;  
-            padding-bottom: 10px;  
-            border-bottom: 2px solid #e0e0e0;  
-        }  
-        .student-info {  
-            display: grid;  
-            grid-template-columns: 1fr 1fr;  
-            gap: 15px;  
-            margin-bottom: 25px;  
-        }  
-        .info-item {  
-            padding: 15px;  
-            background: linear-gradient(135deg, #f9f9f9 0%, #e8f5e9 100%);  
-            border-radius: 8px;  
-            border-left: 5px solid #4CAF50;  
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);  
-        }  
-        .info-item strong {  
-            display: inline-block;  
-            width: 120px;  
-            color: #2E7D32;  
-        }  
-        .info-item span {  
-            font-size: 1.1rem;  
-            font-weight: 500;  
-        }  
-        .total-score {  
-            text-align: center;  
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);  
-            color: white;  
-            padding: 20px;  
-            border-radius: 10px;  
-            margin: 20px 0;  
-            font-size: 1.5rem;  
-            font-weight: bold;  
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);  
-        }  
-        table {  
-            width: 100%;  
-            border-collapse: collapse;  
-            margin-top: 25px;  
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  
-        }  
-        table, th, td {  
-            border: 1px solid #ddd;  
-        }  
-        th {  
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);  
-            color: white;  
-            padding: 16px;  
-            text-align: center;  
-            font-weight: bold;  
-            font-size: 1.1rem;  
-        }  
-        td {  
-            padding: 14px;  
-            text-align: center;  
-        }  
-        tr:nth-child(even) {  
-            background-color: #f9f9f9;  
-        }  
-        tr:hover {  
-            background-color: #f1f8e9;  
-        }  
-        .subject-name {  
-            text-align: right;  
-            font-weight: bold;  
-        }  
-        .score-value {  
-            font-weight: bold;  
-            font-size: 1.1rem;  
-        }  
-        .print-btn {  
-            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);  
-            margin-top: 25px;  
-        }  
-        footer {  
-            text-align: center;  
-            margin-top: 2rem;  
-            padding: 1.5rem;  
-            color: #777;  
-            border-top: 1px solid #eee;  
-            font-size: 0.9rem;  
-        }  
-        .loading {  
-            display: none;  
-            text-align: center;  
-            margin: 25px 0;  
-        }  
-        .loading-spinner {  
-            border: 4px solid #f3f3f3;  
-            border-top: 4px solid #4CAF50;  
-            border-radius: 50%;  
-            width: 50px;  
-            height: 50px;  
-            animation: spin 1s linear infinite;  
-            margin: 0 auto 15px;  
-        }  
-        @keyframes spin {  
-            0% { transform: rotate(0deg); }  
-            100% { transform: rotate(360deg); }  
-        }  
-        .error {  
-            color: #d32f2f;  
-            background-color: #ffebee;  
-            padding: 15px;  
-            border-radius: 8px;  
-            margin: 15px 0;  
-            display: none;  
-            text-align: center;  
-            border-right: 4px solid #d32f2f;  
-            font-weight: bold;  
-        }  
-        .success {  
-            color: #2E7D32;  
-            background-color: #e8f5e9;  
-            padding: 15px;  
-            border-radius: 8px;  
-            margin: 15px 0;  
-            display: none;  
-            text-align: center;  
-            border-right: 4px solid #2E7D32;  
-        }  
-        @media (max-width: 768px) {  
-            .student-info {  
-                grid-template-columns: 1fr;  
-            }  
-            .container {  
-                padding: 15px;  
-            }  
-            h1 {  
-                font-size: 2rem;  
-            }  
-        }  
-        @media print {  
-            .search-box, button, .sheet-config, .instructions {  
-                display: none;  
-            }  
-            .result {  
-                display: block !important;  
-                box-shadow: none;  
-                border: none;  
-            }  
-            footer {  
-                position: fixed;  
-                bottom: 0;  
-                width: 100%;  
-            }  
-        }  
-    </style>  
-</head>  
-<body>  
-    <div class="container">  
-        <header>  
-            <h1>نظام عرض النتائج المدرسية</h1>  
-            <p class="description">استعلم عن نتائجك باستخدام رقم الجلوس فقط</p>  
-        </header>  <div class="instructions">  
-        <h3>كيفية إعداد Google Sheets:</h3>  
-        <ol>  
-            <li>أنشئ جدول بيانات على Google Sheets يحتوي على بيانات الطلاب</li>  
-            <li>يجب أن يحتوي الجدول على الأعمدة التالية بالترتيب: رقم الجلوس، الاسم، الصف، المدرسة</li>  
-            <li>يلي ذلك أعمدة المواد بترتيب: اسم المادة، الدرجة، الدرجة الكاملة (تتكرر لكل مادة)</li>  
-            <li>من قائمة "ملف" اختر "نشر على الويب" ثم انسخ الرابط</li>  
-            <li>الصق الرابط في الحقل أدناه ثم اضغط على "حفظ الإعدادات"</li>  
-        </ol>  
-    </div>  
-      
-    <div class="sheet-config">  
-        <h3><i class="fas fa-cog"></i> إعدادات Google Sheets</h3>  
-        <div class="form-group">  
-            <label for="sheet-url">رابط Google Sheets المنشور</label>  
-            <i class="fas fa-link input-icon"></i>  
-            <input type="text" id="sheet-url" placeholder="https://docs.google.com/spreadsheets/d/.../pubhtml">  
-        </div>  
-        <button class="config-btn" onclick="saveSheetUrl()">  
-            <i class="fas fa-save"></i> حفظ الإعدادات  
-        </button>  
-        <div class="success" id="sheet-url-success">تم حفظ الإعدادات بنجاح!</div>  
-    </div>  
-      
-    <div class="search-box">  
-        <div class="form-group">  
-            <label for="seat-number">رقم الجلوس</label>  
-            <i class="fas fa-user input-icon"></i>  
-            <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس">  
-        </div>  
-        <button onclick="searchResult()" id="search-btn">  
-            <i class="fas fa-search"></i> عرض النتيجة  
-        </button>  
-    </div>  
-      
-    <div class="loading" id="loading">  
-        <div class="loading-spinner"></div>  
-        <p>جاري البحث عن النتيجة...</p>  
-    </div>  
-      
-    <div class="error" id="error"></div>  
-      
-    <div class="result" id="result">  
-        <h2><i class="fas fa-graduation-cap"></i> النتيجة</h2>  
-          
-        <div class="student-info">  
-            <div class="info-item"><strong>اسم الطالب:</strong> <span id="student-name">-</span></div>  
-            <div class="info-item"><strong>الصف:</strong> <span id="student-grade">-</span></div>  
-            <div class="info-item"><strong>المدرسة:</strong> <span id="student-school">-</span></div>  
-            <div class="info-item"><strong>الفصل الدراسي:</strong> <span id="student-semester">-</span></div>  
-        </div>  
-          
-        <div class="total-score">  
-            المجموع الكلي: <span id="total-score">-</span>  
-        </div>  
-          
-        <table>  
-            <thead>  
-                <tr>  
-                    <th width="40%">المادة</th>  
-                    <th width="30%">درجة الطالب</th>  
-                    <th width="30%">الدرجة الكاملة</th>  
-                </tr>  
-            </thead>  
-            <tbody id="subjects-table">  
-                <tr>  
-                    <td class="subject-name">اللغة العربية</td>  
-                    <td class="score-value" id="arabic-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-                <tr>  
-                    <td class="subject-name">اللغة الإنجليزية</td>  
-                    <td class="score-value" id="english-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-                <tr>  
-                    <td class="subject-name">الرياضيات</td>  
-                    <td class="score-value" id="math-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-                <tr>  
-                    <td class="subject-name">العلوم</td>  
-                    <td class="score-value" id="science-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-                <tr>  
-                    <td class="subject-name">الدراسات الاجتماعية</td>  
-                    <td class="score-value" id="social-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-                <tr>  
-                    <td class="subject-name">التربية الدينية</td>  
-                    <td class="score-value" id="religion-score">-</td>  
-                    <td>50</td>  
-                </tr>  
-            </tbody>  
-        </table>  
+    <!-- بيانات الطالب -->
+    <div class="student-info grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-lg">
+      <div class="info-item"><strong>اسم الطالب:</strong> <span id="student-name">-</span></div>
+      <div class="info-item"><strong>الصف:</strong> <span id="student-grade">-</span></div>
+      <div class="info-item"><strong>المجموع الكلي:</strong> <span id="student-total">-</span></div>
+    </div>
 
-        <button class="print-btn" onclick="window.print()">  
-            <i class="fas fa-print"></i> طباعة النتيجة  
-        </button>  
-    </div>  
-      
-    <footer>  
-        <p>جميع الحقوق محفوظة © 2023 - نظام النتائج المدرسية</p>  
-    </footer>  
-</div>  
+    <!-- جدول المواد -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-center border border-gray-300 rounded-lg overflow-hidden">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="py-2 px-4 border">المادة</th>
+            <th class="py-2 px-4 border">الدرجة</th>
+            <th class="py-2 px-4 border">الدرجة الكاملة</th>
+          </tr>
+        </thead>
+        <tbody id="subjects-table" class="text-gray-800">
+          <!-- يتم ملؤه بالدرجات -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<script>  
-    // متغير لتخزين رابط الجدول  
-    let sheetUrl = '';  
-      
-    // حفظ رابط الجدول  
-    function saveSheetUrl() {  
-        const urlInput = document.getElementById('sheet-url').value.trim();  
-        const successDiv = document.getElementById('sheet-url-success');  
-        const errorDiv = document.getElementById('error');  
-          
-        if (!urlInput) {  
-            showError('يرجى إدخال رابط Google Sheets');  
-            return;  
-        }  
-          
-        if (!urlInput.includes('https://docs.google.com/spreadsheets/')) {  
-            showError('يرجى إدخال رابط Google Sheets صحيح');  
-            return;  
-        }  
-          
-        // تحويل الرابط إلى صيغة CSV  
-        if (urlInput.includes('/edit')) {  
-            sheetUrl = urlInput.replace('/edit', '/export?format=csv');  
-        } else if (urlInput.includes('/pubhtml')) {  
-            sheetUrl = urlInput.replace('/pubhtml', '/export?format=csv');  
-        } else if (!urlInput.includes('/export')) {  
-            sheetUrl = urlInput + '/export?format=csv';  
-        } else {  
-            sheetUrl = urlInput;  
-        }  
-          
-        // إخفاء رسائل الخطأ وإظهار رسالة النجاح  
-        errorDiv.style.display = 'none';  
-        successDiv.style.display = 'block';  
-          
-        // حفظ الرابط في localStorage  
-        localStorage.setItem('resultsSheetUrl', sheetUrl);  
-    }  
-      
-    // جلب البيانات من Google Sheets  
-    async function fetchResults() {  
-        if (!sheetUrl) {  
-            // محاولة جلب الرابط من localStorage  
-            const savedUrl = localStorage.getItem('resultsSheetUrl');  
-            if (savedUrl) {  
-                sheetUrl = savedUrl;  
-                document.getElementById('sheet-url').value = savedUrl.replace('/export?format=csv', '/edit');  
-                document.getElementById('sheet-url-success').style.display = 'block';  
-            } else {  
-                throw new Error('يرجى إدخال رابط Google Sheets أولاً');  
-            }  
-        }  
-          
-        try {  
-            const response = await fetch(sheetUrl);  
-              
-            if (!response.ok) {  
-                throw new Error('فشل في جلب البيانات من جدول النتائج');  
-            }  
-              
-            const data = await response.text();  
-            const rows = parseCSV(data);  
-            const resultsData = {};  
+  <script>
+    // بيانات تجريبية كأنها جاية من Google Sheets
+    const student = {
+      name: "أحمد محمد",
+      grade: "الرابع",
+      subjects: [
+        { name: "اللغة العربية", mark: 45, fullMark: 50 },
+        { name: "اللغة الإنجليزية", mark: 40, fullMark: 50 },
+        { name: "الرياضيات", mark: 48, fullMark: 50 },
+        { name: "العلوم", mark: 42, fullMark: 50 },
+        { name: "الدراسات الاجتماعية", mark: 44, fullMark: 50 },
+        { name: "التربية الدينية", mark: 47, fullMark: 50 }
+      ]
+    };
 
-            for (let i = 1; i < rows.length; i++) {  
-                const row = rows[i];  
-                const seatNumber = row[0];  
-                if (!seatNumber) continue;  
+    function showResult(student) {
+      document.getElementById("student-name").textContent = student.name;
+      document.getElementById("student-grade").textContent = student.grade;
 
-                resultsData[seatNumber] = {  
-                    name: row[1],  
-                    grade: row[2],  
-                    school: row[3],  
-                    semester: row[4] || 'الأول 2023/2024',  
-                    subjects: {  
-                        arabic: row[5] && row[6] ? `${row[5]}/${row[6]}` : '-',  
-                        english: row[7] && row[8] ? `${row[7]}/${row[8]}` : '-',  
-                        math: row[9] && row[10] ? `${row[9]}/${row[10]}` : '-',  
-                        science: row[11] && row[12] ? `${row[11]}/${row[12]}` : '-',  
-                        social: row[13] && row[14] ? `${row[13]}/${row[14]}` : '-',  
-                        religion: row[15] && row[16] ? `${row[15]}/${row[16]}` : '-'  
-                    },  
-                    total: calculateTotal(row)  
-                };  
-            }  
-              
-            return resultsData;  
-        } catch (error) {  
-            console.error("Error fetching results:", error);  
-            throw new Error("تعذر جلب البيانات من جدول النتائج. تأكد من أن الرابط صحيح وأن الجدول منشور للعموم.");  
-        }  
-    }  
+      let totalMarks = 0;
+      let fullMarks = 0;
 
-    // دالة لحساب المجموع الكلي  
-    function calculateTotal(row) {  
-        let total = 0;  
-        let maxTotal = 0;  
-          
-        for (let i = 5; i < row.length; i += 3) {  
-            if (i + 1 < row.length) {  
-                const score = parseInt(row[i]) || 0;  
-                const maxScore = parseInt(row[i+1]) || 0;  
-                total += score;  
-                maxTotal += maxScore;  
-            }  
-        }  
-          
-        return maxTotal > 0 ? `${total}/${maxTotal}` : '-';  
-    }  
+      const table = document.getElementById("subjects-table");
+      table.innerHTML = ""; // تفريغ الجدول
 
-    // دالة لتحليل CSV بشكل صحيح  
-    function parseCSV(text) {  
-        const rows = [];  
-        let currentRow = [];  
-        let inQuotedField = false;  
-        let currentValue = "";  
+      student.subjects.forEach(sub => {
+        totalMarks += parseInt(sub.mark) || 0;
+        fullMarks += parseInt(sub.fullMark) || 0;
 
-        for (let i = 0; i < text.length; i++) {  
-            const char = text[i];  
-              
-            if (char === '"') {  
-                inQuotedField = !inQuotedField;  
-            } else if (char === ',' && !inQuotedField) {  
-                currentRow.push(currentValue);  
-                currentValue = "";  
-            } else if (char === '\n' && !inQuotedField) {  
-                currentRow.push(currentValue);  
-                rows.push(currentRow);  
-                currentRow = [];  
-                currentValue = "";  
-            } else if (char !== '\r' || inQuotedField) {  
-                currentValue += char;  
-            }  
-        }  
-          
-        // إضافة الصف الأخير  
-        if (currentValue !== "" || currentRow.length > 0) {  
-            currentRow.push(currentValue);  
-            rows.push(currentRow);  
-        }  
-          
-        return rows;  
-    }  
+        const row = `
+          <tr>
+            <td class="py-2 px-4 border">${sub.name}</td>
+            <td class="py-2 px-4 border">${sub.mark}</td>
+            <td class="py-2 px-4 border">${sub.fullMark}</td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
 
-    async function searchResult() {  
-        const seatNumber = document.getElementById('seat-number').value.trim();  
-        const resultDiv = document.getElementById('result');  
-        const errorDiv = document.getElementById('error');  
-        const loadingDiv = document.getElementById('loading');  
-        const searchBtn = document.getElementById('search-btn');  
-          
-        // إخفاء الرسائل السابقة  
-        errorDiv.style.display = 'none';  
-        resultDiv.style.display = 'none';  
-          
-        if (!seatNumber) {  
-            showError('يرجى إدخال رقم الجلوس');  
-            return;  
-        }  
+      document.getElementById("student-total").textContent = totalMarks + " / " + fullMarks;
+    }
 
-        // عرض مؤشر التحميل وتعطيل زر البحث  
-        loadingDiv.style.display = 'block';  
-        searchBtn.disabled = true;  
-          
-        try {  
-            const data = await fetchResults();  
-              
-            if (data && data[seatNumber]) {  
-                const student = data[seatNumber];  
-                  
-                // تعبئة بيانات الطالب  
-                document.getElementById('student-name').textContent = student.name;  
-                document.getElementById('student-grade').textContent = student.grade;  
-                document.getElementById('student-school').textContent = student.school;  
-                document.getElementById('student-semester').textContent = student.semester;  
-                  
-                // تعبئة درجات المواد  
-                document.getElementById('arabic-score').textContent = student.subjects.arabic;  
-                document.getElementById('english-score').textContent = student.subjects.english;  
-                document.getElementById('math-score').textContent = student.subjects.math;  
-                document.getElementById('science-score').textContent = student.subjects.science;  
-                document.getElementById('social-score').textContent = student.subjects.social;  
-                document.getElementById('religion-score').textContent = student.subjects.religion;  
-                  
-                // تعبئة المجموع الكلي  
-                document.getElementById('total-score').textContent = student.total;  
-                  
-                resultDiv.style.display = 'block';  
-            } else {  
-                showError('رقم الجلوس غير صحيح أو لا توجد نتيجة لهذا الرقم');  
-            }  
-        } catch (error) {  
-            console.error("Error in search:", error);  
-            showError(error.message || 'حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.');  
-        } finally {  
-            // إخفاء مؤشر التحميل وتمكين زر البحث  
-            loadingDiv.style.display = 'none';  
-            searchBtn.disabled = false;  
-        }  
-    }  
-
-    function showError(message) {  
-        const errorDiv = document.getElementById('error');  
-        errorDiv.textContent = message;  
-        errorDiv.style.display = 'block';  
-    }  
-      
-    // السماح بالبحث عند الضغط على Enter  
-    document.getElementById('seat-number').addEventListener('keypress', function(e) {  
-        if (e.key === 'Enter') {  
-            searchResult();  
-        }  
-    });  
-      
-    // تحميل الرابط المحفوظ عند بدء التحميل  
-    window.addEventListener('DOMContentLoaded', function() {  
-        const savedUrl = localStorage.getItem('resultsSheetUrl');  
-        if (savedUrl) {  
-            sheetUrl = savedUrl;  
-            document.getElementById('sheet-url').value = savedUrl.replace('/export?format=csv', '/edit');  
-            document.getElementById('sheet-url-success').style.display = 'block';  
-        }  
-    });  
-</script>
-
-</body>  
+    // تشغيل عند الفتح
+    showResult(student);
+  </script>
+</body>
 </html>
