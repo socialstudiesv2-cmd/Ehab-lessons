@@ -1,346 +1,164 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام النتائج المدرسية - بالتصميم الفرعوني</title>
-    <style>
-        /* أنماط التصميم العام */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-        
-        :root {
-            --gold: #D4AF37;
-            --dark-blue: #0D2B4B;
-            --sand: #E6CEA9;
-            --nile-blue: #1A6A9E;
-            --red: #A52A2A;
-        }
-        
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--sand);
-            margin: 0;
-            padding: 0;
-            color: var(--dark-blue);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20,20 L80,20 L80,80 L20,80 Z' stroke='%23D4AF3755' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 20px 0;
-            background: linear-gradient(to right, var(--dark-blue), var(--nile-blue));
-            color: var(--gold);
-            border-radius: 10px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        header::before, header::after {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 60px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,50 C30,30 70,30 80,50 C70,70 30,70 20,50 Z' fill='%23D4AF37'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            top: 0;
-        }
-        
-        header::before {
-            left: 10px;
-        }
-        
-        header::after {
-            right: 10px;
-            transform: scaleX(-1);
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .search-box {
-            background: linear-gradient(145deg, var(--gold), #b38728);
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        }
-        
-        .search-box h2 {
-            margin-top: 0;
-            color: var(--dark-blue);
-        }
-        
-        .input-group {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        
-        input[type="text"] {
-            padding: 12px 20px;
-            width: 300px;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            font-size: 16px;
-            outline: none;
-        }
-        
-        button {
-            padding: 12px 25px;
-            background-color: var(--dark-blue);
-            color: white;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: var(--nile-blue);
-        }
-        
-        .result-container {
-            display: none;
-            background: linear-gradient(to bottom, #f9f4e8, var(--sand));
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            border: 2px solid var(--gold);
-        }
-        
-        .student-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .info-box {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 8px;
-            border-right: 4px solid var(--gold);
-        }
-        
-        .grades-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        .grades-table th, .grades-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid var(--gold);
-        }
-        
-        .grades-table th {
-            background-color: var(--dark-blue);
-            color: white;
-        }
-        
-        .grades-table tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .total-grade {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--dark-blue);
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            border: 2px dashed var(--gold);
-        }
-        
-        .decoration {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .hieroglyph {
-            display: inline-block;
-            font-size: 2.5rem;
-            margin: 0 10px;
-            color: var(--dark-blue);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: var(--dark-blue);
-            font-weight: bold;
-        }
-        
-        @media (max-width: 768px) {
-            .student-info {
-                grid-template-columns: 1fr;
-            }
-            
-            input[type="text"] {
-                width: 200px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>نتائج الطلاب</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: linear-gradient(to bottom, #fdf6e3, #f5deb3);
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(90deg, #003366, #0a2351);
+      color: gold;
+      padding: 20px;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    input, button {
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      margin: 10px;
+    }
+    input {
+      border: 2px solid #003366;
+      width: 60%;
+    }
+    button {
+      background: gold;
+      color: #003366;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ffd700;
+      transform: scale(1.05);
+    }
+    h3 {
+      color: #0a2351;
+      border-bottom: 2px solid gold;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+      font-size: 18px;
+    }
+    th {
+      background: #003366;
+      color: gold;
+    }
+    td {
+      background: #fafafa;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background: #003366;
+      color: gold;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>نظام عرض النتائج المدرسية</h1>
-            <p>بالاستيلاء الفرعوني المصري</p>
-        </header>
-        
-        <div class="search-box">
-            <h2>ادخل رقم الجلوس للطالب</h2>
-            <div class="input-group">
-                <input type="text" id="seat-number" placeholder="رقم الجلوس">
-                <button onclick="searchResult()">استعلم عن النتيجة</button>
-            </div>
-        </div>
-        
-        <div class="decoration">
-            <span class="hieroglyph">𓂀</span>
-            <span class="hieroglyph">𓆣</span>
-            <span class="hieroglyph">𓂋</span>
-            <span class="hieroglyph">𓎡</span>
-            <span class="hieroglyph">𓂀</span>
-        </div>
-        
-        <div id="result" class="result-container">
-            <h2>نتيجة الطالب</h2>
-            
-            <div class="student-info">
-                <div class="info-box">
-                    <strong>اسم الطالب:</strong> <span id="student-name">محمد أحمد علي</span>
-                </div>
-                <div class="info-box">
-                    <strong>رقم الجلوس:</strong> <span id="student-seat">12345</span>
-                </div>
-                <div class="info-box">
-                    <strong>الصف:</strong> <span id="student-grade">الثاني الثانوي</span>
-                </div>
-                <div class="info-box">
-                    <strong>المدرسة:</strong> <span id="student-school">مدرسة النيل العريقة</span>
-                </div>
-            </div>
-            
-            <table class="grades-table">
-                <thead>
-                    <tr>
-                        <th>المادة</th>
-                        <th>درجة الحضور</th>
-                        <th>درجة الامتحان</th>
-                        <th>المجموع</th>
-                    </tr>
-                </thead>
-                <tbody id="grades-body">
-                    <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
-                </tbody>
-            </table>
-            
-            <div class="total-grade">
-                المجموع الكلي: <span id="total">380</span> من 410
-            </div>
-        </div>
-        
-        <footer>
-            <p>جميع الحقوق محفوظة © 2023 - نظام النتائج المدرسية</p>
-        </footer>
-    </div>
+  <header>📜 منصة نتائج الطلاب - التصميم الفرعوني</header>
 
-    <script>
-        // بيانات نموذجية للنتائج (يمكن استبدالها ببيانات حقيقية من قاعدة بيانات)
-        const resultsData = {
-            "12345": {
-                name: "محمد أحمد علي",
-                grade: "الثاني الثانوي",
-                school: "مدرسة النيل العريقة",
-                subjects: [
-                    { name: "اللغة العربية", attendance: 40, exam: 50 },
-                    { name: "اللغة الإنجليزية", attendance: 38, exam: 47 },
-                    { name: "الرياضيات", attendance: 39, exam: 48 },
-                    { name: "الفيزياء", attendance: 37, exam: 45 },
-                    { name: "الكيمياء", attendance: 40, exam: 49 },
-                    { name: "الأحياء", attendance: 38, exam: 46 },
-                    { name: "التاريخ", attendance: 40, exam: 48 }
-                ]
-            },
-            "67890": {
-                name: "فاطمة إبراهيم محمد",
-                grade: "الأول الثانوي",
-                school: "مدرسة الملكة حتشبسوت",
-                subjects: [
-                    { name: "اللغة العربية", attendance: 40, exam: 49 },
-                    { name: "اللغة الإنجليزية", attendance: 39, exam: 48 },
-                    { name: "الرياضيات", attendance: 38, exam: 47 },
-                    { name: "العلوم", attendance: 40, exam: 50 },
-                    { name: "الدراسات الاجتماعية", attendance: 40, exam: 46 },
-                    { name: "الحاسب الآلي", attendance: 40, exam: 48 }
-                ]
-            }
-        };
-        
-        function searchResult() {
-            const seatNumber = document.getElementById('seat-number').value.trim();
-            const resultDiv = document.getElementById('result');
-            
-            if (resultsData[seatNumber]) {
-                const student = resultsData[seatNumber];
-                
-                // تحديث بيانات الطالب
-                document.getElementById('student-name').textContent = student.name;
-                document.getElementById('student-seat').textContent = seatNumber;
-                document.getElementById('student-grade').textContent = student.grade;
-                document.getElementById('student-school').textContent = student.school;
-                
-                // تحديث جدول الدرجات
-                const gradesBody = document.getElementById('grades-body');
-                gradesBody.innerHTML = '';
-                
-                let total = 0;
-                student.subjects.forEach(subject => {
-                    const row = document.createElement('tr');
-                    const subjectTotal = subject.attendance + subject.exam;
-                    total += subjectTotal;
-                    
-                    row.innerHTML = `
-                        <td>${subject.name}</td>
-                        <td>${subject.attendance}</td>
-                        <td>${subject.exam}</td>
-                        <td>${subjectTotal}</td>
-                    `;
-                    
-                    gradesBody.appendChild(row);
-                });
-                
-                // تحديث المجموع الكلي
-                document.getElementById('total').textContent = total;
-                
-                // عرض نتيجة الطالب
-                resultDiv.style.display = 'block';
-            } else {
-                alert("رقم الجلوس غير صحيح. يرجى المحاولة مرة أخرى.");
-                resultDiv.style.display = 'none';
-            }
-        }
-    </script>
+  <div class="container">
+    <h2>ابحث برقم الجلوس</h2>
+    <input type="text" id="seat" placeholder="ادخل رقم الجلوس">
+    <button onclick="search()">عرض النتيجة</button>
+
+    <div id="result" style="display:none; margin-top:30px;">
+      <h3>بيانات الطالب</h3>
+      <p><b>👤 الاسم:</b> <span id="name"></span></p>
+      <p><b>🏫 المدرسة:</b> <span id="school"></span></p>
+      <p><b>📚 الصف:</b> <span id="grade"></span></p>
+
+      <h3>الدرجات</h3>
+      <table>
+        <thead>
+          <tr><th>المادة</th><th>الدرجة</th></tr>
+        </thead>
+        <tbody id="subjects"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>⚜️ تصميم فرعوني أنيق - GitHub Pages + Google Sheets ⚜️</footer>
+
+<script>
+const sheetURL = "ضع_هنا_رابط_CSV_من_Google_Sheet";
+
+let students = {};
+
+async function loadSheet() {
+  const response = await fetch(sheetURL);
+  const data = await response.text();
+  const rows = data.split("\n").map(r => r.split(","));
+  
+  // header: seat | name | grade | school | subject | total
+  students = {};
+  rows.slice(1).forEach(r => {
+    const [seat, name, grade, school, subject, total] = r;
+    if (!students[seat]) {
+      students[seat] = {name, grade, school, subjects:[]};
+    }
+    students[seat].subjects.push({subject, total});
+  });
+}
+
+async function search() {
+  if (Object.keys(students).length === 0) {
+    await loadSheet();
+  }
+  
+  const seat = document.getElementById("seat").value.trim();
+  const resultDiv = document.getElementById("result");
+  
+  if (students[seat]) {
+    const s = students[seat];
+    document.getElementById("name").textContent = s.name;
+    document.getElementById("grade").textContent = s.grade;
+    document.getElementById("school").textContent = s.school;
+    
+    const tbody = document.getElementById("subjects");
+    tbody.innerHTML = "";
+    s.subjects.forEach(sub => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${sub.subject}</td><td>${sub.total}</td>`;
+      tbody.appendChild(tr);
+    });
+    
+    resultDiv.style.display = "block";
+  } else {
+    alert("❌ رقم الجلوس غير صحيح");
+    resultDiv.style.display = "none";
+  }
+}
+</script>
 </body>
 </html>
