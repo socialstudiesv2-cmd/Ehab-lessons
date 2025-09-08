@@ -3,118 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نتيجة الطالب</title>
+  <title>نظام عرض النتائج</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- مكتبة Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl">
-    <h1 class="text-2xl font-bold mb-4 text-center">نتيجة الطالب</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-4xl">
+    <h1 class="text-2xl font-bold text-center mb-6">نظام عرض النتائج المدرسية</h1>
 
-    <!-- بيانات الطالب -->
-    <div class="student-info grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-lg">
-      <div class="info-item"><strong>اسم الطالب:</strong> <span id="student-name">-</span></div>
-      <div class="info-item"><strong>الصف:</strong> <span id="student-grade">-</span></div>
+    <!-- إدخال رقم الجلوس -->
+    <div class="mb-6">
+      <label for="seat-number" class="block text-lg font-semibold mb-2">رقم الجلوس</label>
+      <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس" 
+        class="w-full border rounded-lg p-3 text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+      <button onclick="searchResult()" 
+        class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">
+        عرض النتيجة
+      </button>
     </div>
 
-    <!-- المجموع الكلي بشكل بياني -->
-    <div class="flex flex-col items-center mb-6">
-      <h2 class="text-lg font-semibold mb-2">المجموع الكلي</h2>
-      <div class="relative w-48 h-48">
-        <canvas id="totalChart"></canvas>
-        <div class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-gray-700" id="percentageText">-</div>
+    <!-- رسائل -->
+    <div id="error" class="hidden text-red-600 font-bold text-center mb-4"></div>
+
+    <!-- النتيجة -->
+    <div id="result" class="hidden">
+      <!-- بيانات الطالب -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-lg">
+        <div><strong>اسم الطالب:</strong> <span id="student-name">-</span></div>
+        <div><strong>الصف:</strong> <span id="student-grade">-</span></div>
       </div>
-      <div class="mt-2 text-xl font-bold text-gray-700" id="totalText">-</div>
-    </div>
 
-    <!-- جدول المواد -->
-    <div class="overflow-x-auto">
-      <table class="w-full text-center border border-gray-300 rounded-lg overflow-hidden">
-        <thead class="bg-gray-200 text-gray-700">
-          <tr>
-            <th class="py-2 px-4 border">المادة</th>
-            <th class="py-2 px-4 border">الدرجة</th>
-            <th class="py-2 px-4 border">الدرجة الكاملة</th>
-          </tr>
-        </thead>
-        <tbody id="subjects-table" class="text-gray-800">
-          <!-- يتم ملؤه بالدرجات -->
-        </tbody>
-      </table>
+      <!-- المجموع الكلي -->
+      <div class="flex flex-col items-center mb-6">
+        <h2 class="text-lg font-semibold mb-2">المجموع الكلي</h2>
+        <div class="relative w-48 h-48">
+          <canvas id="totalChart"></canvas>
+          <div class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-gray-700" id="percentageText">-</div>
+        </div>
+        <div class="mt-2 text-xl font-bold text-gray-700" id="totalText">-</div>
+      </div>
+
+      <!-- جدول المواد -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-center border border-gray-300 rounded-lg overflow-hidden">
+          <thead class="bg-gray-200 text-gray-700">
+            <tr>
+              <th class="py-2 px-4 border">المادة</th>
+              <th class="py-2 px-4 border">الدرجة</th>
+              <th class="py-2 px-4 border">الدرجة الكاملة</th>
+            </tr>
+          </thead>
+          <tbody id="subjects-table" class="text-gray-800"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <script>
-    // بيانات تجريبية كأنها جاية من Google Sheets
-    const student = {
-      name: "أحمد محمد",
-      grade: "الرابع",
-      subjects: [
-        { name: "اللغة العربية", mark: 45, fullMark: 50 },
-        { name: "اللغة الإنجليزية", mark: 40, fullMark: 50 },
-        { name: "الرياضيات", mark: 48, fullMark: 50 },
-        { name: "العلوم", mark: 42, fullMark: 50 },
-        { name: "الدراسات الاجتماعية", mark: 44, fullMark: 50 },
-        { name: "التربية الدينية", mark: 47, fullMark: 50 }
-      ]
-    };
+    // رابط جوجل شيت بصيغة CSV (عدله وحط رابطك هنا)
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv";
 
-    function showResult(student) {
-      document.getElementById("student-name").textContent = student.name;
-      document.getElementById("student-grade").textContent = student.grade;
-
-      let totalMarks = 0;
-      let fullMarks = 0;
-
-      const table = document.getElementById("subjects-table");
-      table.innerHTML = ""; // تفريغ الجدول
-
-      student.subjects.forEach(sub => {
-        totalMarks += parseInt(sub.mark) || 0;
-        fullMarks += parseInt(sub.fullMark) || 0;
-
-        const row = `
-          <tr>
-            <td class="py-2 px-4 border">${sub.name}</td>
-            <td class="py-2 px-4 border">${sub.mark}</td>
-            <td class="py-2 px-4 border">${sub.fullMark}</td>
-          </tr>
-        `;
-        table.innerHTML += row;
-      });
-
-      // حساب النسبة المئوية
-      let percentage = ((totalMarks / fullMarks) * 100).toFixed(1);
-
-      // كتابة المجموع والنسبة
-      document.getElementById("totalText").textContent = totalMarks + " / " + fullMarks;
-      document.getElementById("percentageText").textContent = percentage + "%";
-
-      // رسم الرسم البياني
-      const ctx = document.getElementById("totalChart").getContext("2d");
-      new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: ["الدرجات المحققة", "المتبقي"],
-          datasets: [{
-            data: [totalMarks, fullMarks - totalMarks],
-            backgroundColor: ["#4CAF50", "#E5E7EB"], // أخضر + رمادي فاتح
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false }
-          },
-          cutout: "70%" // يخليها شبه عجلة
-        }
-      });
+    async function fetchResults() {
+      const response = await fetch(sheetUrl);
+      const data = await response.text();
+      return parseCSV(data);
     }
 
-    // تشغيل عند الفتح
-    showResult(student);
+    function parseCSV(text) {
+      const rows = text.split("\n").map(r => r.split(","));
+      return rows;
+    }
+
+    async function searchResult() {
+      const seatNumber = document.getElementById("seat-number").value.trim();
+      const errorDiv = document.getElementById("error");
+      const resultDiv = document.getElementById("result");
+      const table = document.getElementById("subjects-table");
+
+      errorDiv.classList.add("hidden");
+      resultDiv.classList.add("hidden");
+
+      if (!seatNumber) {
+        errorDiv.textContent = "يرجى إدخال رقم الجلوس";
+        errorDiv.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const rows = await fetchResults();
+        const header = rows[0];
+        const studentRow = rows.find(r => r[0] === seatNumber);
+
+        if (!studentRow) {
+          errorDiv.textContent = "رقم الجلوس غير صحيح أو لا توجد نتيجة.";
+          errorDiv.classList.remove("hidden");
+          return;
+        }
+
+        // بيانات الطالب
+        document.getElementById("student-name").textContent = studentRow[1];
+        document.getElementById("student-grade").textContent = studentRow[2];
+
+        // جدول المواد
+        table.innerHTML = "";
+        let totalMarks = 0, fullMarks = 0;
+
+        for (let i = 3; i < studentRow.length; i += 3) {
+          if (!studentRow[i]) continue;
+          const subject = studentRow[i];
+          const mark = parseInt(studentRow[i+1]) || 0;
+          const fullMark = parseInt(studentRow[i+2]) || 0;
+
+          totalMarks += mark;
+          fullMarks += fullMark;
+
+          table.innerHTML += `
+            <tr>
+              <td class="py-2 px-4 border">${subject}</td>
+              <td class="py-2 px-4 border">${mark}</td>
+              <td class="py-2 px-4 border">${fullMark}</td>
+            </tr>
+          `;
+        }
+
+        // المجموع الكلي
+        const percentage = ((totalMarks / fullMarks) * 100).toFixed(1);
+        document.getElementById("totalText").textContent = `${totalMarks} / ${fullMarks}`;
+        document.getElementById("percentageText").textContent = percentage + "%";
+
+        // عرض الرسم البياني
+        const ctx = document.getElementById("totalChart").getContext("2d");
+        if (window.totalChart) window.totalChart.destroy();
+        window.totalChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            datasets: [{
+              data: [totalMarks, fullMarks - totalMarks],
+              backgroundColor: ["#4CAF50", "#E5E7EB"],
+            }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            cutout: "70%"
+          }
+        });
+
+        resultDiv.classList.remove("hidden");
+
+      } catch (err) {
+        errorDiv.textContent = "خطأ في جلب البيانات. تأكد من رابط Google Sheets.";
+        errorDiv.classList.remove("hidden");
+      }
+    }
   </script>
 </body>
 </html>
