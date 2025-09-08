@@ -26,6 +26,7 @@
             background-color: #f5f7fa;
             color: var(--text-color);
             line-height: 1.6;
+            padding-bottom: 20px;
         }
         
         .container {
@@ -41,6 +42,7 @@
             padding: 1rem 0;
             box-shadow: var(--shadow);
             text-align: center;
+            margin-bottom: 20px;
         }
         
         .logo {
@@ -108,6 +110,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             transition: background 0.3s;
+            margin-top: 10px;
         }
         
         button:hover {
@@ -147,6 +150,8 @@
             width: 100%;
             border-collapse: collapse;
             margin: 1rem 0;
+            overflow-x: auto;
+            display: block;
         }
         
         .grades-table th, .grades-table td {
@@ -173,6 +178,22 @@
             padding: 1rem;
             background-color: #f8f9fa;
             border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .total-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 15px;
+        }
+        
+        .total-value {
+            font-size: 1.4rem;
+            margin-top: 5px;
         }
         
         .success {
@@ -206,17 +227,83 @@
             border-radius: 5px;
         }
         
+        /* تحسينات للجوال */
         @media (max-width: 768px) {
-            .student-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .grades-table {
-                font-size: 0.9rem;
+            .container {
+                width: 95%;
+                padding: 10px;
             }
             
             .logo h1 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+            
+            .search-section {
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+            
+            .student-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .grades-table {
+                font-size: 0.85rem;
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .grades-table th, 
+            .grades-table td {
+                padding: 8px 5px;
+            }
+            
+            .total-grade {
+                flex-direction: column;
+                gap: 10px;
+                padding: 0.8rem;
+            }
+            
+            .total-item {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                padding: 5px 0;
+                border-bottom: 1px dashed #ddd;
+            }
+            
+            .total-item:last-child {
+                border-bottom: none;
+            }
+            
+            .result-section {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .search-section {
+                padding: 1rem;
+            }
+            
+            .grades-table {
+                font-size: 0.8rem;
+            }
+            
+            .grades-table th, 
+            .grades-table td {
+                padding: 6px 3px;
+            }
+            
+            button {
+                padding: 10px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -279,23 +366,35 @@
             </div>
             
             <h3>الدرجات</h3>
-            <table class="grades-table">
-                <thead>
-                    <tr>
-                        <th>المادة</th>
-                        <th>الدرجة</th>
-                        <th>الدرجة النهائية</th>
-                        <th>الحالة</th>
-                    </tr>
-                </thead>
-                <tbody id="gradesBody">
-                    <!-- سيتم ملء هذا القسم بالبيانات -->
-                </tbody>
-            </table>
+            <div style="overflow-x: auto;">
+                <table class="grades-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>الدرجة</th>
+                            <th>الدرجة النهائية</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gradesBody">
+                        <!-- سيتم ملء هذا القسم بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
             
             <div class="total-grade">
-                النسبة المئوية: <span id="percentage">85%</span> |
-                التقدير: <span id="grade" class="success">ممتاز</span>
+                <div class="total-item">
+                    <span>المجموع الكلي:</span>
+                    <span class="total-value" id="totalScore">285</span>
+                </div>
+                <div class="total-item">
+                    <span>النسبة المئوية:</span>
+                    <span class="total-value" id="percentage">85%</span>
+                </div>
+                <div class="total-item">
+                    <span>التقدير:</span>
+                    <span class="total-value success" id="grade">ممتاز</span>
+                </div>
             </div>
         </section>
     </div>
@@ -331,7 +430,8 @@
                         { subject: 'الكيمياء', score: 39, maxScore: 50, status: 'ناجح' },
                         { subject: 'الأحياء', score: 46, maxScore: 50, status: 'ناجح' }
                     ],
-                    percentage: 85,
+                    totalScore: 263,
+                    percentage: 88,
                     finalGrade: 'ممتاز'
                 });
             } else if (seatNumber === '654321') {
@@ -349,8 +449,9 @@
                         { subject: 'التربية الإسلامية', score: 45, maxScore: 50, status: 'ناجح' },
                         { subject: 'الدراسات الاجتماعية', score: 38, maxScore: 50, status: 'ناجح' }
                     ],
-                    percentage: 62,
-                    finalGrade: 'مقبول'
+                    totalScore: 218,
+                    percentage: 73,
+                    finalGrade: 'جيد'
                 });
             } else {
                 // رقم جلوس غير صحيح
@@ -385,6 +486,7 @@
             });
             
             // تعبئة النتيجة النهائية
+            document.getElementById('totalScore').textContent = data.totalScore;
             document.getElementById('percentage').textContent = `${data.percentage}%`;
             
             const gradeElement = document.getElementById('grade');
@@ -392,11 +494,11 @@
             
             // تغيير لون التقدير بناء على النسبة
             if (data.percentage >= 85) {
-                gradeElement.className = 'success';
+                gradeElement.className = 'total-value success';
             } else if (data.percentage >= 65) {
-                gradeElement.className = ''; // لون افتراضي
+                gradeElement.className = 'total-value'; // لون افتراضي
             } else {
-                gradeElement.className = 'failed';
+                gradeElement.className = 'total-value failed';
             }
             
             // عرض قسم النتائج
