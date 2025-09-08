@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام عرض نتائج الطلاب</title>
+    <title>نظام نتائج الطلاب - البحث برقم الجلوس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #3498db;
@@ -13,6 +14,8 @@
             --danger-color: #e74c3c;
             --light-color: #ecf0f1;
             --dark-color: #34495e;
+            --gradient-start: #3498db;
+            --gradient-end: #2c3e50;
         }
         
         * {
@@ -39,7 +42,7 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
             color: white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -50,6 +53,91 @@
             margin-bottom: 10px;
         }
         
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px 0 0 10px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        .search-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        
+        .search-button:hover {
+            background: var(--secondary-color);
+        }
+        
+        .examples {
+            margin-top: 20px;
+            color: var(--dark-color);
+        }
+        
+        .examples p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .example-numbers {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .example-number {
+            background: var(--light-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .example-number:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .results-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
         .student-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -58,10 +146,10 @@
         }
         
         .info-card {
-            background: white;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             text-align: center;
             transition: transform 0.3s ease;
         }
@@ -99,7 +187,7 @@
         }
         
         .results-table thead {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
             color: white;
         }
         
@@ -157,10 +245,10 @@
         }
         
         .summary-card {
-            background: white;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             text-align: center;
         }
         
@@ -187,12 +275,64 @@
             color: var(--warning-color);
         }
         
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .action-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .print-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .print-btn:hover {
+            background: var(--secondary-color);
+        }
+        
+        .new-search-btn {
+            background: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .new-search-btn:hover {
+            background: #dde4e6;
+        }
+        
         footer {
             text-align: center;
             padding: 20px;
             margin-top: 30px;
             color: var(--dark-color);
             font-size: 0.9rem;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
         }
         
         @media (max-width: 768px) {
@@ -208,6 +348,24 @@
             .results-table td {
                 padding: 10px;
             }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .search-button {
+                border-radius: 10px;
+                padding: 12px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -215,103 +373,266 @@
     <div class="container">
         <header>
             <h1>نظام عرض نتائج الطلاب</h1>
-            <p>الفصل الدراسي الأول 2023/2024</p>
+            <p>ابحث برقم الجلوس لعرض النتائج</p>
         </header>
         
-        <div class="student-info">
-            <div class="info-card">
-                <h3>اسم الطالب</h3>
-                <p>أحمد محمد علي</p>
+        <section class="search-section">
+            <h2>البحث عن نتائج الطلاب</h2>
+            <div class="search-form">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="seat-number" placeholder="أدخل رقم الجلوس">
+                    <button class="search-button" id="search-btn">
+                        <i class="fas fa-search"></i> بحث
+                    </button>
+                </div>
             </div>
-            <div class="info-card">
-                <h3>الصف</h3>
-                <p>الأول الثانوي</p>
+            
+            <div class="examples">
+                <p>أرقام جلوس примерية للاختبار:</p>
+                <div class="example-numbers">
+                    <span class="example-number">12345</span>
+                    <span class="example-number">23456</span>
+                    <span class="example-number">34567</span>
+                    <span class="example-number">45678</span>
+                    <span class="example-number">56789</span>
+                </div>
             </div>
-            <div class="info-card">
-                <h3>رقم الجلوس</h3>
-                <p>12345</p>
-            </div>
+        </section>
+        
+        <div class="message error" id="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="error-text">رقم الجلوس غير صحيح. يرجى المحاولة مرة أخرى.</span>
         </div>
         
-        <table class="results-table">
-            <thead>
-                <tr>
-                    <th>المادة</th>
-                    <th>الدرجة الكاملة</th>
-                    <th>الدرجة التي حصل عليها</th>
-                    <th>التقدير</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>اللغة العربية</td>
-                    <td>100</td>
-                    <td>95</td>
-                    <td><span class="grade excellent">ممتاز</span></td>
-                </tr>
-                <tr>
-                    <td>اللغة الإنجليزية</td>
-                    <td>100</td>
-                    <td>88</td>
-                    <td><span class="grade very-good">جيد جدًا</span></td>
-                </tr>
-                <tr>
-                    <td>الرياضيات</td>
-                    <td>100</td>
-                    <td>92</td>
-                    <td><span class="grade excellent">ممتاز</span></td>
-                </tr>
-                <tr>
-                    <td>الفيزياء</td>
-                    <td>100</td>
-                    <td>85</td>
-                    <td><span class="grade very-good">جيد جدًا</span></td>
-                </tr>
-                <tr>
-                    <td>الكيمياء</td>
-                    <td>100</td>
-                    <td>78</td>
-                    <td><span class="grade good">جيد</span></td>
-                </tr>
-                <tr>
-                    <td>الأحياء</td>
-                    <td>100</td>
-                    <td>82</td>
-                    <td><span class="grade very-good">جيد جدًا</span></td>
-                </tr>
-                <tr>
-                    <td>التاريخ</td>
-                    <td>100</td>
-                    <td>90</td>
-                    <td><span class="grade excellent">ممتاز</span></td>
-                </tr>
-                <tr>
-                    <td>الجغرافيا</td>
-                    <td>100</td>
-                    <td>65</td>
-                    <td><span class="grade pass">مقبول</span></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="summary">
-            <div class="summary-card">
-                <h3>المجموع الكلي</h3>
-                <p class="total-grade">675 / 800</p>
+        <section class="results-section" id="results-section">
+            <h2>نتيجة الطالب</h2>
+            
+            <div class="student-info">
+                <div class="info-card">
+                    <h3>اسم الطالب</h3>
+                    <p id="student-name">أحمد محمد علي</p>
+                </div>
+                <div class="info-card">
+                    <h3>الصف</h3>
+                    <p id="student-class">الأول الثانوي</p>
+                </div>
+                <div class="info-card">
+                    <h3>رقم الجلوس</h3>
+                    <p id="student-seat">12345</p>
+                </div>
             </div>
-            <div class="summary-card">
-                <h3>النسبة المئوية</h3>
-                <p class="percentage">84.4%</p>
+            
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>المادة</th>
+                        <th>الدرجة الكاملة</th>
+                        <th>الدرجة التي حصل عليها</th>
+                        <th>التقدير</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="summary">
+                <div class="summary-card">
+                    <h3>المجموع الكلي</h3>
+                    <p class="total-grade" id="total-grade">675 / 800</p>
+                </div>
+                <div class="summary-card">
+                    <h3>النسبة المئوية</h3>
+                    <p class="percentage" id="percentage">84.4%</p>
+                </div>
+                <div class="summary-card">
+                    <h3>التقدير العام</h3>
+                    <p class="status" id="overall-grade">جيد جدًا</p>
+                </div>
             </div>
-            <div class="summary-card">
-                <h3>التقدير العام</h3>
-                <p class="status">جيد جدًا</p>
+            
+            <div class="action-buttons">
+                <button class="action-button print-btn" id="print-btn">
+                    <i class="fas fa-print"></i> طباعة النتيجة
+                </button>
+                <button class="action-button new-search-btn" id="new-search-btn">
+                    <i class="fas fa-search"></i> بحث جديد
+                </button>
             </div>
-        </div>
+        </section>
         
         <footer>
             <p>© 2023 نظام إدارة المدارس - جميع الحقوق محفوظة</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const seatNumberInput = document.getElementById('seat-number');
+            const searchBtn = document.getElementById('search-btn');
+            const resultsSection = document.getElementById('results-section');
+            const errorMessage = document.getElementById('error-message');
+            const exampleNumbers = document.querySelectorAll('.example-number');
+            const newSearchBtn = document.getElementById('new-search-btn');
+            const printBtn = document.getElementById('print-btn');
+            
+            // بيانات примерية للطلاب
+            const studentsData = {
+                '12345': {
+                    name: 'أحمد محمد علي',
+                    class: 'الأول الثانوي',
+                    seat: '12345',
+                    subjects: [
+                        { name: 'اللغة العربية', total: 100, achieved: 95, grade: 'excellent' },
+                        { name: 'اللغة الإنجليزية', total: 100, achieved: 88, grade: 'very-good' },
+                        { name: 'الرياضيات', total: 100, achieved: 92, grade: 'excellent' },
+                        { name: 'الفيزياء', total: 100, achieved: 85, grade: 'very-good' },
+                        { name: 'الكيمياء', total: 100, achieved: 78, grade: 'good' },
+                        { name: 'الأحياء', total: 100, achieved: 82, grade: 'very-good' },
+                        { name: 'التاريخ', total: 100, achieved: 90, grade: 'excellent' },
+                        { name: 'الجغرافيا', total: 100, achieved: 65, grade: 'pass' }
+                    ],
+                    total: 675,
+                    percentage: 84.4,
+                    overall: 'جيد جدًا'
+                },
+                '23456': {
+                    name: 'مريم أحمد عبد الله',
+                    class: 'الثاني الثانوي',
+                    seat: '23456',
+                    subjects: [
+                        { name: 'اللغة العربية', total: 100, achieved: 98, grade: 'excellent' },
+                        { name: 'اللغة الإنجليزية', total: 100, achieved: 92, grade: 'excellent' },
+                        { name: 'الرياضيات', total: 100, achieved: 96, grade: 'excellent' },
+                        { name: 'الفيزياء', total: 100, achieved: 94, grade: 'excellent' },
+                        { name: 'الكيمياء', total: 100, achieved: 89, grade: 'very-good' },
+                        { name: 'الأحياء', total: 100, achieved: 91, grade: 'excellent' },
+                        { name: 'التاريخ', total: 100, achieved: 87, grade: 'very-good' },
+                        { name: 'الجغرافيا', total: 100, achieved: 93, grade: 'excellent' }
+                    ],
+                    total: 740,
+                    percentage: 92.5,
+                    overall: 'ممتاز'
+                },
+                '34567': {
+                    name: 'خالد إبراهيم سعيد',
+                    class: 'الثالث الثانوي',
+                    seat: '34567',
+                    subjects: [
+                        { name: 'اللغة العربية', total: 100, achieved: 75, grade: 'good' },
+                        { name: 'اللغة الإنجليزية', total: 100, achieved: 68, grade: 'pass' },
+                        { name: 'الرياضيات', total: 100, achieved: 72, grade: 'good' },
+                        { name: 'الفيزياء', total: 100, achieved: 65, grade: 'pass' },
+                        { name: 'الكيمياء', total: 100, achieved: 70, grade: 'good' },
+                        { name: 'الأحياء', total: 100, achieved: 62, grade: 'pass' },
+                        { name: 'التاريخ', total: 100, achieved: 58, grade: 'fail' },
+                        { name: 'الجغرافيا', total: 100, achieved: 64, grade: 'pass' }
+                    ],
+                    total: 534,
+                    percentage: 66.8,
+                    overall: 'مقبول'
+                }
+            };
+            
+            // إضافة مستمعي الأحداث
+            searchBtn.addEventListener('click', searchResults);
+            newSearchBtn.addEventListener('click', resetSearch);
+            printBtn.addEventListener('click', printResults);
+            
+            // إضافة مستمعي الأحداث لأرقام примерية
+            exampleNumbers.forEach(el => {
+                el.addEventListener('click', function() {
+                    seatNumberInput.value = this.textContent;
+                    searchResults();
+                });
+            });
+            
+            // دالة البحث
+            function searchResults() {
+                const seatNumber = seatNumberInput.value.trim();
+                
+                if (seatNumber === '') {
+                    showError('يرجى إدخال رقم الجلوس');
+                    return;
+                }
+                
+                if (studentsData[seatNumber]) {
+                    displayResults(studentsData[seatNumber]);
+                    hideError();
+                } else {
+                    showError('رقم الجلوس غير موجود. يرجى المحاولة مرة أخرى.');
+                }
+            }
+            
+            // دالة عرض النتائج
+            function displayResults(student) {
+                // تحديث معلومات الطالب
+                document.getElementById('student-name').textContent = student.name;
+                document.getElementById('student-class').textContent = student.class;
+                document.getElementById('student-seat').textContent = student.seat;
+                document.getElementById('total-grade').textContent = `${student.total} / 800`;
+                document.getElementById('percentage').textContent = `${student.percentage}%`;
+                document.getElementById('overall-grade').textContent = student.overall;
+                
+                // تحديث جدول النتائج
+                const resultsBody = document.getElementById('results-body');
+                resultsBody.innerHTML = '';
+                
+                student.subjects.forEach(subject => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${subject.name}</td>
+                        <td>${subject.total}</td>
+                        <td>${subject.achieved}</td>
+                        <td><span class="grade ${subject.grade}">${getGradeText(subject.grade)}</span></td>
+                    `;
+                    
+                    resultsBody.appendChild(row);
+                });
+                
+                // إظهار قسم النتائج
+                resultsSection.style.display = 'block';
+            }
+            
+            // دالة للحصول على نص التقدير
+            function getGradeText(grade) {
+                const grades = {
+                    'excellent': 'ممتاز',
+                    'very-good': 'جيد جدًا',
+                    'good': 'جيد',
+                    'pass': 'مقبول',
+                    'fail': 'راسب'
+                };
+                
+                return grades[grade] || 'غير محدد';
+            }
+            
+            // دالة إظهار الخطأ
+            function showError(message) {
+                errorMessage.style.display = 'block';
+                document.getElementById('error-text').textContent = message;
+                resultsSection.style.display = 'none';
+            }
+            
+            // دالة إخفاء الخطأ
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+            
+            // دالة البحث الجديد
+            function resetSearch() {
+                seatNumberInput.value = '';
+                resultsSection.style.display = 'none';
+                hideError();
+                seatNumberInput.focus();
+            }
+            
+            // دالة طباعة النتائج
+            function printResults() {
+                window.print();
+            }
+        });
+    </script>
 </body>
 </html>
