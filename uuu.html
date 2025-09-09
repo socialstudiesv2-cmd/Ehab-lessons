@@ -3,158 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام عرض نتائج الطلاب</title>
+    <title>نظام نتائج الطلاب - البحث برقم الجلوس</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3498db;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --danger: #f94144;
+            --gradient-start: #4361ee;
+            --gradient-end: #3a0ca3;
         }
         
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
         }
         
         .container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            margin: 20px 0;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         
         header {
-            background: var(--dark-color);
-            color: white;
-            padding: 25px;
             text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            animation: fadeIn 1s ease;
         }
         
-        header h1 {
-            font-size: 2.2rem;
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 42px;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-left: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            font-weight: 800;
         }
         
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease;
         }
         
         .search-box {
-            padding: 25px;
-            background: var(--light-color);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 20px;
         }
         
         .input-group {
             display: flex;
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 20px;
-        }
-        
-        .input-group input {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 8px 0 0 8px;
-            font-size: 1.1rem;
-            outline: none;
-        }
-        
-        .input-group button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0 25px;
-            border-radius: 0 8px 8px 0;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: background 0.3s;
-        }
-        
-        .input-group button:hover {
-            background: #2980b9;
-        }
-        
-        .or-import {
-            margin: 15px 0;
-            font-weight: bold;
-            color: var(--dark-color);
-        }
-        
-        .import-section {
-            display: flex;
             flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
         }
         
-        .import-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-size: 1.1rem;
         }
         
-        .import-btn {
-            background: var(--success-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
+        .input-with-icon {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            right: 15px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        input {
+            padding: 15px 50px 15px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1.1rem;
             width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 10px;
         }
         
-        .import-btn:hover {
-            background: #27ae60;
-        }
-        
-        .sheet-info {
-            margin-top: 15px;
-            padding: 10px;
-            background: #d4edda;
-            border-radius: 5px;
-            color: #155724;
-            display: none;
-            width: 100%;
-            text-align: center;
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
         
         .result-container {
-            display: none;
+            background: white;
+            border-radius: 15px;
             padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
         }
         
         .student-info {
@@ -165,149 +183,144 @@
         }
         
         .info-card {
-            background: var(--light-color);
-            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 15px;
             border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
         
         .info-card h3 {
-            color: var(--dark-color);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
         }
         
         .info-card p {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
         }
         
-        .grades-table {
+        .results-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
-        .grades-table th, .grades-table td {
+        .results-table th {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
             padding: 15px;
-            text-align: center;
+            text-align: right;
         }
         
-        .grades-table thead {
-            background: var(--dark-color);
-            color: white;
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
         }
         
-        .grades-table tbody tr:nth-child(even) {
-            background: #f5f5f5;
+        .results-table tr:nth-child(even) {
+            background-color: #f8fafc;
         }
         
-        .grades-table tbody tr:hover {
-            background: #e3f2fd;
+        .results-table tr:hover {
+            background-color: #f1f5f9;
         }
         
-        .grade-excellent {
-            background: #d4edda !important;
-            color: #155724;
-            font-weight: bold;
+        .total-row {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-weight: 700;
         }
         
-        .grade-very-good {
-            background: #c3e6cb !important;
-            color: #155724;
-        }
-        
-        .grade-good {
-            background: #f8d7da !important;
-            color: #721c24;
-        }
-        
-        .grade-weak {
-            background: #f8d7da !important;
-            color: #721c24;
-        }
-        
-        .total-grade {
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
             margin-top: 20px;
-            padding: 20px;
-            background: var(--dark-color);
-            color: white;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
         }
         
-        .success {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        .status.pass {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
         }
         
-        .warning {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
+        .status.fail {
+            background-color: rgba(249, 65, 68, 0.2);
+            color: #f94144;
         }
         
-        .danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
         
-        .no-result {
-            text-align: center;
-            padding: 40px;
-            color: #e74c3c;
-            font-size: 1.2rem;
-            display: none;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .btn-secondary {
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
         }
         
         footer {
             text-align: center;
-            padding: 20px;
-            color: white;
             margin-top: auto;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #f94144 0%, #e63946 100%);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
         @media (max-width: 768px) {
-            .input-group {
-                flex-direction: column;
+            .search-container, .result-container {
+                padding: 20px;
             }
             
-            .input-group input {
-                border-radius: 8px;
-                margin-bottom: 10px;
-            }
-            
-            .input-group button {
-                border-radius: 8px;
-                padding: 15px;
+            h1 {
+                font-size: 2rem;
             }
             
             .student-info {
                 grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -315,35 +328,38 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-graduation-cap"></i> نظام نتائج الطلاب</h1>
-            <p>استعلم عن نتيجتك باستخدام رقم الجلوس</p>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>نظام نتائج الطلاب</h1>
+            </div>
+            <p class="subtitle">استعلم عن نتيجتك باستخدام رقم الجلوس فقط</p>
         </header>
         
-        <div class="search-box">
-            <div class="input-group">
-                <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس">
-                <button id="search-btn"><i class="fas fa-search"></i> بحث</button>
-            </div>
-            
-            <div class="or-import">أو استيراد البيانات من Google Sheets</div>
-            
-            <div class="import-section">
-                <input type="text" id="sheet-url" class="import-input" placeholder="أدخل رابط Google Sheets">
-                <button class="import-btn" id="import-btn">
-                    <i class="fab fa-google"></i> استيراد البيانات
-                </button>
-                <div class="sheet-info" id="sheet-info">
-                    تم ربط جدول البيانات بنجاح
+        <div class="search-container">
+            <div class="search-box">
+                <div class="input-group">
+                    <label for="seat-number"><i class="fas fa-search"></i> رقم الجلوس</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس الخاص بك">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
                 </div>
+                <button id="search-btn">
+                    <i class="fas fa-search"></i>
+                    استعلام عن النتيجة
+                </button>
             </div>
-        </div>
-        
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <p>جاري تحميل البيانات...</p>
         </div>
         
         <div class="result-container" id="result-container">
+            <div class="result-header">
+                <h2>نتيجة الطالب</h2>
+                <div id="print-btn" class="btn-secondary">
+                    <i class="fas fa-print"></i>
+                    طباعة النتيجة
+                </div>
+            </div>
+            
             <div class="student-info">
                 <div class="info-card">
                     <h3>اسم الطالب</h3>
@@ -351,233 +367,253 @@
                 </div>
                 <div class="info-card">
                     <h3>رقم الجلوس</h3>
-                    <p id="student-seat">12345</p>
+                    <p id="seat-number-result">2023001</p>
+                </div>
+                <div class="info-card">
+                    <h3>الصف</h3>
+                    <p id="grade">الصف الثالث الثانوي</p>
                 </div>
                 <div class="info-card">
                     <h3>المدرسة</h3>
-                    <p id="student-school">مدرسة النجاح الثانوية</p>
+                    <p id="school">ثانوية المستقبل النموذجية</p>
                 </div>
             </div>
             
-            <table class="grades-table">
+            <table class="results-table">
                 <thead>
                     <tr>
-                        <th>المادة</th>
-                        <th>الدرجة</th>
                         <th>التقدير</th>
+                        <th>الدرجة</th>
+                        <th>المادة</th>
                     </tr>
                 </thead>
-                <tbody id="grades-body">
-                    <!-- البيانات سيتم إضافتها بواسطة JavaScript -->
+                <tbody id="results-body">
+                    <tr>
+                        <td>جيد جدًا</td>
+                        <td>85</td>
+                        <td>اللغة العربية</td>
+                    </tr>
+                    <tr>
+                        <td>ممتاز</td>
+                        <td>92</td>
+                        <td>اللغة الإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>جيد جدًا</td>
+                        <td>78</td>
+                        <td>الرياضيات</td>
+                    </tr>
+                    <tr>
+                        <td>جيد جدًا</td>
+                        <td>88</td>
+                        <td>الفيزياء</td>
+                    </tr>
+                    <tr>
+                        <td>ممتاز</td>
+                        <td>95</td>
+                        <td>الكيمياء</td>
+                    </tr>
+                    <tr>
+                        <td>ممتاز</td>
+                        <td>90</td>
+                        <td>الأحياء</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>ممتاز</td>
+                        <td>528</td>
+                        <td>المجموع</td>
+                    </tr>
                 </tbody>
             </table>
             
-            <div class="total-grade" id="total-grade">
-                النسبة المئوية: 85% - تقدير عام: ممتاز
+            <div class="status pass">ناجح</div>
+            
+            <div class="action-buttons">
+                <button>
+                    <i class="fas fa-download"></i>
+                    تحميل النتيجة
+                </button>
+                <div class="btn-secondary">
+                    <i class="fas fa-redo"></i>
+                    بحث جديد
+                </div>
             </div>
         </div>
         
-        <div class="no-result" id="no-result">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>لم يتم العثور على نتيجة للرقم المدخل. يرجى التأكد من رقم الجلوس.</p>
-        </div>
+        <footer>
+            <p>© 2023 نظام نتائج الطلاب - جميع الحقوق محفوظة</p>
+        </footer>
     </div>
     
-    <footer>
-        <p>© 2023 نظام إدارة نتائج الطلاب. جميع الحقوق محفوظة.</p>
-    </footer>
+    <div class="notification error" id="error-notification">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="error-msg">رقم الجلوس غير صحيح أو غير موجود</span>
+    </div>
+    
+    <div class="notification success" id="success-notification">
+        <i class="fas fa-check-circle"></i>
+        <span>تم العثور على النتيجة بنجاح</span>
+    </div>
 
     <script>
+        // بيانات تجريبية للطلاب
+        const studentsData = {
+            "2023001": {
+                name: "أحمد محمد علي",
+                grade: "الصف الثالث الثانوي",
+                school: "ثانوية المستقبل النموذجية",
+                results: [
+                    { subject: "اللغة العربية", score: 85, grade: "جيد جدًا" },
+                    { subject: "اللغة الإنجليزية", score: 92, grade: "ممتاز" },
+                    { subject: "الرياضيات", score: 78, grade: "جيد جدًا" },
+                    { subject: "الفيزياء", score: 88, grade: "جيد جدًا" },
+                    { subject: "الكيمياء", score: 95, grade: "ممتاز" },
+                    { subject: "الأحياء", score: 90, grade: "ممتاز" }
+                ],
+                status: "ناجح"
+            },
+            "2023002": {
+                name: "فاطمة إبراهيم حسين",
+                grade: "الصف الثالث الثانوي",
+                school: "مدرسة النهضة الثانوية",
+                results: [
+                    { subject: "اللغة العربية", score: 92, grade: "ممتاز" },
+                    { subject: "اللغة الإنجليزية", score: 85, grade: "جيد جدًا" },
+                    { subject: "الرياضيات", score: 90, grade: "ممتاز" },
+                    { subject: "الفيزياء", score: 87, grade: "جيد جدًا" },
+                    { subject: "الكيمياء", score: 94, grade: "ممتاز" },
+                    { subject: "الأحياء", score: 89, grade: "جيد جدًا" }
+                ],
+                status: "ناجح"
+            },
+            "2023003": {
+                name: "خالد عبد الله سعيد",
+                grade: "الصف الثالث الثانوي",
+                school: "ثانوية الأمل",
+                results: [
+                    { subject: "اللغة العربية", score: 45, grade: "مقبول" },
+                    { subject: "اللغة الإنجليزية", score: 50, grade: "مقبول" },
+                    { subject: "الرياضيات", score: 40, grade: "ضعيف" },
+                    { subject: "الفيزياء", score: 35, grade: "ضعيف" },
+                    { subject: "الكيمياء", score: 48, grade: "مقبول" },
+                    { subject: "الأحياء", score: 42, grade: "مقبول" }
+                ],
+                status: "راسب"
+            }
+        };
+
+        // عناصر DOM
+        const seatNumberInput = document.getElementById('seat-number');
+        const searchBtn = document.getElementById('search-btn');
+        const resultContainer = document.getElementById('result-container');
+        const errorNotification = document.getElementById('error-notification');
+        const successNotification = document.getElementById('success-notification');
+        const errorMsg = document.getElementById('error-msg');
+        const studentName = document.getElementById('student-name');
+        const seatNumberResult = document.getElementById('seat-number-result');
+        const gradeElement = document.getElementById('grade');
+        const schoolElement = document.getElementById('school');
+        const resultsBody = document.getElementById('results-body');
+        const statusElement = document.querySelector('.status');
+
+        // وظيفة البحث
+        searchBtn.addEventListener('click', function() {
+            const seatNumber = seatNumberInput.value.trim();
+            
+            // إخفاء الإشعارات السابقة
+            hideNotifications();
+            
+            // التحقق من وجود رقم الجلوس
+            if (seatNumber === '') {
+                showError('يرجى إدخال رقم الجلوس');
+                return;
+            }
+            
+            // البحث عن الطالب
+            if (studentsData[seatNumber]) {
+                showResult(studentsData[seatNumber], seatNumber);
+                showSuccess();
+            } else {
+                showError('رقم الجلوس غير صحيح أو غير موجود');
+            }
+        });
+
+        // عرض الخطأ
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorNotification.style.display = 'block';
+            
+            // إخفاء الإشعار تلقائياً بعد 5 ثواني
+            setTimeout(hideNotifications, 5000);
+        }
+
+        // عرض إشعار النجاح
+        function showSuccess() {
+            successNotification.style.display = 'block';
+            
+            // إخفاء الإشعار تلقائياً بعد 5 ثواني
+            setTimeout(hideNotifications, 5000);
+        }
+
+        // إخفاء جميع الإشعارات
+        function hideNotifications() {
+            errorNotification.style.display = 'none';
+            successNotification.style.display = 'none';
+        }
+
+        // عرض النتيجة
+        function showResult(student, seatNumber) {
+            // تعبئة البيانات الشخصية
+            studentName.textContent = student.name;
+            seatNumberResult.textContent = seatNumber;
+            gradeElement.textContent = student.grade;
+            schoolElement.textContent = student.school;
+            
+            // تعبئة جدول النتائج
+            resultsBody.innerHTML = '';
+            let total = 0;
+            
+            student.results.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.grade}</td>
+                    <td>${result.score}</td>
+                    <td>${result.subject}</td>
+                `;
+                resultsBody.appendChild(row);
+                total += result.score;
+            });
+            
+            // إضافة صف المجموع
+            const totalRow = document.createElement('tr');
+            totalRow.classList.add('total-row');
+            totalRow.innerHTML = `
+                <td>${calculateFinalGrade(total / student.results.length)}</td>
+                <td>${total}</td>
+                <td>المجموع</td>
+            `;
+            resultsBody.appendChild(totalRow);
+            
+            // تحديث حالة النجاح أو الرسوب
+            statusElement.textContent = student.status;
+            statusElement.className = 'status ' + (student.status === "ناجح" ? "pass" : "fail");
+            
+            // عرض نتيجة البحث
+            resultContainer.style.display = 'block';
+        }
+
+        // حساب التقدير النهائي بناء على المعدل
+        function calculateFinalGrade(average) {
+            if (average >= 90) return "ممتاز";
+            if (average >= 80) return "جيد جدًا";
+            if (average >= 70) return "جيد";
+            if (average >= 60) return "مقبول";
+            return "ضعيف";
+        }
+
+        // إضافة تأثيرات عند التحميل
         document.addEventListener('DOMContentLoaded', function() {
-            const searchBtn = document.getElementById('search-btn');
-            const importBtn = document.getElementById('import-btn');
-            const seatNumberInput = document.getElementById('seat-number');
-            const sheetUrlInput = document.getElementById('sheet-url');
-            const resultContainer = document.getElementById('result-container');
-            const noResult = document.getElementById('no-result');
-            const loading = document.getElementById('loading');
-            const sheetInfo = document.getElementById('sheet-info');
-            
-            let studentsData = [];
-            let isSheetConnected = false;
-            
-            // بيانات نموذجية (ستأتي من Google Sheets في التطبيق الفعلي)
-            const demoData = [
-                {
-                    seatNumber: "2023001",
-                    name: "أحمد محمد علي",
-                    school: "مدرسة النجاح الثانوية",
-                    grades: [
-                        { subject: "اللغة العربية", score: 85, total: 100 },
-                        { subject: "اللغة الإنجليزية", score: 92, total: 100 },
-                        { subject: "الرياضيات", score: 78, total: 100 },
-                        { subject: "الفيزياء", score: 88, total: 100 },
-                        { subject: "الكيمياء", score: 95, total: 100 }
-                    ]
-                },
-                {
-                    seatNumber: "2023002",
-                    name: "سارة خالد عبدالله",
-                    school: "مدرسة الأمل الثانوية",
-                    grades: [
-                        { subject: "اللغة العربية", score: 75, total: 100 },
-                        { subject: "اللغة الإنجليزية", score: 80, total: 100 },
-                        { subject: "الرياضيات", score: 72, total: 100 },
-                        { subject: "الفيزياء", score: 68, total: 100 },
-                        { subject: "الكيمياء", score: 79, total: 100 }
-                    ]
-                },
-                {
-                    seatNumber: "2023003",
-                    name: "محمد حسن إبراهيم",
-                    school: "مدرسة المستقبل الثانوية",
-                    grades: [
-                        { subject: "اللغة العربية", score: 60, total: 100 },
-                        { subject: "اللغة الإنجليزية", score: 65, total: 100 },
-                        { subject: "الرياضيات", score: 58, total: 100 },
-                        { subject: "الفيزياء", score: 62, total: 100 },
-                        { subject: "الكيمياء", score: 59, total: 100 }
-                    ]
-                }
-            ];
-            
-            // دالة البحث عن النتيجة
-            function searchResult() {
-                const seatNumber = seatNumberInput.value.trim();
-                if (!seatNumber) {
-                    alert("يرجى إدخال رقم الجلوس");
-                    return;
-                }
-                
-                // استخدام البيانات المتاحة (إما من Google Sheets أو البيانات النموذجية)
-                const dataToUse = isSheetConnected && studentsData.length > 0 ? studentsData : demoData;
-                const student = dataToUse.find(s => s.seatNumber === seatNumber);
-                
-                if (student) {
-                    displayResult(student);
-                    resultContainer.style.display = 'block';
-                    noResult.style.display = 'none';
-                } else {
-                    resultContainer.style.display = 'none';
-                    noResult.style.display = 'block';
-                }
-            }
-            
-            // دالة عرض النتيجة
-            function displayResult(student) {
-                document.getElementById('student-name').textContent = student.name;
-                document.getElementById('student-seat').textContent = student.seatNumber;
-                document.getElementById('student-school').textContent = student.school;
-                
-                const gradesBody = document.getElementById('grades-body');
-                gradesBody.innerHTML = '';
-                
-                let totalScore = 0;
-                let totalMax = 0;
-                
-                student.grades.forEach(grade => {
-                    const percentage = (grade.score / grade.total) * 100;
-                    let rating = '';
-                    let ratingClass = '';
-                    
-                    if (percentage >= 85) {
-                        rating = 'ممتاز';
-                        ratingClass = 'grade-excellent';
-                    } else if (percentage >= 75) {
-                        rating = 'جيد جدًا';
-                        ratingClass = 'grade-very-good';
-                    } else if (percentage >= 50) {
-                        rating = 'جيد';
-                        ratingClass = 'grade-good';
-                    } else {
-                        rating = 'ضعيف';
-                        ratingClass = 'grade-weak';
-                    }
-                    
-                    const row = document.createElement('tr');
-                    row.classList.add(ratingClass);
-                    row.innerHTML = `
-                        <td>${grade.subject}</td>
-                        <td>${grade.score}/${grade.total}</td>
-                        <td>${rating}</td>
-                    `;
-                    
-                    gradesBody.appendChild(row);
-                    
-                    totalScore += grade.score;
-                    totalMax += grade.total;
-                });
-                
-                const totalPercentage = (totalScore / totalMax) * 100;
-                const totalGradeElement = document.getElementById('total-grade');
-                
-                let overallRating = '';
-                let ratingClass = '';
-                
-                if (totalPercentage >= 85) {
-                    overallRating = 'ممتاز';
-                    ratingClass = 'success';
-                } else if (totalPercentage >= 75) {
-                    overallRating = 'جيد جدًا';
-                    ratingClass = 'warning';
-                } else if (totalPercentage >= 50) {
-                    overallRating = 'جيد';
-                    ratingClass = 'warning';
-                } else {
-                    overallRating = 'ضعيف';
-                    ratingClass = 'danger';
-                }
-                
-                totalGradeElement.textContent = `النسبة المئوية: ${totalPercentage.toFixed(2)}% - تقدير عام: ${overallRating}`;
-                totalGradeElement.className = 'total-grade ' + ratingClass;
-            }
-            
-            // محاكاة استيراد البيانات من Google Sheets
-            function importFromSheets() {
-                const sheetUrl = sheetUrlInput.value.trim();
-                
-                if (!sheetUrl) {
-                    alert("يرجى إدخال رابط Google Sheets");
-                    return;
-                }
-                
-                loading.style.display = 'block';
-                
-                // محاكاة وقت التحميل
-                setTimeout(() => {
-                    // هنا سيتم وضع كود التكامل مع Google Sheets API
-                    // في هذا المثال، سنستخدم البيانات النموذجية فقط
-                    
-                    // محاكاة نجاح استيراد البيانات
-                    studentsData = demoData;
-                    isSheetConnected = true;
-                    
-                    loading.style.display = 'none';
-                    sheetInfo.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        sheetInfo.style.display = 'none';
-                    }, 3000);
-                    
-                    alert("تم ربط جدول البيانات بنجاح! يمكنك الآن البحث باستخدام رقم الجلوس.");
-                }, 2000);
-            }
-            
-            // إضافة event listeners
-            searchBtn.addEventListener('click', searchResult);
-            importBtn.addEventListener('click', importFromSheets);
-            
-            seatNumberInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchResult();
-                }
-            });
-            
-            sheetUrlInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    importFromSheets();
-                }
-            });
+            seatNumberInput.focus();
         });
     </script>
 </body>
