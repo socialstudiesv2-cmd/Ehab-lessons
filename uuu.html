@@ -1,34 +1,189 @@
-<script>
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/1Khc1TfJX-4EyJQOBt6Lw8puCBrfscGfrzle2F0DA4qU/pub?output=csv";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام عرض النتائج المدرسية</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* هنا نفس التنسيقات اللي عندك تماماً – بدون تغيير */
+    :root { --primary-color: #4CAF50; --primary-dark: #2E7D32; /* ... */ }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e9 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; color: var(--text-color); min-height: 100vh; }
+    .container { max-width: 900px; margin: 20px auto; background: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); animation: fadeIn 0.8s ease; }
+    header { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: var(--white); padding: 2rem; border-radius: var(--border-radius); text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; }
+    /* ... تكملة التنسيقات كما هي عندك ... */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>نظام عرض النتائج المدرسية</h1>
+      <p>استعلم عن نتيجتك باستخدام رقم الجلوس</p>
+    </header>
 
-  // تحميل البيانات من Google Sheet
-  async function fetchResults() {
-    console.log("Fetching data from sheet...");
-    const response = await fetch(sheetUrl);
-    const data = await response.text();
-    console.log("Raw CSV data:", data);
+    <div class="school-logo"><i class="fas fa-graduation-cap"></i></div>
+    <div class="success-message" id="success-message"></div>
+    <div class="error-card" id="error-message"></div>
 
-    const rows = data.split("\n").map(r => r.split(","));
-    const results = {};
+    <div class="search-box">
+      <div class="form-group">
+        <label for="seat-number"><i class="fas fa-user-graduate"></i> رقم الجلوس:</label>
+        <div class="input-with-icon">
+          <input type="text" id="seat-number" placeholder="أدخل رقم الجلوس المكون من 6 أرقام" maxlength="6">
+          <i class="fas fa-key"></i>
+        </div>
+        <div class="error-message" id="seat-number-error"></div>
+      </div>
+      <button onclick="searchResult()" id="search-button"><i class="fas fa-search"></i> عرض النتيجة</button>
+    </div>
 
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      if (!row[0]) continue;
-      const seatNo = row[0].trim();
-      results[seatNo] = {
-        name: row[1],
-        grade: row[2],
-        school: row[3],
-        subjects: [
-          { name: "اللغة العربية", score: parseInt(row[4])||0, fullScore: 100 },
-          { name: "اللغة الإنجليزية", score: parseInt(row[5])||0, fullScore: 100 },
-          { name: "الرياضيات", score: parseInt(row[6])||0, fullScore: 100 },
-          { name: "العلوم", score: parseInt(row[7])||0, fullScore: 100 },
-          { name: "الدراسات الاجتماعية", score: parseInt(row[8])||0, fullScore: 100 }
-        ]
-      };
+    <div class="loader" id="loader"><div class="loader-spinner"></div><p>جاري تحميل النتيجة...</p></div>
+
+    <div class="result" id="result">
+      <div class="result-header">
+        <h2>النتيجة</h2>
+        <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
+      </div>
+      <div class="student-info">
+        <div class="info-item"><strong><i class="fas fa-user"></i> اسم الطالب:</strong> <span id="student-name">-</span></div>
+        <div class="info-item"><strong><i class="fas fa-book"></i> الصف:</strong> <span id="student-grade">-</span></div>
+        <div class="info-item"><strong><i class="fas fa-school"></i> المدرسة:</strong> <span id="student-school">-</span></div>
+        <div class="info-item"><strong><i class="fas fa-id-card"></i> رقم الجلوس:</strong> <span id="student-seat">-</span></div>
+      </div>
+      <h3 style="margin-bottom: 20px; color: var(--primary-dark);"><i class="fas fa-book-open"></i> المواد الدراسية</h3>
+      <div class="subjects-grid" id="subjects-table"></div>
+      <div class="summary-cards">
+        <div class="summary-card total-card">
+          <h3><i class="fas fa-calculator"></i> المجموع الكلي</h3>
+          <div class="summary-value" id="total">-</div>
+          <div class="summary-text" id="total-text"></div>
+        </div>
+        <div class="summary-card percentage-card">
+          <h3><i class="fas fa-chart-line"></i> النسبة المئوية</h3>
+          <div class="summary-value" id="percentage">-</div>
+          <div class="summary-text" id="summary-text">-</div>
+        </div>
+      </div>
+    </div>
+
+    <footer><p>جميع الحقوق محفوظة © 2023 - نظام النتائج المدرسية</p></footer>
+  </div>
+
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1Khc1TfJX-4EyJQOBt6Lw8puCBrfscGfrzle2F0DA4qU/pub?output=csv";
+
+    async function fetchResults() {
+      const response = await fetch(sheetUrl);
+      const data = await response.text();
+      const rows = data.split("\n").map(r => r.split(","));
+      const results = {};
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row[0]) continue;
+        const seatNo = row[0].trim();
+        results[seatNo] = {
+          name: row[1],
+          grade: row[2],
+          school: row[3],
+          subjects: [
+            { name: "اللغة العربية", score: parseInt(row[4])||0, fullScore: 100 },
+            { name: "اللغة الإنجليزية", score: parseInt(row[5])||0, fullScore: 100 },
+            { name: "الرياضيات", score: parseInt(row[6])||0, fullScore: 100 },
+            { name: "العلوم", score: parseInt(row[7])||0, fullScore: 100 },
+            { name: "الدراسات الاجتماعية", score: parseInt(row[8])||0, fullScore: 100 }
+          ]
+        };
+      }
+      return results;
     }
-    console.log("Parsed results:", results);
-    return results;
-  }
-</script>
+
+    function validateSeatNumber(seatNumber) {
+      return /^\d{6}$/.test(seatNumber);
+    }
+
+    function getSummary(percentage) {
+      if (percentage >= 90) return { text: "امتياز" };
+      if (percentage >= 80) return { text: "جيد جدًا" };
+      if (percentage >= 70) return { text: "جيد" };
+      if (percentage >= 60) return { text: "مقبول" };
+      return { text: "ضعيف" };
+    }
+
+    async function searchResult() {
+      const seat = document.getElementById('seat-number').value.trim();
+      const errorDiv = document.getElementById('seat-number-error');
+      const loader = document.getElementById('loader');
+      const resultDiv = document.getElementById('result');
+      const successMsg = document.getElementById('success-message');
+      const errorMsg = document.getElementById('error-message');
+      const searchBtn = document.getElementById('search-button');
+
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+      errorDiv.style.display = 'none';
+      if (!validateSeatNumber(seat)) {
+        errorDiv.textContent = "يرجى إدخال رقم جلوس صحيح مكون من 6 أرقام";
+        errorDiv.style.display = 'block';
+        resultDiv.style.display = 'none';
+        return;
+      }
+
+      loader.style.display = 'block';
+      searchBtn.disabled = true;
+
+      try {
+        const data = await fetchResults();
+        loader.style.display = 'none';
+        searchBtn.disabled = false;
+
+        if (data[seat]) {
+          const st = data[seat];
+          document.getElementById('student-name').textContent = st.name;
+          document.getElementById('student-grade').textContent = st.grade;
+          document.getElementById('student-school').textContent = st.school;
+          document.getElementById('student-seat').textContent = seat;
+
+          const subjectsGrid = document.getElementById('subjects-table');
+          subjectsGrid.innerHTML = '';
+          let total = 0, fullTotal = 0;
+          st.subjects.forEach(s => {
+            total += s.score;
+            fullTotal += s.fullScore;
+            const perc = ((s.score / s.fullScore) * 100).toFixed(0);
+            const box = document.createElement('div');
+            box.className = 'subject-box';
+            box.innerHTML = `<h3>${s.name}</h3><div class="score">${s.score}</div><div class="full-score">من ${s.fullScore}</div><div class="progress-bar"><div class="progress" style="width:${perc}%"></div></div><div>${perc}%</div>`;
+            subjectsGrid.appendChild(box);
+          });
+
+          const overallPerc = ((total / fullTotal) * 100).toFixed(2);
+          const summary = getSummary(overallPerc);
+          document.getElementById('total').textContent = `${total}/${fullTotal}`;
+          document.getElementById('total-text').textContent = `من ${fullTotal}`;
+          document.getElementById('percentage').textContent = `${overallPerc}%`;
+          document.getElementById('summary-text').textContent = summary.text;
+
+          successMsg.textContent = `تم تحميل نتيجة الطالب ${st.name} بنجاح!`;
+          successMsg.style.display = 'block';
+          resultDiv.style.display = 'block';
+        } else {
+          errorMsg.textContent = 'رقم الجلوس غير صحيح أو لا توجد بيانات';
+          errorMsg.style.display = 'block';
+          resultDiv.style.display = 'none';
+        }
+      } catch (_) {
+        loader.style.display = 'none';
+        searchBtn.disabled = false;
+        errorMsg.textContent = 'خطأ أثناء تحميل البيانات، حاول مرة أخرى';
+        errorMsg.style.display = 'block';
+        resultDiv.style.display = 'none';
+      }
+    }
+
+    document.getElementById('seat-number').addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchResult();
+    });
+  </script>
+</body>
+</html>
