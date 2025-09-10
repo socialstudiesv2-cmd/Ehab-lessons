@@ -29,6 +29,7 @@
     .student-info{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;}
     .info-item{padding:12px;background:#fff;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.05);}
     .info-item span{font-weight:600;color:#4a00e0;}
+    .chart-container{width:300px;margin:0 auto 20px auto;}
     table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;border-radius:10px;overflow:hidden;}
     th,td{padding:12px;text-align:center;}
     th{background:#4a00e0;color:#fff;}
@@ -36,6 +37,7 @@
     footer{text-align:center;padding:15px;background:linear-gradient(to right,#4a00e0,#8e2de2);color:#fff;font-size:14px;}
     @media(max-width:768px){.main-content{flex-direction:column}.student-info{grid-template-columns:1fr}}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
@@ -70,7 +72,6 @@
 </footer>
 
   </div><script>
-// ضع هنا رابط CSV المنشور من Google Sheet
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pub?output=csv";
 
 async function fetchCSV() {
@@ -98,15 +99,38 @@ async function getResult(){
     <div class="student-info">
       <div class="info-item"><span>اسم:</span> ${student["name"]||student["الاسم"]||"-"}</div>
       <div class="info-item"><span>رقم الجلوس:</span> ${student["seat"]||student["رقم الجلوس"]}</div>
-    </div>`;
+    </div>
+    <div class="chart-container"><canvas id="resultChart"></canvas></div>`;
 
   let subjects = Object.keys(student).filter(k=>!['seat','رقم الجلوس','name','الاسم'].includes(k));
-  let rows = subjects.map(sub=>`<tr><td>${sub}</td><td>${student[sub]}</td></tr>`).join("");
+  let scores = subjects.map(sub=>Number(student[sub])||0);
+  let total = scores.reduce((a,b)=>a+b,0);
+  let maxTotal = subjects.length * 100;
+  let percent = ((total/maxTotal)*100).toFixed(1);
 
+  let rows = subjects.map(sub=>`<tr><td>${sub}</td><td>${student[sub]}</td></tr>`).join("");
   infoHtml += `<table><thead><tr><th>المادة</th><th>الدرجة</th></tr></thead><tbody>${rows}</tbody></table>`;
+
   resultDiv.style.display='block';
   resultDiv.innerHTML = infoHtml;
   resultDiv.scrollIntoView({behavior:'smooth'});
+
+  const ctx = document.getElementById('resultChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['درجات محصلة','المتبقي'],
+      datasets: [{
+        data: [total, maxTotal-total],
+        backgroundColor: ['#4a00e0','#e0e0e0']
+      }]
+    },
+    options: {
+      plugins: {
+        title:{display:true,text:`المجموع: ${total} / ${maxTotal} (${percent}%)`,color:'#4a00e0'}
+      }
+    }
+  });
 }
 </script></body>
 </html>
