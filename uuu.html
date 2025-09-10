@@ -6,120 +6,312 @@
   <title>نظام نتائج الطلاب</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #4a00e0;
+      --secondary: #8e2de2;
+      --accent: #00b4db;
+      --success: #36d1dc;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       margin: 0;
       padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      color: var(--dark);
+      line-height: 1.6;
     }
+
     .container {
-      background: #fff;
-      border-radius: 15px;
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      padding: 30px;
       width: 100%;
       max-width: 900px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
     }
+
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
-    header h1 {
-      margin: 10px 0;
-      font-size: 26px;
-      color: #4a00e0;
-    }
-    .form-group {
+
+    .logo {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50%;
       margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(142, 45, 226, 0.3);
     }
+
+    header h1 {
+      margin: 10px 0 5px;
+      font-size: 28px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+
+    header p {
+      color: var(--gray);
+      font-size: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
     input[type="text"] {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 10px;
+      padding: 15px 20px;
+      border: 2px solid #e9ecef;
+      border-radius: var(--border-radius);
       font-size: 16px;
+      transition: var(--transition);
+      background: #f8f9fa;
     }
-    button {
-      background: linear-gradient(to right, #4a00e0, #8e2de2);
-      color: #fff;
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.1);
+    }
+
+    input[type="text"]::placeholder {
+      color: #adb5bd;
+    }
+
+    .btn {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
       border: none;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
       font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
       width: 100%;
-      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(142, 45, 226, 0.3);
     }
-    button:hover {
-      opacity: 0.9;
+
+    .btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(142, 45, 226, 0.4);
     }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
     .result-box {
-      margin-top: 20px;
+      margin-top: 30px;
       display: none;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: var(--transition);
     }
+
+    .result-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
     .info-item {
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: #333;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
     }
+
+    .info-item i {
+      color: var(--primary);
+      font-size: 18px;
+      width: 25px;
+    }
+
     table {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
+
     th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+      padding: 15px;
       text-align: center;
+      border: none;
     }
+
     th {
-      background: #4a00e0;
-      color: #fff;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      font-weight: 600;
+      position: relative;
     }
+
+    th:not(:last-child):after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
     tr:nth-child(even) {
-      background: #f3e5f5;
+      background: #f8f9fa;
     }
-    #total-box {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #4a00e0;
+
+    tr:hover {
+      background: rgba(74, 0, 224, 0.03);
+    }
+
+    .total-box {
+      margin-top: 25px;
       text-align: center;
+      padding: 20px;
+      background: linear-gradient(to right, var(--success), var(--accent));
+      color: white;
+      border-radius: var(--border-radius);
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 5px 15px rgba(0, 180, 219, 0.3);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading i {
+      color: var(--primary);
+      font-size: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .student-info {
+        grid-template-columns: 1fr;
+      }
+      
+      th, td {
+        padding: 10px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <i class="fas fa-graduation-cap fa-2x"></i>
+      <div class="logo">
+        <i class="fas fa-graduation-cap fa-2x"></i>
+      </div>
       <h1>نظام نتائج الطلاب</h1>
       <p>استعلم عن نتيجتك باستخدام رقم الجلوس</p>
     </header>
 
-    <div class="form-group">
-      <input type="text" id="exam-number" placeholder="أدخل رقم الجلوس">
-      <button onclick="getResult()">عرض النتيجة</button>
+    <div class="card">
+      <div class="form-group">
+        <input type="text" id="exam-number" placeholder="أدخل رقم الجلوس">
+      </div>
+      <button class="btn" onclick="getResult()">
+        <i class="fas fa-search"></i> عرض النتيجة
+      </button>
+    </div>
+
+    <div class="loading" id="loading">
+      <i class="fas fa-spinner"></i>
+      <p>جاري تحميل النتيجة...</p>
     </div>
 
     <div id="result" class="result-box">
-      <div id="student-info"></div>
-      <table id="included-table">
-        <thead>
-          <tr>
-            <th>المادة</th>
-            <th>الدرجة</th>
-            <th>التقدير</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div id="total-box"></div>
+      <div class="card">
+        <div id="student-info" class="student-info"></div>
+        
+        <div style="overflow-x: auto;">
+          <table id="included-table">
+            <thead>
+              <tr>
+                <th>المادة</th>
+                <th>الدرجة</th>
+                <th>التقدير</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div id="total-box" class="total-box"></div>
+      </div>
     </div>
   </div>
 
@@ -137,45 +329,82 @@
       const num = document.getElementById('exam-number').value.trim();
       if (!num) return alert('يرجى إدخال رقم الجلوس');
 
-      const res = await fetch(SHEET_CSV_URL);
-      const data = await res.text();
-      const rows = data.split("\n").map(r => r.split(","));
-      const headers = rows.shift();
-      const studentRow = rows.find(r => r[0] === num);
-      if (!studentRow) return alert("رقم الجلوس غير موجود");
+      // إظهار تحميل
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('result').style.display = 'none';
+      
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        const data = await res.text();
+        const rows = data.split("\n").map(r => r.split(","));
+        const headers = rows.shift();
+        const studentRow = rows.find(r => r[0] === num);
+        
+        if (!studentRow) {
+          alert("رقم الجلوس غير موجود");
+          document.getElementById('loading').style.display = 'none';
+          return;
+        }
 
-      document.getElementById('result').style.display = 'block';
-      document.getElementById('student-info').innerHTML = `
-        <div class="info-item"><i class="fas fa-user"></i> اسم الطالب: ${studentRow[1] || "-"} </div>
-        <div class="info-item"><i class="fas fa-id-card"></i> رقم الجلوس: ${num} </div>
-        <div class="info-item"><i class="fas fa-school"></i> الصف الدراسي: ${studentRow[2] || "-"} </div>
-      `;
+        document.getElementById('student-info').innerHTML = `
+          <div class="info-item">
+            <i class="fas fa-user"></i>
+            <span>اسم الطالب: ${studentRow[1] || "-"}</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-id-card"></i>
+            <span>رقم الجلوس: ${num}</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-school"></i>
+            <span>الصف الدراسي: ${studentRow[2] || "-"}</span>
+          </div>
+        `;
 
-      const tbodyInc = document.querySelector('#included-table tbody');
-      tbodyInc.innerHTML = "";
-      let total = 0, maxTotal = 0;
+        const tbodyInc = document.querySelector('#included-table tbody');
+        tbodyInc.innerHTML = "";
+        let total = 0, maxTotal = 0;
 
-      // كل مادة لها عمود درجة وعمود درجة نهائية
-      for (let i = 3; i < headers.length; i += 2) {
-        const sub = headers[i].trim();
-        const score = Number(studentRow[i]) || 0;
-        const gradeFull = Number(studentRow[i+1]) || 100;
-        total += score;
-        maxTotal += gradeFull;
-        const percent = (score/gradeFull) * 100;
+        // كل مادة لها عمود درجة وعمود درجة نهائية
+        for (let i = 3; i < headers.length; i += 2) {
+          const sub = headers[i].trim();
+          const score = Number(studentRow[i]) || 0;
+          const gradeFull = Number(studentRow[i+1]) || 100;
+          total += score;
+          maxTotal += gradeFull;
+          const percent = (score/gradeFull) * 100;
 
-        tbodyInc.innerHTML += `<tr>
-          <td>${sub}</td>
-          <td>${score} / ${gradeFull}</td>
-          <td>${calcGrade(percent)}</td>
-        </tr>`;
+          tbodyInc.innerHTML += `<tr>
+            <td>${sub}</td>
+            <td>${score} / ${gradeFull}</td>
+            <td>${calcGrade(percent)}</td>
+          </tr>`;
+        }
+
+        document.getElementById('total-box').innerText =
+          `المجموع الكلي: ${total} / ${maxTotal} — النسبة: ${(total/maxTotal*100).toFixed(1)}% (${calcGrade(total/maxTotal*100)})`;
+
+        // إخفاء تحميل وإظهار النتيجة
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('result').classList.add('show');
+        }, 10);
+        
+        document.getElementById('result').scrollIntoView({behavior: 'smooth'});
+      } catch (error) {
+        console.error(error);
+        alert('حدث خطأ أثناء جلب البيانات');
+        document.getElementById('loading').style.display = 'none';
       }
-
-      document.getElementById('total-box').innerText =
-        `المجموع الكلي: ${total} / ${maxTotal} — النسبة: ${(total/maxTotal*100).toFixed(1)}% (${calcGrade(total/maxTotal*100)})`;
-
-      document.getElementById('result').scrollIntoView({behavior:'smooth'});
     }
+
+    // السماح بالبحث عند الضغط على Enter
+    document.getElementById('exam-number').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        getResult();
+      }
+    });
   </script>
 </body>
 </html>
