@@ -5,26 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نظام نتائج الطلاب</title>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-    .container { width: 100%; max-width: 1000px; background: #fff; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); overflow: hidden; }
-    header { background: linear-gradient(to right, #4a00e0, #8e2de2); color: #fff; padding: 25px; text-align: center; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: linear-gradient(135deg,#6a11cb 0%,#2575fc 100%); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .container { width: 100%; max-width: 1000px; background: #fff; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,.2); overflow: hidden; }
+    header { background: linear-gradient(to right,#4a00e0,#8e2de2); color: #fff; padding: 25px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; }
     .main-content { padding: 30px; }
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; font-weight: bold; }
     input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; }
-    button { background: linear-gradient(to right, #4a00e0, #8e2de2); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 16px; width: 100%; }
-    button:hover { opacity: 0.9; }
-    .result-box { display: none; margin-top: 20px; background: #f9f9f9; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-    .info-item { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
-    .grades-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+    button { background: linear-gradient(to right,#4a00e0,#8e2de2); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-size: 16px; width: 100%; }
+    button:hover { opacity: .9; }
+    .result-box { display: none; margin-top: 20px; background: #f9f9f9; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,.1); }
+    .student-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .info-item { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(0,0,0,.05); }
+    .grades-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,.05); }
     .grades-table th, .grades-table td { padding: 12px 15px; text-align: center; }
     .grades-table th { background: #4a00e0; color: #fff; }
     .grades-table tr:nth-child(even) { background: #f3e5f5; }
-    .total-box { margin-top: 20px; padding: 15px; background: #fff; border-radius: 10px; text-align: center; font-weight: bold; color: #4a00e0; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-    footer { text-align: center; padding: 15px; background: linear-gradient(to right, #4a00e0, #8e2de2); color: #fff; font-size: 14px; }
-    @media(max-width:768px){ .student-info { grid-template-columns:1fr; } }
+    .total-box { margin-top: 20px; padding: 15px; background: #fff; border-radius: 10px; text-align: center; font-weight: bold; color: #4a00e0; box-shadow: 0 3px 10px rgba(0,0,0,.1); }
+    footer { text-align: center; padding: 15px; background: linear-gradient(to right,#4a00e0,#8e2de2); color: #fff; font-size: 14px; }
+    @media(max-width:768px){ .student-info{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
@@ -40,12 +40,14 @@
       </div>
       <button onclick="getResult()">استعراض النتيجة</button>
       <div id="result" class="result-box">
-        <h3 style="text-align:center; color:#4a00e0;">نتيجة الطالب</h3>
+        <h3 style="text-align:center;color:#4a00e0;">نتيجة الطالب</h3>
         <div class="student-info" id="student-info"></div>
-        <table class="grades-table" id="grades-table">
+
+        <table class="grades-table" id="included-table">
           <thead><tr><th>المادة</th><th>الدرجة / الدرجة الكاملة</th><th>التقدير</th></tr></thead>
           <tbody></tbody>
         </table>
+
         <div class="total-box" id="total-box"></div>
       </div>
     </div>
@@ -54,6 +56,9 @@
 
 <script>
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQmPEhfw-LCCyFttUmy23WS26UsA5NYhMkDe4XYkgEBiu4MHgd7z1WGgDX62NxZcejMC8NrOONdRGbH/pub?output=csv";
+
+  // المواد المضافة للمجموع (بالضبط زي ما مكتوبة في الشيت)
+  const includedSubjects = ["عربي", "انجليزي", "رياضيات", "علوم", "دراسات"];
 
   function calcGrade(percent) {
     if (percent >= 90) return "ممتاز";
@@ -65,6 +70,7 @@
   async function getResult() {
     const num = document.getElementById('exam-number').value.trim();
     if (!num) return alert('يرجى إدخال رقم الجلوس');
+
     const res = await fetch(SHEET_CSV_URL);
     const data = await res.text();
     const rows = data.split("\n").map(r => r.split(","));
@@ -76,27 +82,33 @@
     document.getElementById('student-info').innerHTML = `
       <div class="info-item"><strong>اسم الطالب:</strong> ${studentRow[1] || "-"} </div>
       <div class="info-item"><strong>رقم الجلوس:</strong> ${num} </div>
+      <div class="info-item"><strong>الصف الدراسي:</strong> ${studentRow[2] || "-"} </div>
     `;
 
-    const tbody = document.querySelector('#grades-table tbody');
-    tbody.innerHTML = "";
+    const tbodyInc = document.querySelector('#included-table tbody');
+    tbodyInc.innerHTML = "";
     let total = 0, maxTotal = 0;
 
-    for (let i = 2; i < headers.length; i++) {
-      const sub = headers[i];
+    for (let i = 3; i < headers.length; i++) {
+      const sub = headers[i].trim();
       const score = Number(studentRow[i]) || 0;
       const gradeFull = 100;
-      total += score;
-      maxTotal += gradeFull;
-      const percent = (score/gradeFull) * 100;
-      tbody.innerHTML += `<tr>
-        <td>${sub}</td>
-        <td>${score} / ${gradeFull}</td>
-        <td>${calcGrade(percent)}</td>
-      </tr>`;
+
+      if (includedSubjects.includes(sub)) {
+        total += score;
+        maxTotal += gradeFull;
+        const percent = (score/gradeFull) * 100;
+        tbodyInc.innerHTML += `<tr>
+          <td>${sub}</td>
+          <td>${score} / ${gradeFull}</td>
+          <td>${calcGrade(percent)}</td>
+        </tr>`;
+      }
     }
 
-    document.getElementById('total-box').innerText = `المجموع الكلي: ${total} / ${maxTotal} — النسبة المئوية: ${(total/maxTotal*100).toFixed(1)}%`;
+    document.getElementById('total-box').innerText = 
+      `المجموع الكلي: ${total} / ${maxTotal} — النسبة: ${(total/maxTotal*100).toFixed(1)}% (${calcGrade(total/maxTotal*100)})`;
+
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
   }
 </script>
