@@ -2,135 +2,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نتائج الطلاب - نظام الاستعلام برقم الجلوس</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>نظام نتائج الطلاب</title>
   <style>
-    * {box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-    body{background:linear-gradient(135deg,#6a11cb 0%,#2575fc 100%);color:#333;line-height:1.6;min-height:100vh;padding:20px;display:flex;justify-content:center;align-items:center;}
-    .container{width:100%;max-width:1100px;background:rgba(255,255,255,0.97);border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,0.2);overflow:hidden;}
-    header{background:linear-gradient(to right,#4a00e0,#8e2de2);color:#fff;padding:25px;text-align:center;}
-    .logo{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:10px;}
-    .logo i{font-size:32px;}
-    .logo h1{font-size:28px;font-weight:700;}
-    .main-content{display:flex;flex-wrap:wrap;}
-    .form-section,.info-section{flex:1;min-width:300px;padding:30px;}
-    .form-section{background:#f9f9f9;}
-    .info-section{background:#fff;}
-    h2{color:#4a00e0;margin-bottom:20px;position:relative;padding-bottom:10px;}
-    h2:after{content:'';position:absolute;bottom:0;right:0;width:50px;height:3px;background:linear-gradient(to right,#4a00e0,#8e2de2);}
-    .form-group{margin-bottom:20px;}
-    label{display:block;margin-bottom:8px;font-weight:600;color:#555;}
-    input[type=text]{width:100%;padding:15px;border:2px solid #ddd;border-radius:10px;font-size:16px;transition:all 0.3s;}
-    input[type=text]:focus{border-color:#4a00e0;outline:none;box-shadow:0 0 10px rgba(74,0,224,0.2);}
-    button{background:linear-gradient(to right,#4a00e0,#8e2de2);color:#fff;border:none;padding:15px 20px;border-radius:10px;cursor:pointer;font-size:16px;font-weight:600;transition:all 0.3s;width:100%;box-shadow:0 5px 15px rgba(74,0,224,0.2);}
-    button:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,0,224,0.3);}
-    .result-box{background:linear-gradient(to right,#f3e5f5,#e8eaf6);border-radius:15px;padding:25px;margin-top:20px;box-shadow:0 5px 15px rgba(0,0,0,0.05);display:none;}
-    .result-box h3{text-align:center;color:#4a00e0;margin-bottom:20px;}
-    .student-info{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;}
-    .info-item{padding:12px;background:#fff;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.05);}
-    .info-item span{font-weight:600;color:#4a00e0;}
-    .chart-container{width:300px;margin:0 auto 20px auto;}
-    table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;border-radius:10px;overflow:hidden;}
-    th,td{padding:12px;text-align:center;}
-    th{background:#4a00e0;color:#fff;}
-    tr:nth-child(even){background:#f3e5f5;}
-    footer{text-align:center;padding:15px;background:linear-gradient(to right,#4a00e0,#8e2de2);color:#fff;font-size:14px;}
-    @media(max-width:768px){.main-content{flex-direction:column}.student-info{grid-template-columns:1fr}}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(to right, #4a00e0, #8e2de2);
+      color: #fff;
+      padding: 25px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .main-content {
+      padding: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: linear-gradient(to right, #4a00e0, #8e2de2);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .result-box {
+      display: none;
+      margin-top: 20px;
+      background: #f9f9f9;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .student-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .grades-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .grades-table th, .grades-table td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+    .grades-table th {
+      background: #4a00e0;
+      color: #fff;
+    }
+    .grades-table tr:nth-child(even) {
+      background: #f3e5f5;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(to right, #4a00e0, #8e2de2);
+      color: #fff;
+      font-size: 14px;
+    }
+    @media(max-width:768px){
+      .student-info{
+        grid-template-columns:1fr;
+      }
+    }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <div class="logo">
-        <i class="fas fa-graduation-cap"></i>
-        <h1>نظام نتائج الطلاب</h1>
-      </div>
-      <p>استعلم عن نتيجتك باستخدام رقم الجلوس فقط</p>
+      <h1>نظام نتائج الطلاب</h1>
+      <p>استعلم عن نتيجتك باستخدام رقم الجلوس</p>
     </header><div class="main-content">
-  <div class="form-section">
-    <h2>استعلام عن النتيجة</h2>
-    <div class="form-group">
-      <label for="exam-number">رقم الجلوس</label>
-      <input type="text" id="exam-number" placeholder="أدخل رقم الجلوس">
-    </div>
-    <button onclick="getResult()">استعراض النتيجة</button>
-    <div id="result" class="result-box"></div>
+  <div class="form-group">
+    <label for="exam-number">رقم الجلوس</label>
+    <input type="text" id="exam-number" placeholder="أدخل رقم الجلوس">
   </div>
+  <button onclick="getResult()">استعراض النتيجة</button>
 
-  <div class="info-section">
-    <h2>تعليمات</h2>
-    <ul>
-      <li><i class="fas fa-info-circle"></i> أدخل رقم الجلوس الصحيح</li>
-      <li><i class="fas fa-info-circle"></i> يتم جلب البيانات من Google Sheet مباشرة</li>
-    </ul>
+  <div id="result" class="result-box">
+    <h3 style="text-align:center; color:#4a00e0;">نتيجة الطالب</h3>
+    <div class="student-info">
+      <div class="info-item"><strong>اسم الطالب:</strong> أحمد محمد علي</div>
+      <div class="info-item"><strong>رقم الجلوس:</strong> 38572416</div>
+      <div class="info-item"><strong>الصف:</strong> الثالث الثانوي العلمي</div>
+      <div class="info-item"><strong>المدرسة:</strong> الثانوية العسكرية بنين</div>
+    </div>
+
+    <table class="grades-table">
+      <thead>
+        <tr>
+          <th>المادة</th>
+          <th>الدرجة</th>
+          <th>التقدير</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>اللغة العربية</td><td>85</td><td>جيد جدًا</td></tr>
+        <tr><td>اللغة الإنجليزية</td><td>92</td><td>ممتاز</td></tr>
+        <tr><td>الرياضيات</td><td>78</td><td>جيد جدًا</td></tr>
+        <tr><td>الفيزياء</td><td>88</td><td>جيد جدًا</td></tr>
+        <tr><td>الكيمياء</td><td>95</td><td>ممتاز</td></tr>
+        <tr><td>الأحياء</td><td>82</td><td>جيد جدًا</td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <footer>
-  جميع الحقوق محفوظة © 2025 - نظام نتائج الطلاب
+  <p>© 2023 جميع الحقوق محفوظة - نظام نتائج الطلاب</p>
 </footer>
 
-  </div><script>
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQmPEhfw-LCCyFttUmy23WS26UsA5NYhMkDe4XYkgEBiu4MHgd7z1WGgDX62NxZcejMC8NrOONdRGbH/pub?output=csv";
-
-async function fetchCSV() {
-  const res = await fetch(SHEET_CSV_URL);
-  const data = await res.text();
-  const rows = data.split("\n").map(r => r.split(","));
-  const headers = rows[0];
-  const students = rows.slice(1).map(r => {
-    let obj = {};
-    headers.forEach((h,i)=> obj[h.trim()] = r[i]);
-    return obj;
-  });
-  return students;
-}
-
-async function getResult(){
-  const examNumber = document.getElementById('exam-number').value.trim();
-  if(!examNumber){alert("من فضلك أدخل رقم الجلوس");return;}
-  const students = await fetchCSV();
-  const student = students.find(s=> s["seat"] === examNumber || s["رقم الجلوس"] === examNumber);
-  const resultDiv = document.getElementById('result');
-  if(!student){resultDiv.style.display='block';resultDiv.innerHTML='<h3>لم يتم العثور على الطالب</h3>';return;}
-
-  let infoHtml = `<h3>نتيجة الطالب</h3>
-    <div class="student-info">
-      <div class="info-item"><span>اسم:</span> ${student["name"]||student["الاسم"]||"-"}</div>
-      <div class="info-item"><span>رقم الجلوس:</span> ${student["seat"]||student["رقم الجلوس"]}</div>
-    </div>
-    <div class="chart-container"><canvas id="resultChart"></canvas></div>`;
-
-  let subjects = Object.keys(student).filter(k=>!['seat','رقم الجلوس','name','الاسم'].includes(k));
-  let scores = subjects.map(sub=>Number(student[sub])||0);
-  let total = scores.reduce((a,b)=>a+b,0);
-  let maxTotal = subjects.length * 100;
-  let percent = ((total/maxTotal)*100).toFixed(1);
-
-  let rows = subjects.map(sub=>`<tr><td>${sub}</td><td>${student[sub]}</td></tr>`).join("");
-  infoHtml += `<table><thead><tr><th>المادة</th><th>الدرجة</th></tr></thead><tbody>${rows}</tbody></table>`;
-
-  resultDiv.style.display='block';
-  resultDiv.innerHTML = infoHtml;
-  resultDiv.scrollIntoView({behavior:'smooth'});
-
-  const ctx = document.getElementById('resultChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['درجات محصلة','المتبقي'],
-      datasets: [{
-        data: [total, maxTotal-total],
-        backgroundColor: ['#4a00e0','#e0e0e0']
-      }]
-    },
-    options: {
-      plugins: {
-        title:{display:true,text:`المجموع: ${total} / ${maxTotal} (${percent}%)`,color:'#4a00e0'}
+  </div>  <script>
+    function getResult(){
+      const examNumber=document.getElementById('exam-number').value;
+      if(!examNumber){
+        alert('يرجى إدخال رقم الجلوس');
+        return;
       }
+      document.getElementById('result').style.display='block';
+      document.getElementById('result').scrollIntoView({behavior:'smooth'});
     }
-  });
-}
-</script></body>
+  </script></body>
 </html>
