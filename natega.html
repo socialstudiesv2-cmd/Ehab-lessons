@@ -3,610 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الامتحان الإلكتروني</title>
+    <title>نظام مسابقات تفاعلي</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
             color: #333;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
         
         header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 0;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            background-color: white;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .tab {
-            padding: 15px 20px;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        
-        .tab.active {
-            background-color: #4CAF50;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #6e48aa, #9d50bb);
             color: white;
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-            background-color: white;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .tab-content.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        .student-list, .results-list {
-            margin-top: 20px;
-        }
-        
-        .student-item, .result-item {
-            background-color: #f9f9f9;
-            padding: 10px 15px;
+        h1 {
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            border-radius: 4px;
-            border-left: 4px solid #4CAF50;
         }
         
-        .timer {
-            background-color: #f44336;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 5px;
+        .screen {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+        }
+        
+        #welcome-screen {
+            display: block;
+            text-align: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #6e48aa;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #9d50bb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .option {
+            display: block;
+            width: 100%;
+            text-align: right;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            border-color: #6e48aa;
+        }
+        
+        .correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .incorrect {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
         
         .question {
-            background-color: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .ranking {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .rank {
-            width: 30px;
-            height: 30px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
             font-weight: bold;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .timer {
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 15px 0;
+            color: #6e48aa;
+            font-weight: bold;
         }
         
-        th, td {
-            padding: 12px 15px;
-            text-align: right;
-            border-bottom: 1px solid #ddd;
+        .score {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 20px 0;
+            color: #6e48aa;
         }
         
-        th {
-            background-color: #4CAF50;
+        .progress {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #6e48aa, #9d50bb);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .player {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .player-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e48aa, #9d50bb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
+            font-weight: bold;
+            margin-left: 15px;
         }
         
-        tr:hover {
-            background-color: #f5f5f5;
+        .player-info {
+            flex: 1;
+        }
+        
+        .player-name {
+            font-weight: bold;
+        }
+        
+        .player-score {
+            color: #6e48aa;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>نظام الامتحان الإلكتروني</h1>
-    </header>
-    
     <div class="container">
-        <div class="tabs">
-            <div class="tab active" onclick="showTab('teacher')">واجهة المعلم</div>
-            <div class="tab" onclick="showTab('student')">واجهة الطالب</div>
-            <div class="tab" onclick="showTab('monitor')">متابعة الطلاب</div>
-            <div class="tab" onclick="showTab('results')">النتائج والترتيب</div>
+        <header>
+            <h1>نظام المسابقات التفاعلي</h1>
+            <p>اختبر معرفتك في جو من المنافسة والمتعة!</p>
+        </header>
+        
+        <div id="welcome-screen" class="screen">
+            <h2>مرحبًا بك!</h2>
+            <p>انضم إلى المسابقة واختبر معلوماتك مع أصدقائك</p>
+            <input type="text" id="player-name" placeholder="أدخل اسمك" style="padding: 12px; width: 80%; max-width: 300px; border: 2px solid #ddd; border-radius: 50px; margin: 20px 0; text-align: center; font-size: 1rem;">
+            <br>
+            <button class="btn" onclick="joinGame()">انضم إلى اللعبة</button>
+            <button class="btn" onclick="createGame()">أنشئ لعبة جديدة</button>
         </div>
         
-        <!-- واجهة المعلم -->
-        <div id="teacher" class="tab-content active">
-            <h2>إنشاء امتحان جديد</h2>
-            
-            <div class="form-group">
-                <label for="examTitle">عنوان الامتحان</label>
-                <input type="text" id="examTitle" placeholder="أدخل عنوان الامتحان">
+        <div id="waiting-screen" class="screen">
+            <h2>في انتظار اللاعبين...</h2>
+            <p>شارك رمز الغرفة مع أصدقائك للانضمام</p>
+            <div style="font-size: 2rem; font-weight: bold; letter-spacing: 5px; margin: 20px 0; color: #6e48aa;">X7B9</div>
+            <div id="players-list">
+                <!-- اللاعبون سيضافون هنا ديناميكيًا -->
             </div>
-            
-            <div class="form-group">
-                <label for="examDuration">مدة الامتحان (دقائق)</label>
-                <input type="number" id="examDuration" min="1" value="30">
-            </div>
-            
-            <h3>أسئلة الامتحان</h3>
-            <div id="questionsContainer">
-                <div class="question">
-                    <div class="form-group">
-                        <label>السؤال 1</label>
-                        <textarea placeholder="أدخل نص السؤال"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>الخيارات</label>
-                        <input type="text" placeholder="الخيار الأول">
-                        <input type="text" placeholder="الخيار الثاني">
-                        <input type="text" placeholder="الخيار الثالث">
-                        <input type="text" placeholder="الخيار الرابع">
-                    </div>
-                    <div class="form-group">
-                        <label>الإجابة الصحيحة</label>
-                        <select>
-                            <option value="1">الخيار الأول</option>
-                            <option value="2">الخيار الثاني</option>
-                            <option value="3">الخيار الثالث</option>
-                            <option value="4">الخيار الرابع</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="addQuestion()">إضافة سؤال</button>
-            <button onclick="saveExam()" style="background-color: #2196F3;">حفظ الامتحان</button>
+            <button class="btn" onclick="startGame()">ابدأ اللعبة</button>
         </div>
         
-        <!-- واجهة الطالب -->
-        <div id="student" class="tab-content">
-            <h2>تسجيل الطالب وأداء الامتحان</h2>
-            
-            <div class="form-group">
-                <label for="studentName">اسم الطالب</label>
-                <input type="text" id="studentName" placeholder="أدخل اسمك الثلاثي">
+        <div id="game-screen" class="screen">
+            <div class="question">ما هي عاصمة المملكة العربية السعودية؟</div>
+            <div class="timer">وقت متبق: <span id="time">10</span> ثانية</div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar" style="width: 100%;"></div>
             </div>
-            
-            <div class="form-group">
-                <label for="studentId">رقم الجلوس</label>
-                <input type="text" id="studentId" placeholder="أدخل رقم الجلوس">
-            </div>
-            
-            <button onclick="startExam()">بدء الامتحان</button>
-            
-            <div id="examInterface" style="display: none;">
-                <div class="timer" id="timer">30:00</div>
-                
-                <div id="examQuestions">
-                    <!-- سيتم عرض الأسئلة هنا dynamically -->
-                </div>
-                
-                <button onclick="submitExam()" style="background-color: #f44336;">إنهاء الامتحان</button>
+            <div class="options">
+                <button class="option">الرياض</button>
+                <button class="option">جدة</button>
+                <button class="option">الدمام</button>
+                <button class="option">مكة</button>
             </div>
         </div>
         
-        <!-- متابعة الطلاب -->
-        <div id="monitor" class="tab-content">
-            <h2>متابعة الطلاب أثناء الامتحان</h2>
-            
-            <div class="student-list">
-                <h3>الطلاب المتصلين حالياً</h3>
-                <div id="connectedStudents">
-                    <!-- سيتم عرض الطلاب المتصلين هنا -->
-                </div>
+        <div id="results-screen" class="screen">
+            <h2>النتائج النهائية</h2>
+            <div class="score">نقاطك: <span id="final-score">0</span></div>
+            <div id="leaderboard">
+                <!-- المتصدرون سيضافون هنا ديناميكيًا -->
             </div>
-            
-            <div class="progress-list">
-                <h3>تقدم الطلاب في الإجابة</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>اسم الطالب</th>
-                            <th>رقم الجلوس</th>
-                            <th>عدد الأسئلة المجابة</th>
-                            <th>الوقت المتبقي</th>
-                            <th>الحالة</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentsProgress">
-                        <!-- سيتم عرض تقدم الطلاب هنا -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- النتائج والترتيب -->
-        <div id="results" class="tab-content">
-            <h2>نتائج الطلاب والترتيب</h2>
-            
-            <div class="results-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الترتيب</th>
-                            <th>اسم الطالب</th>
-                            <th>رقم الجلوس</th>
-                            <th>الدرجة</th>
-                            <th>النسبة المئوية</th>
-                            <th>الوقت المستغرق</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentsResults">
-                        <!-- سيتم عرض النتائج هنا -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <button onclick="exportResults()" style="background-color: #FF9800;">تصدير النتائج</button>
+            <button class="btn" onclick="playAgain()">العب مرة أخرى</button>
         </div>
     </div>
 
     <script>
-        // بيانات التخزين (في تطبيق حقيقي سيتم استخدام قاعدة بيانات)
-        let examData = {
-            title: "",
-            duration: 30,
-            questions: []
-        };
+        // بيانات نموذجية للأسئلة
+        const questions = [
+            {
+                question: "ما هي عاصمة المملكة العربية السعودية؟",
+                options: ["الرياض", "جدة", "الدمام", "مكة"],
+                correct: 0
+            },
+            {
+                question: "كم عدد أيام السنة الكبيسة؟",
+                options: ["365", "366", "364", "367"],
+                correct: 1
+            },
+            {
+                question: "ما هو أسرع حيوان بري؟",
+                options: ["الفهد", "الأسد", "النمر", "الغزال"],
+                correct: 0
+            },
+            {
+                question: "ما هو العنصر الأكثر وفرة في الكون؟",
+                options: ["الهيدروجين", "الأكسجين", "الهيليوم", "النيتروجين"],
+                correct: 0
+            },
+            {
+                question: "في أي عام تم توحيد المملكة العربية السعودية؟",
+                options: ["1930", "1932", "1945", "1927"],
+                correct: 1
+            }
+        ];
         
-        let students = [];
-        let results = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 10;
+        let timer;
         
-        // عرض التبويب المحدد وإخفاء الآخرين
-        function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
+        // انضمام إلى اللعبة
+        function joinGame() {
+            const playerName = document.getElementById('player-name').value;
+            if (!playerName) {
+                alert('الرجاء إدخال اسمك');
+                return;
+            }
             
-            const tabButtons = document.querySelectorAll('.tab');
-            tabButtons.forEach(tab => tab.classList.remove('active'));
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('waiting-screen').style.display = 'block';
             
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
+            // إضافة اللاعب إلى القائمة
+            addPlayer(playerName);
         }
         
-        // إضافة سؤال جديد
-        function addQuestion() {
-            const questionsContainer = document.getElementById('questionsContainer');
-            const questionCount = questionsContainer.children.length + 1;
+        // إنشاء لعبة جديدة
+        function createGame() {
+            const playerName = document.getElementById('player-name').value;
+            if (!playerName) {
+                alert('الرجاء إدخال اسمك');
+                return;
+            }
             
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question';
-            questionDiv.innerHTML = `
-                <div class="form-group">
-                    <label>السؤال ${questionCount}</label>
-                    <textarea placeholder="أدخل نص السؤال"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>الخيارات</label>
-                    <input type="text" placeholder="الخيار الأول">
-                    <input type="text" placeholder="الخيار الثاني">
-                    <input type="text" placeholder="الخيار الثالث">
-                    <input type="text" placeholder="الخيار الرابع">
-                </div>
-                <div class="form-group">
-                    <label>الإجابة الصحيحة</label>
-                    <select>
-                        <option value="1">الخيار الأول</option>
-                        <option value="2">الخيار الثاني</option>
-                        <option value="3">الخيار الثالث</option>
-                        <option value="4">الخيار الرابع</option>
-                    </select>
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('waiting-screen').style.display = 'block';
+            
+            // إضافة اللاعب إلى القائمة
+            addPlayer(playerName + " (المضيف)");
+        }
+        
+        // إضافة لاعب إلى القائمة
+        function addPlayer(name) {
+            const playersList = document.getElementById('players-list');
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'player';
+            
+            // إنشاء صورة رمزية عشوائية بناء على الاسم
+            const colors = ['#6e48aa', '#9d50bb', '#4a7bd9', '#32a852', '#d93f4a'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            playerDiv.innerHTML = `
+                <div class="player-avatar" style="background: ${randomColor}">${initials}</div>
+                <div class="player-info">
+                    <div class="player-name">${name}</div>
+                    <div class="player-score">0 نقاط</div>
                 </div>
             `;
             
-            questionsContainer.appendChild(questionDiv);
+            playersList.appendChild(playerDiv);
         }
         
-        // حفظ بيانات الامتحان
-        function saveExam() {
-            const title = document.getElementById('examTitle').value;
-            const duration = document.getElementById('examDuration').value;
+        // بدء اللعبة
+        function startGame() {
+            document.getElementById('waiting-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
             
-            if (!title) {
-                alert('يرجى إدخال عنوان للامتحان');
+            loadQuestion();
+        }
+        
+        // تحميل السؤال
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endGame();
                 return;
             }
             
-            examData.title = title;
-            examData.duration = duration;
-            examData.questions = [];
+            const q = questions[currentQuestion];
+            document.querySelector('.question').textContent = q.question;
             
-            const questions = document.querySelectorAll('.question');
-            questions.forEach((question, index) => {
-                const textarea = question.querySelector('textarea');
-                const inputs = question.querySelectorAll('input[type="text"]');
-                const select = question.querySelector('select');
-                
-                if (textarea.value && inputs[0].value && inputs[1].value) {
-                    examData.questions.push({
-                        text: textarea.value,
-                        options: [
-                            inputs[0].value,
-                            inputs[1].value,
-                            inputs[2].value,
-                            inputs[3].value
-                        ],
-                        correctAnswer: parseInt(select.value)
-                    });
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.textContent = q.options[index];
+                option.className = 'option';
+                option.onclick = () => checkAnswer(index);
+            });
+            
+            // بدء المؤقت
+            timeLeft = 10;
+            document.getElementById('time').textContent = timeLeft;
+            document.getElementById('progress-bar').style.width = '100%';
+            
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        }
+        
+        // تحديث المؤقت
+        function updateTimer() {
+            timeLeft--;
+            document.getElementById('time').textContent = timeLeft;
+            document.getElementById('progress-bar').style.width = (timeLeft * 10) + '%';
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                // الانتقال إلى السؤال التالي بعد تأخير قصير
+                setTimeout(nextQuestion, 1000);
+            }
+        }
+        
+        // التحقق من الإجابة
+        function checkAnswer(selected) {
+            clearInterval(timer);
+            
+            const options = document.querySelectorAll('.option');
+            const correctIndex = questions[currentQuestion].correct;
+            
+            // تلوين الإجابات
+            options.forEach((option, index) => {
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                } else if (index === selected && index !== correctIndex) {
+                    option.classList.add('incorrect');
                 }
             });
             
-            if (examData.questions.length === 0) {
-                alert('يرجى إضافة أسئلة للامتحان');
-                return;
+            // زيادة النقاط إذا كانت الإجابة صحيحة
+            if (selected === correctIndex) {
+                score += timeLeft * 10; // نقاط أكثر للإجابات الأسرع
             }
             
-            alert('تم حفظ الامتحان بنجاح!');
+            // الانتقال إلى السؤال التالي بعد تأخير قصير
+            setTimeout(nextQuestion, 2000);
         }
         
-        // بدء الامتحان للطالب
-        function startExam() {
-            const name = document.getElementById('studentName').value;
-            const id = document.getElementById('studentId').value;
-            
-            if (!name || !id) {
-                alert('يرجى إدخال اسم الطالب ورقم الجلوس');
-                return;
-            }
-            
-            if (examData.questions.length === 0) {
-                alert('لا يوجد امتحان مُعد حتى الآن');
-                return;
-            }
-            
-            // تسجيل الطالب
-            students.push({
-                id: id,
-                name: name,
-                startTime: new Date(),
-                answers: [],
-                connected: true
-            });
-            
-            // إخفاء نموذج التسجيل وإظهار واجهة الامتحان
-            document.querySelector('#student .form-group').style.display = 'none';
-            document.querySelector('#student button').style.display = 'none';
-            document.getElementById('examInterface').style.display = 'block';
-            
-            // بدء العد التنازلي
-            startTimer(examData.duration * 60);
-            
-            // عرض الأسئلة
-            displayQuestions();
+        // الانتقال إلى السؤال التالي
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
         }
         
-        // بدء المؤقت
-        function startTimer(duration) {
-            const timerElement = document.getElementById('timer');
-            let timer = duration;
+        // انتهاء اللعبة
+        function endGame() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'block';
+            document.getElementById('final-score').textContent = score;
             
-            const countdown = setInterval(function() {
-                const minutes = Math.floor(timer / 60);
-                const seconds = timer % 60;
-                
-                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                
-                if (--timer < 0) {
-                    clearInterval(countdown);
-                    submitExam();
-                }
-            }, 1000);
-        }
-        
-        // عرض أسئلة الامتحان
-        function displayQuestions() {
-            const container = document.getElementById('examQuestions');
-            container.innerHTML = '';
-            
-            examData.questions.forEach((question, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                questionDiv.innerHTML = `
-                    <h3>السؤال ${index + 1}: ${question.text}</h3>
-                    <div class="form-group">
-                        ${question.options.map((option, optIndex) => `
-                            <div>
-                                <input type="radio" name="question${index}" id="q${index}opt${optIndex}" value="${optIndex + 1}">
-                                <label for="q${index}opt${optIndex}">${option}</label>
-                            </div>
-                        `).join('')}
+            // عرض المتصدرين (نموذجية)
+            const leaderboard = document.getElementById('leaderboard');
+            leaderboard.innerHTML = `
+                <div class="player">
+                    <div class="player-avatar" style="background: #6e48aa">أنت</div>
+                    <div class="player-info">
+                        <div class="player-name">أنت</div>
+                        <div class="player-score">${score} نقاط</div>
                     </div>
-                `;
-                
-                container.appendChild(questionDiv);
-            });
+                </div>
+                <div class="player">
+                    <div class="player-avatar" style="background: #4a7bd9">أ</div>
+                    <div class="player-info">
+                        <div class="player-name">أحمد</div>
+                        <div class="player-score">450 نقاط</div>
+                    </div>
+                </div>
+                <div class="player">
+                    <div class="player-avatar" style="background: #32a852">م</div>
+                    <div class="player-info">
+                        <div class="player-name">محمد</div>
+                        <div class="player-score">380 نقاط</div>
+                    </div>
+                </div>
+            `;
         }
         
-        // إنهاء الامتحان
-        function submitExam() {
-            // جمع الإجابات وتصحيحها
-            const student = students[students.length - 1];
-            let score = 0;
-            
-            examData.questions.forEach((question, index) => {
-                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-                const answer = selectedOption ? parseInt(selectedOption.value) : 0;
-                
-                student.answers.push(answer);
-                
-                if (answer === question.correctAnswer) {
-                    score++;
-                }
-            });
-            
-            // حفظ النتيجة
-            const totalQuestions = examData.questions.length;
-            const percentage = (score / totalQuestions) * 100;
-            const endTime = new Date();
-            const timeSpent = Math.floor((endTime - student.startTime) / 1000); // بالثواني
-            
-            results.push({
-                studentId: student.id,
-                studentName: student.name,
-                score: score,
-                total: totalQuestions,
-                percentage: percentage,
-                timeSpent: timeSpent
-            });
-            
-            // ترتيب النتائج
-            results.sort((a, b) => {
-                if (b.percentage !== a.percentage) {
-                    return b.percentage - a.percentage;
-                }
-                return a.timeSpent - b.timeSpent;
-            });
-            
-            alert('تم إنهاء الامتحان! درجتك: ' + score + '/' + totalQuestions);
-            
-            // تحديث واجهة النتائج
-            updateResultsUI();
+        // اللعب مرة أخرى
+        function playAgain() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('results-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'block';
         }
-        
-        // تحديث واجهة النتائج
-        function updateResultsUI() {
-            const resultsBody = document.getElementById('studentsResults');
-            resultsBody.innerHTML = '';
-            
-            results.forEach((result, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${result.studentName}</td>
-                    <td>${result.studentId}</td>
-                    <td>${result.score}/${result.total}</td>
-                    <td>${result.percentage.toFixed(2)}%</td>
-                    <td>${formatTime(result.timeSpent)}</td>
-                `;
-                
-                resultsBody.appendChild(row);
-            });
-        }
-        
-        // تحويل الثواني إلى صيغة وقت قابلة للقراءة
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins} دقيقة ${secs} ثانية`;
-        }
-        
-        // تصدير النتائج
-        function exportResults() {
-            // في تطبيق حقيقي، سيتم إنشاء ملف Excel أو PDF
-            alert('سيتم تصدير النتائج إلى ملف Excel');
-        }
-        
-        // محاكاة بيانات للعرض
-        function simulateData() {
-            // محاكاة أسئلة امتحان
-            examData = {
-                title: "امتحان الرياضيات النهائي",
-                duration: 30,
-                questions: [
-                    {
-                        text: "ما هو ناتج جمع ٥ + ٧؟",
-                        options: ["١٠", "١١", "١٢", "١٣"],
-                        correctAnswer: 3
-                    },
-                    {
-                        text: "ما هو العدد الأولي من بين الأعداد التالية؟",
-                        options: ["١", "٤", "٧", "٩"],
-                        correctAnswer: 3
-                    }
-                ]
-            };
-            
-            // محاكاة نتائج طلاب
-            results = [
-                {
-                    studentId: "١٢٣",
-                    studentName: "أحمد محمد",
-                    score: 2,
-                    total: 2,
-                    percentage: 100,
-                    timeSpent: 350
-                },
-                {
-                    studentId: "٤٥٦",
-                    studentName: "سارة علي",
-                    score: 1,
-                    total: 2,
-                    percentage: 50,
-                    timeSpent: 420
-                }
-            ];
-            
-            // تحديث واجهة النتائج
-            updateResultsUI();
-        }
-        
-        // تشغيل محاكاة البيانات عند تحميل الصفحة
-        window.onload = simulateData;
     </script>
 </body>
 </html>
