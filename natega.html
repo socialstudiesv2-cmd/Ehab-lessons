@@ -7,245 +7,45 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #1e3a8a; /* أزرق داكن أنيق */
-      --secondary: #60a5fa; /* أزرق فاتح */
-      --accent: #14b8a6; /* فيروزي لإبراز العناصر */
-      --light: #f1f5f9; /* خلفية فاتحة */
-      --dark: #1f2937; /* نص داكن */
-      --shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      --border-radius: 12px;
-      --transition: all 0.3s ease-in-out;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg, #1e3a8a, #60a5fa);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      color: var(--dark);
+      color: #1f2937;
     }
-
     .container {
-      background: var(--light);
-      border-radius: var(--border-radius);
+      background: #f1f5f9;
+      border-radius: 12px;
       padding: 30px;
-      max-width: 600px;
+      max-width: 700px;
       width: 100%;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
+    header { text-align: center; margin-bottom: 25px; }
     .logo {
-      width: 70px;
-      height: 70px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 15px;
-      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+      width: 70px; height: 70px; border-radius: 50%; 
+      background: #14b8a6; display:flex;align-items:center;justify-content:center;
+      margin: 0 auto 10px;
     }
-
-    header h1 {
-      font-size: 26px;
-      font-weight: 700;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    header p {
-      color: #6b7280;
-      font-size: 16px;
-      margin-top: 5px;
-    }
-
-    .card {
-      background: white;
-      border-radius: var(--border-radius);
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      position: relative;
-    }
-
-    .card h3 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--primary);
-      transform: translateY(-10px); /* رفع النص للأعلى */
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: var(--transition);
-      background: #f9fafb;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-    }
-
+    h1 { font-size: 24px; font-weight:700; color:#1e3a8a; }
+    p { color:#6b7280; font-size: 15px; }
+    input { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin:10px 0; }
     .btn {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: var(--transition);
+      background: linear-gradient(to right, #1e3a8a, #60a5fa);
+      color:#fff; padding:12px; border:none; border-radius:8px; width:100%;
+      cursor:pointer; font-weight:600;
     }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .result-box {
-      display: none;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: var(--transition);
-    }
-
-    .result-box.show {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .student-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .info-item {
-      background: #f9fafb;
-      padding: 12px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-    }
-
-    .info-item i {
-      color: var(--accent);
-      font-size: 18px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    th {
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) {
-      background: #f9fafb;
-    }
-
-    tr:hover {
-      background: rgba(20, 184, 166, 0.05);
-    }
-
+    .btn:hover { opacity:0.9; }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+    th { background:#1e3a8a; color:white; }
+    tr:nth-child(even) { background:#f9fafb; }
     .total-box {
-      margin-top: 20px;
-      padding: 15px;
-      background: var(--accent);
-      color: white;
-      border-radius: 8px;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 15px;
-    }
-
-    .loading i {
-      color: var(--primary);
-      font-size: 24px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      header h1 {
-        font-size: 22px;
-      }
-      .btn, input {
-        font-size: 14px;
-      }
-      .student-info {
-        grid-template-columns: 1fr;
-      }
+      margin-top:15px; padding:12px; background:#14b8a6; color:white; border-radius:8px; text-align:center;
     }
   </style>
 </head>
@@ -257,123 +57,73 @@
       <p>مدرسة منشأة الدهب القبلية الابتدائية</p>
     </header>
 
-    <div class="card">
-      <h3>استعلام عن النتيجة</h3>
-      <div class="form-group">
-        <input type="text" id="searchSeat" placeholder="أدخل رقم الجلوس (مثال: 1001)">
-      </div>
-      <button class="btn" onclick="getResult()">
-        <i class="fas fa-search"></i> عرض النتيجة
-      </button>
-    </div>
+    <input type="text" id="seatInput" placeholder="أدخل رقم الجلوس (مثال: 1001)">
+    <button class="btn" onclick="getResult()">عرض النتيجة</button>
 
-    <div class="loading" id="loading">
-      <i class="fas fa-spinner"></i>
-      <p>جاري تحميل النتيجة...</p>
-    </div>
-
-    <div id="result" class="result-box">
-      <div class="card">
-        <div id="student-info" class="student-info"></div>
-        <div style="overflow-x: auto;">
-          <table id="result-table">
-            <thead>
-              <tr>
-                <th>المادة</th>
-                <th>الدرجة</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div id="total-box" class="total-box"></div>
-      </div>
+    <div id="result" style="display:none;">
+      <div id="student-info" style="margin-top:20px;"></div>
+      <table id="result-table">
+        <thead>
+          <tr id="table-head">
+            <th>المادة</th>
+            <th>الدرجة</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="total-box" id="total-box"></div>
     </div>
   </div>
 
   <script>
-    // بيانات الطلاب الافتراضية (نموذج)
-    const students = {
-      "1001": {
-        name: "أحمد محمد",
-        gradeLevel: "الصف الخامس",
-        grades: {
-          "الرياضيات": 85,
-          "العلوم": 90,
-          "اللغة العربية": 88
-        }
-      },
-      "1002": {
-        name: "سارة علي",
-        gradeLevel: "الصف الخامس",
-        grades: {
-          "الرياضيات": 92,
-          "العلوم": 87,
-          "اللغة العربية": 95
-        }
-      },
-      "1003": {
-        name: "محمود خالد",
-        gradeLevel: "الصف السادس",
-        grades: {
-          "الرياضيات": 78,
-          "العلوم": 82,
-          "اللغة العربية": 80
-        }
-      }
-    };
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1XSJzCwgc77gBrX-MIV3Y8VFnSXS8PMMxbXJwWfszlro/edit?usp=drivesdk";
+    let studentsData = [];
 
-    // دالة لعرض النتيجة
-    function getResult() {
-      const seatNumber = document.getElementById('searchSeat').value.trim();
-      const resultBox = document.getElementById('result');
-      const studentInfo = document.getElementById('student-info');
-      const tbody = document.querySelector('#result-table tbody');
-      const totalBox = document.getElementById('total-box');
-      const loading = document.getElementById('loading');
+    async function loadSheet() {
+      const res = await fetch(sheetUrl);
+      const text = await res.text();
+      const rows = text.split("\n").map(r => r.split(","));
+      const headers = rows[0]; 
+      studentsData = rows.slice(1).map(r => {
+        let obj = {};
+        headers.forEach((h,i)=> obj[h.trim()] = r[i] ? r[i].trim() : "");
+        return obj;
+      });
+    }
 
-      if (!seatNumber) {
-        alert('يرجى إدخال رقم الجلوس');
+    async function getResult() {
+      if(studentsData.length === 0) await loadSheet();
+      const seat = document.getElementById("seatInput").value.trim();
+      const student = studentsData.find(s => s["رقم الجلوس"] === seat);
+
+      if(!student){
+        alert("رقم الجلوس غير موجود!");
         return;
       }
 
-      loading.style.display = 'block';
-      resultBox.style.display = 'none';
-      resultBox.classList.remove('show');
+      document.getElementById("result").style.display = "block";
 
-      setTimeout(() => {
-        if (students[seatNumber]) {
-          const student = students[seatNumber];
-          studentInfo.innerHTML = `
-            <div class="info-item"><i class="fas fa-user"></i><span>اسم الطالب: ${student.name}</span></div>
-            <div class="info-item"><i class="fas fa-id-card"></i><span>رقم الجلوس: ${seatNumber}</span></div>
-            <div class="info-item"><i class="fas fa-school"></i><span>الصف الدراسي: ${student.gradeLevel}</span></div>
-          `;
+      // بيانات أساسية
+      document.getElementById("student-info").innerHTML = `
+        <p><b>اسم الطالب:</b> ${student["اسم الطالب"]}</p>
+        <p><b>رقم الجلوس:</b> ${student["رقم الجلوس"]}</p>
+        <p><b>الصف الدراسي:</b> ${student["الصف الدراسي"]}</p>
+      `;
 
-          tbody.innerHTML = '';
-          let total = 0;
-          let maxTotal = Object.keys(student.grades).length * 100; // افتراضي 100 لكل مادة
-          for (const [subject, score] of Object.entries(student.grades)) {
-            tbody.innerHTML += `<tr><td>${subject}</td><td>${score} / 100</td></tr>`;
-            total += score;
-          }
-
-          totalBox.innerText = `المجموع الكلي: ${total} / ${maxTotal}`;
-          loading.style.display = 'none';
-          resultBox.style.display = 'block';
-          setTimeout(() => resultBox.classList.add('show'), 10);
-          resultBox.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          alert(`رقم الجلوس "${seatNumber}" غير موجود. جربي 1001 كمثال.`);
-          loading.style.display = 'none';
+      // جدول المواد
+      const tbody = document.querySelector("#result-table tbody");
+      tbody.innerHTML = "";
+      let total = 0;
+      let count = 0;
+      for(const key in student){
+        if(key !== "رقم الجلوس" && key !== "اسم الطالب" && key !== "الصف الدراسي" && student[key] !== ""){
+          tbody.innerHTML += `<tr><td>${key}</td><td>${student[key]}</td></tr>`;
+          total += Number(student[key]) || 0;
+          count++;
         }
-      }, 1000); // محاكاة تحميل البيانات
+      }
+      document.getElementById("total-box").innerText = `المجموع الكلي: ${total}`;
     }
-
-    // دعم زر Enter للبحث
-    document.getElementById('searchSeat').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') getResult();
-    });
   </script>
 </body>
 </html>
