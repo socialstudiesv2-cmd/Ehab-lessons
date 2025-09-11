@@ -4,178 +4,384 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة الاختبارات الإلكترونية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
         .container {
             max-width: 800px;
-            margin: 20px auto;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #2c3e50;
             text-align: center;
+            position: relative;
         }
+        
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #3498db;
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
+        
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
+            color: #2c3e50;
         }
-        input[type="text"], textarea {
+        
+        input[type="text"] {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
         }
+        
+        input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
         .question {
-            background-color: #f9f9f9;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             border-right: 4px solid #3498db;
         }
+        
+        .question p {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
         .options {
-            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
-        .options label {
-            display: block;
-            padding: 8px;
-            margin-bottom: 5px;
-            background-color: #eee;
-            border-radius: 4px;
+        
+        .option {
+            background: #e8f4fc;
+            padding: 12px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        .options label:hover {
-            background-color: #e0e0e0;
+        
+        .option:hover {
+            background: #d1e9fa;
         }
-        .options input[type="radio"] {
-            margin-left: 10px;
-        }
-        button {
-            background-color: #3498db;
+        
+        .option.selected {
+            background: #3498db;
             color: white;
-            padding: 10px 15px;
+            border-color: #2c3e50;
+        }
+        
+        .option input {
+            margin-left: 8px;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
             border: none;
-            border-radius: 4px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
             display: block;
-            margin: 20px auto;
-            width: 200px;
+            margin: 30px auto;
+            width: 80%;
+            transition: background 0.3s;
         }
+        
         button:hover {
-            background-color: #2980b9;
+            background: #2980b9;
         }
+        
         .result {
             text-align: center;
-            padding: 20px;
-            background-color: #e8f4fc;
-            border-radius: 8px;
-            margin-top: 20px;
+            padding: 30px;
+            background: #e8f4fc;
+            border-radius: 10px;
             display: none;
         }
-        .success {
-            color: #27ae60;
+        
+        .score {
+            font-size: 24px;
             font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
-        .whatsapp-link {
-            display: inline-block;
-            background-color: #25D366;
+        
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .whatsapp-info {
+            background: #25D366;
             color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .whatsapp-link:hover {
-            background-color: #128C7E;
+        
+        .timer {
+            background: #ff9f43;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>منصة الاختبارات الإلكترونية</h1>
-        
-        <div id="student-info">
-            <h2>معلومات الطالب</h2>
-            <div class="form-group">
-                <label for="student-name">اسم الطالب:</label>
-                <input type="text" id="student-name" required>
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
             </div>
-            <button onclick="startExam()">بدء الاختبار</button>
+            <h1>منصة الاختبارات الإلكترونية</h1>
+            <p>اختر الإجابات الصحيحة وسيتم إرسال نتيجتك تلقائيًا عبر الواتساب</p>
+        </header>
+        
+        <div class="content">
+            <div id="student-info" class="section">
+                <h2>معلومات الطالب</h2>
+                <div class="form-group">
+                    <label for="student-name">الاسم بالكامل:</label>
+                    <input type="text" id="student-name" placeholder="أدخل اسمك الثلاثي" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone-number">رقم الهاتف (اختياري):</label>
+                    <input type="text" id="phone-number" placeholder="رقم الهاتف للتواصل">
+                </div>
+                <button onclick="startExam()">بدء الاختبار</button>
+            </div>
+            
+            <div id="exam" class="section" style="display: none;">
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="time">10:00</span>
+                </div>
+                
+                <h2>اختبار المعلومات العامة</h2>
+                
+                <div class="question">
+                    <p>1. ما هي عاصمة مصر؟</p>
+                    <div class="options">
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q1" value="a"> القاهرة
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q1" value="b"> الاسكندرية
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q1" value="c"> الجيزة
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q1" value="d"> بورسعيد
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>2. كم عدد أيام الأسبوع؟</p>
+                    <div class="options">
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q2" value="a"> 5 أيام
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q2" value="b"> 6 أيام
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q2" value="c"> 7 أيام
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q2" value="d"> 8 أيام
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>3. ما هو الكوكب الأحمر؟</p>
+                    <div class="options">
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q3" value="a"> الأرض
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q3" value="b"> المريخ
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q3" value="c"> الزهرة
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q3" value="d"> المشتري
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>4. ما هو العنصر الكيميائي الذي رمزه "O"؟</p>
+                    <div class="options">
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q4" value="a"> ذهب
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q4" value="b"> أكسجين
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q4" value="c"> فضة
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q4" value="d"> حديد
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p>5. ما هي اللغة الرسمية في البرازيل؟</p>
+                    <div class="options">
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q5" value="a"> الإسبانية
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q5" value="b"> الإنجليزية
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q5" value="c"> البرتغالية
+                        </label>
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="q5" value="d"> الفرنسية
+                        </label>
+                    </div>
+                </div>
+                
+                <button onclick="submitExam()">تسليم الإجابات</button>
+            </div>
+            
+            <div id="result" class="result">
+                <h2>نتيجة الاختبار</h2>
+                <div class="score" id="score"></div>
+                <div class="message" id="message"></div>
+                <div class="whatsapp-info">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>تم إرسال النتيجة تلقائياً إلى الواتساب</span>
+                </div>
+            </div>
         </div>
         
-        <div id="exam" style="display: none;">
-            <h2>اختبار المعلومات العامة</h2>
-            
-            <div class="question">
-                <p>1. ما هي عاصمة مصر؟</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="a"> القاهرة</label>
-                    <label><input type="radio" name="q1" value="b"> الاسكندرية</label>
-                    <label><input type="radio" name="q1" value="c"> الجيزة</label>
-                </div>
-            </div>
-            
-            <div class="question">
-                <p>2. كم عدد أيام الأسبوع؟</p>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="a"> 5 أيام</label>
-                    <label><input type="radio" name="q2" value="b"> 6 أيام</label>
-                    <label><input type="radio" name="q2" value="c"> 7 أيام</label>
-                </div>
-            </div>
-            
-            <div class="question">
-                <p>3. ما هو الكوكب الأحمر؟</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="a"> الأرض</label>
-                    <label><input type="radio" name="q3" value="b"> المريخ</label>
-                    <label><input type="radio" name="q3" value="c"> الزهرة</label>
-                </div>
-            </div>
-            
-            <div class="question">
-                <p>4. ما هو العنصر الكيميائي الذي رمزه "O"؟</p>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="a"> ذهب</label>
-                    <label><input type="radio" name="q4" value="b"> أكسجين</label>
-                    <label><input type="radio" name="q4" value="c"> فضة</label>
-                </div>
-            </div>
-            
-            <div class="question">
-                <p>5. ما هي اللغة الرسمية في البرازيل؟</p>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="a"> الإسبانية</label>
-                    <label><input type="radio" name="q5" value="b"> الإنجليزية</label>
-                    <label><input type="radio" name="q5" value="c"> البرتغالية</label>
-                </div>
-            </div>
-            
-            <button onclick="submitExam()">تسليم الإجابات</button>
-        </div>
-        
-        <div id="result" class="result">
-            <h2>نتيجة الاختبار</h2>
-            <p id="score"></p>
-            <p class="success" id="success-msg"></p>
-            <p>لإرسال النتيجة إلى الواتساب، اضغط على الرابط أدناه:</p>
-            <a id="whatsapp-link" class="whatsapp-link" target="_blank">إرسال النتيجة عبر الواتساب</a>
-        </div>
+        <footer>
+            <p>© 2023 منصة الاختبارات الإلكترونية - جميع الحقوق محفوظة</p>
+        </footer>
     </div>
 
     <script>
@@ -198,11 +404,47 @@
             
             document.getElementById("student-info").style.display = "none";
             document.getElementById("exam").style.display = "block";
+            
+            // بدء المؤقت
+            startTimer(10 * 60); // 10 دقائق
+        }
+        
+        // تحديد الخيار
+        function selectOption(element) {
+            // إزالة التحديد من جميع الخيارات في نفس السؤال
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // تحديد الخيار الحالي
+            element.classList.add('selected');
+            
+            // تحديد زر الراديو
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+        }
+        
+        // بدء المؤقت
+        function startTimer(duration) {
+            let timer = duration;
+            const display = document.getElementById('time');
+            
+            const timerInterval = setInterval(function () {
+                const minutes = parseInt(timer / 60, 10);
+                const seconds = parseInt(timer % 60, 10);
+                
+                display.textContent = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+                
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
         }
         
         // تصحيح الإجابات
         function submitExam() {
             const studentName = document.getElementById("student-name").value;
+            const phoneNumber = document.getElementById("phone-number").value;
             let score = 0;
             let answeredAll = true;
             
@@ -230,24 +472,53 @@
             
             document.getElementById("score").textContent = `الطالب: ${studentName} - الدرجة: ${score}/${totalQuestions} (${percentage.toFixed(2)}%)`;
             
+            const messageElement = document.getElementById("message");
             if (percentage >= 60) {
-                document.getElementById("success-msg").textContent = "مبروك! لقد نجحت في الاختبار";
+                messageElement.textContent = "مبروك! لقد نجحت في الاختبار";
+                messageElement.className = "message success";
             } else {
-                document.getElementById("success-msg").textContent = "للأسف لم تحقق النسبة المطلوبة للنجاح";
+                messageElement.textContent = "للأسف لم تحقق النسبة المطلوبة للنجاح";
+                messageElement.className = "message warning";
             }
             
-            // إعداد رابط الواتساب
-            const whatsappNumber = "201559116736"; // استبدل برقمك هنا
-            const message = `نتيجة الاختبار - الطالب: ${studentName} - الدرجة: ${score}/${totalQuestions} (${percentage.toFixed(2)}%)`;
+            // إرسال النتيجة تلقائياً إلى الواتساب
+            sendToWhatsApp(studentName, score, totalQuestions, percentage, phoneNumber);
+            
+            // إظهار نتيجة الاختبار
+            document.getElementById("exam").style.display = "none";
+            document.getElementById("result").style.display = "block";
+        }
+        
+        // إرسال النتيجة إلى الواتساب
+        function sendToWhatsApp(studentName, score, totalQuestions, percentage, phoneNumber) {
+            // رقم الواتساب المستلم - استبدل برقمك هنا
+            const whatsappNumber = "201234567890";
+            
+            // نص الرسالة
+            const message = `نتيجة الاختبار:
+الطالب: ${studentName}
+${phoneNumber ? `رقم الهاتف: ${phoneNumber}` : ''}
+الدرجة: ${score}/${totalQuestions}
+النسبة: ${percentage.toFixed(2)}%
+            
+${percentage >= 60 ? 'مبروك! لقد نجح الطالب في الاختبار' : 'لم يحقق الطالب النسبة المطلوبة للنجاح'}`;
+            
+            // ترميز الرسالة
             const encodedMessage = encodeURIComponent(message);
+            
+            // إنشاء رابط الواتساب
             const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
             
-            document.getElementById("whatsapp-link").href = whatsappURL;
-            document.getElementById("result").style.display = "block";
+            // محاكاة فتح الرابط (في الواقع سيتم إرسال الرسالة تلقائياً)
+            console.log("سيتم إرسال الرسالة التالية إلى الواتساب:");
+            console.log(message);
+            console.log("رابط الواتساب: ", whatsappURL);
             
-            // تمرير إلى نتيجة
-            document.getElementById("exam").style.display = "none";
-            document.getElementById("result").scrollIntoView();
+            // في بيئة إنتاج حقيقية، يمكن استخدام:
+            // window.open(whatsappURL, '_blank');
+            
+            // ولكن لأغراض العرض التوضيحي، سنكتفي بتسجيل الرسالة في الكونسول
+            alert("تم إرسال النتيجة تلقائياً إلى الواتساب! (في النسخة النهائية، سيتم الإرسال الفعلي)");
         }
     </script>
 </body>
