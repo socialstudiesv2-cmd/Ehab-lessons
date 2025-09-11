@@ -3,448 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام مسابقات تفاعلي</title>
+    <title>منصة الاختبارات الإلكترونية</title>
     <style>
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f0f2f5;
+            background-color: #f5f5f5;
             color: #333;
-            line-height: 1.6;
         }
-        
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        
-        header {
+        h1, h2 {
+            color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #6e48aa, #9d50bb);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .form-group {
+            margin-bottom: 15px;
         }
-        
-        .screen {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        #welcome-screen {
+        label {
             display: block;
-            text-align: center;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: #6e48aa;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
+            margin-bottom: 5px;
             font-weight: bold;
-            margin: 10px;
-            transition: all 0.3s ease;
         }
-        
-        .btn:hover {
-            background: #9d50bb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .option {
-            display: block;
+        input[type="text"], textarea {
             width: 100%;
-            text-align: right;
-            padding: 15px;
-            margin: 10px 0;
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
-        
-        .option:hover {
-            background: #e9ecef;
-            border-color: #6e48aa;
-        }
-        
-        .correct {
-            background: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-        
-        .incorrect {
-            background: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-        
         .question {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .timer {
-            font-size: 1.2rem;
-            text-align: center;
-            margin: 15px 0;
-            color: #6e48aa;
-            font-weight: bold;
-        }
-        
-        .score {
-            font-size: 1.5rem;
-            text-align: center;
-            margin: 20px 0;
-            color: #6e48aa;
-        }
-        
-        .progress {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(135deg, #6e48aa, #9d50bb);
-            border-radius: 5px;
-            transition: width 0.3s ease;
-        }
-        
-        .player {
-            display: flex;
-            align-items: center;
-            background: white;
+            background-color: #f9f9f9;
             padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border-right: 4px solid #3498db;
         }
-        
-        .player-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6e48aa, #9d50bb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .options {
+            margin-top: 10px;
+        }
+        .options label {
+            display: block;
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #eee;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .options label:hover {
+            background-color: #e0e0e0;
+        }
+        .options input[type="radio"] {
+            margin-left: 10px;
+        }
+        button {
+            background-color: #3498db;
             color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+            width: 200px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            text-align: center;
+            padding: 20px;
+            background-color: #e8f4fc;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .success {
+            color: #27ae60;
             font-weight: bold;
-            margin-left: 15px;
         }
-        
-        .player-info {
-            flex: 1;
+        .whatsapp-link {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
         }
-        
-        .player-name {
-            font-weight: bold;
-        }
-        
-        .player-score {
-            color: #6e48aa;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .question {
-                font-size: 1.2rem;
-            }
+        .whatsapp-link:hover {
+            background-color: #128C7E;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>نظام المسابقات التفاعلي</h1>
-            <p>اختبر معرفتك في جو من المنافسة والمتعة!</p>
-        </header>
+        <h1>منصة الاختبارات الإلكترونية</h1>
         
-        <div id="welcome-screen" class="screen">
-            <h2>مرحبًا بك!</h2>
-            <p>انضم إلى المسابقة واختبر معلوماتك مع أصدقائك</p>
-            <input type="text" id="player-name" placeholder="أدخل اسمك" style="padding: 12px; width: 80%; max-width: 300px; border: 2px solid #ddd; border-radius: 50px; margin: 20px 0; text-align: center; font-size: 1rem;">
-            <br>
-            <button class="btn" onclick="joinGame()">انضم إلى اللعبة</button>
-            <button class="btn" onclick="createGame()">أنشئ لعبة جديدة</button>
+        <div id="student-info">
+            <h2>معلومات الطالب</h2>
+            <div class="form-group">
+                <label for="student-name">اسم الطالب:</label>
+                <input type="text" id="student-name" required>
+            </div>
+            <button onclick="startExam()">بدء الاختبار</button>
         </div>
         
-        <div id="waiting-screen" class="screen">
-            <h2>في انتظار اللاعبين...</h2>
-            <p>شارك رمز الغرفة مع أصدقائك للانضمام</p>
-            <div style="font-size: 2rem; font-weight: bold; letter-spacing: 5px; margin: 20px 0; color: #6e48aa;">X7B9</div>
-            <div id="players-list">
-                <!-- اللاعبون سيضافون هنا ديناميكيًا -->
+        <div id="exam" style="display: none;">
+            <h2>اختبار المعلومات العامة</h2>
+            
+            <div class="question">
+                <p>1. ما هي عاصمة مصر؟</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> القاهرة</label>
+                    <label><input type="radio" name="q1" value="b"> الاسكندرية</label>
+                    <label><input type="radio" name="q1" value="c"> الجيزة</label>
+                </div>
             </div>
-            <button class="btn" onclick="startGame()">ابدأ اللعبة</button>
+            
+            <div class="question">
+                <p>2. كم عدد أيام الأسبوع؟</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> 5 أيام</label>
+                    <label><input type="radio" name="q2" value="b"> 6 أيام</label>
+                    <label><input type="radio" name="q2" value="c"> 7 أيام</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. ما هو الكوكب الأحمر؟</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> الأرض</label>
+                    <label><input type="radio" name="q3" value="b"> المريخ</label>
+                    <label><input type="radio" name="q3" value="c"> الزهرة</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>4. ما هو العنصر الكيميائي الذي رمزه "O"؟</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> ذهب</label>
+                    <label><input type="radio" name="q4" value="b"> أكسجين</label>
+                    <label><input type="radio" name="q4" value="c"> فضة</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>5. ما هي اللغة الرسمية في البرازيل؟</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> الإسبانية</label>
+                    <label><input type="radio" name="q5" value="b"> الإنجليزية</label>
+                    <label><input type="radio" name="q5" value="c"> البرتغالية</label>
+                </div>
+            </div>
+            
+            <button onclick="submitExam()">تسليم الإجابات</button>
         </div>
         
-        <div id="game-screen" class="screen">
-            <div class="question">ما هي عاصمة المملكة العربية السعودية؟</div>
-            <div class="timer">وقت متبق: <span id="time">10</span> ثانية</div>
-            <div class="progress">
-                <div class="progress-bar" id="progress-bar" style="width: 100%;"></div>
-            </div>
-            <div class="options">
-                <button class="option">الرياض</button>
-                <button class="option">جدة</button>
-                <button class="option">الدمام</button>
-                <button class="option">مكة</button>
-            </div>
-        </div>
-        
-        <div id="results-screen" class="screen">
-            <h2>النتائج النهائية</h2>
-            <div class="score">نقاطك: <span id="final-score">0</span></div>
-            <div id="leaderboard">
-                <!-- المتصدرون سيضافون هنا ديناميكيًا -->
-            </div>
-            <button class="btn" onclick="playAgain()">العب مرة أخرى</button>
+        <div id="result" class="result">
+            <h2>نتيجة الاختبار</h2>
+            <p id="score"></p>
+            <p class="success" id="success-msg"></p>
+            <p>لإرسال النتيجة إلى الواتساب، اضغط على الرابط أدناه:</p>
+            <a id="whatsapp-link" class="whatsapp-link" target="_blank">إرسال النتيجة عبر الواتساب</a>
         </div>
     </div>
 
     <script>
-        // بيانات نموذجية للأسئلة
-        const questions = [
-            {
-                question: "ما هي عاصمة المملكة العربية السعودية؟",
-                options: ["الرياض", "جدة", "الدمام", "مكة"],
-                correct: 0
-            },
-            {
-                question: "كم عدد أيام السنة الكبيسة؟",
-                options: ["365", "366", "364", "367"],
-                correct: 1
-            },
-            {
-                question: "ما هو أسرع حيوان بري؟",
-                options: ["الفهد", "الأسد", "النمر", "الغزال"],
-                correct: 0
-            },
-            {
-                question: "ما هو العنصر الأكثر وفرة في الكون؟",
-                options: ["الهيدروجين", "الأكسجين", "الهيليوم", "النيتروجين"],
-                correct: 0
-            },
-            {
-                question: "في أي عام تم توحيد المملكة العربية السعودية؟",
-                options: ["1930", "1932", "1945", "1927"],
-                correct: 1
-            }
-        ];
+        // الإجابات الصحيحة
+        const correctAnswers = {
+            q1: "a", // القاهرة
+            q2: "c", // 7 أيام
+            q3: "b", // المريخ
+            q4: "b", // أكسجين
+            q5: "c"  // البرتغالية
+        };
         
-        let currentQuestion = 0;
-        let score = 0;
-        let timeLeft = 10;
-        let timer;
-        
-        // انضمام إلى اللعبة
-        function joinGame() {
-            const playerName = document.getElementById('player-name').value;
-            if (!playerName) {
-                alert('الرجاء إدخال اسمك');
+        // بدء الاختبار
+        function startExam() {
+            const studentName = document.getElementById("student-name").value;
+            if (!studentName) {
+                alert("يرجى إدخال اسم الطالب");
                 return;
             }
             
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('waiting-screen').style.display = 'block';
-            
-            // إضافة اللاعب إلى القائمة
-            addPlayer(playerName);
+            document.getElementById("student-info").style.display = "none";
+            document.getElementById("exam").style.display = "block";
         }
         
-        // إنشاء لعبة جديدة
-        function createGame() {
-            const playerName = document.getElementById('player-name').value;
-            if (!playerName) {
-                alert('الرجاء إدخال اسمك');
-                return;
-            }
+        // تصحيح الإجابات
+        function submitExam() {
+            const studentName = document.getElementById("student-name").value;
+            let score = 0;
+            let answeredAll = true;
             
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('waiting-screen').style.display = 'block';
-            
-            // إضافة اللاعب إلى القائمة
-            addPlayer(playerName + " (المضيف)");
-        }
-        
-        // إضافة لاعب إلى القائمة
-        function addPlayer(name) {
-            const playersList = document.getElementById('players-list');
-            const playerDiv = document.createElement('div');
-            playerDiv.className = 'player';
-            
-            // إنشاء صورة رمزية عشوائية بناء على الاسم
-            const colors = ['#6e48aa', '#9d50bb', '#4a7bd9', '#32a852', '#d93f4a'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
-            
-            playerDiv.innerHTML = `
-                <div class="player-avatar" style="background: ${randomColor}">${initials}</div>
-                <div class="player-info">
-                    <div class="player-name">${name}</div>
-                    <div class="player-score">0 نقاط</div>
-                </div>
-            `;
-            
-            playersList.appendChild(playerDiv);
-        }
-        
-        // بدء اللعبة
-        function startGame() {
-            document.getElementById('waiting-screen').style.display = 'none';
-            document.getElementById('game-screen').style.display = 'block';
-            
-            loadQuestion();
-        }
-        
-        // تحميل السؤال
-        function loadQuestion() {
-            if (currentQuestion >= questions.length) {
-                endGame();
-                return;
-            }
-            
-            const q = questions[currentQuestion];
-            document.querySelector('.question').textContent = q.question;
-            
-            const options = document.querySelectorAll('.option');
-            options.forEach((option, index) => {
-                option.textContent = q.options[index];
-                option.className = 'option';
-                option.onclick = () => checkAnswer(index);
-            });
-            
-            // بدء المؤقت
-            timeLeft = 10;
-            document.getElementById('time').textContent = timeLeft;
-            document.getElementById('progress-bar').style.width = '100%';
-            
-            clearInterval(timer);
-            timer = setInterval(updateTimer, 1000);
-        }
-        
-        // تحديث المؤقت
-        function updateTimer() {
-            timeLeft--;
-            document.getElementById('time').textContent = timeLeft;
-            document.getElementById('progress-bar').style.width = (timeLeft * 10) + '%';
-            
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                // الانتقال إلى السؤال التالي بعد تأخير قصير
-                setTimeout(nextQuestion, 1000);
-            }
-        }
-        
-        // التحقق من الإجابة
-        function checkAnswer(selected) {
-            clearInterval(timer);
-            
-            const options = document.querySelectorAll('.option');
-            const correctIndex = questions[currentQuestion].correct;
-            
-            // تلوين الإجابات
-            options.forEach((option, index) => {
-                if (index === correctIndex) {
-                    option.classList.add('correct');
-                } else if (index === selected && index !== correctIndex) {
-                    option.classList.add('incorrect');
+            // حساب الدرجة
+            for (const question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                if (!selectedOption) {
+                    answeredAll = false;
+                    break;
                 }
-            });
-            
-            // زيادة النقاط إذا كانت الإجابة صحيحة
-            if (selected === correctIndex) {
-                score += timeLeft * 10; // نقاط أكثر للإجابات الأسرع
+                
+                if (selectedOption.value === correctAnswers[question]) {
+                    score++;
+                }
             }
             
-            // الانتقال إلى السؤال التالي بعد تأخير قصير
-            setTimeout(nextQuestion, 2000);
-        }
-        
-        // الانتقال إلى السؤال التالي
-        function nextQuestion() {
-            currentQuestion++;
-            loadQuestion();
-        }
-        
-        // انتهاء اللعبة
-        function endGame() {
-            document.getElementById('game-screen').style.display = 'none';
-            document.getElementById('results-screen').style.display = 'block';
-            document.getElementById('final-score').textContent = score;
+            if (!answeredAll) {
+                alert("يرجى الإجابة على جميع الأسئلة");
+                return;
+            }
             
-            // عرض المتصدرين (نموذجية)
-            const leaderboard = document.getElementById('leaderboard');
-            leaderboard.innerHTML = `
-                <div class="player">
-                    <div class="player-avatar" style="background: #6e48aa">أنت</div>
-                    <div class="player-info">
-                        <div class="player-name">أنت</div>
-                        <div class="player-score">${score} نقاط</div>
-                    </div>
-                </div>
-                <div class="player">
-                    <div class="player-avatar" style="background: #4a7bd9">أ</div>
-                    <div class="player-info">
-                        <div class="player-name">أحمد</div>
-                        <div class="player-score">450 نقاط</div>
-                    </div>
-                </div>
-                <div class="player">
-                    <div class="player-avatar" style="background: #32a852">م</div>
-                    <div class="player-info">
-                        <div class="player-name">محمد</div>
-                        <div class="player-score">380 نقاط</div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // اللعب مرة أخرى
-        function playAgain() {
-            currentQuestion = 0;
-            score = 0;
-            document.getElementById('results-screen').style.display = 'none';
-            document.getElementById('welcome-screen').style.display = 'block';
+            // عرض النتيجة
+            const totalQuestions = Object.keys(correctAnswers).length;
+            const percentage = (score / totalQuestions) * 100;
+            
+            document.getElementById("score").textContent = `الطالب: ${studentName} - الدرجة: ${score}/${totalQuestions} (${percentage.toFixed(2)}%)`;
+            
+            if (percentage >= 60) {
+                document.getElementById("success-msg").textContent = "مبروك! لقد نجحت في الاختبار";
+            } else {
+                document.getElementById("success-msg").textContent = "للأسف لم تحقق النسبة المطلوبة للنجاح";
+            }
+            
+            // إعداد رابط الواتساب
+            const whatsappNumber = "201559116736"; // استبدل برقمك هنا
+            const message = `نتيجة الاختبار - الطالب: ${studentName} - الدرجة: ${score}/${totalQuestions} (${percentage.toFixed(2)}%)`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            document.getElementById("whatsapp-link").href = whatsappURL;
+            document.getElementById("result").style.display = "block";
+            
+            // تمرير إلى نتيجة
+            document.getElementById("exam").style.display = "none";
+            document.getElementById("result").scrollIntoView();
         }
     </script>
 </body>
