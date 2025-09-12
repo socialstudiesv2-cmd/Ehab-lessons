@@ -1,557 +1,445 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أنيميشن وايت بورد</title>
+    <title>أنيميشن وايت بورد - مُصلَّح</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        
-        header {
-            text-align: center;
-            padding: 25px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .content {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        
-        .input-section {
-            flex: 1;
-            min-width: 300px;
-            padding: 25px;
-            background: #f9f9f9;
-            border-right: 2px dashed #ccc;
-        }
-        
-        .animation-section {
-            flex: 2;
-            min-width: 400px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            background: white;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #444;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            resize: vertical;
-            transition: border-color 0.3s;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #6a11cb;
-        }
-        
-        .options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        select, button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        select {
-            flex: 1;
-            background: white;
-            border: 2px solid #ddd;
-        }
-        
-        button {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            font-weight: 600;
-            min-width: 120px;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        #generate-btn {
-            background: linear-gradient(135deg, #00b09b, #96c93d);
-        }
-        
-        #clear-btn {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-        }
-        
-        .canvas-container {
-            flex: 1;
-            border: 3px dashed #6a11cb;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-            background: white;
-            min-height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #whiteboard {
-            background-color: white;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .controls {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .control-btn {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            background: #f0f0f0;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-width: 120px;
-        }
-        
-        .control-btn:hover {
-            background: #e0e0e0;
-        }
-        
-        #play-btn {
-            background: linear-gradient(135deg, #00b09b, #96c93d);
-            color: white;
-        }
-        
-        #pause-btn {
-            background: linear-gradient(135deg, #ff9966, #ff5e62);
-            color: white;
-        }
-        
-        #reset-btn {
-            background: linear-gradient(135deg, #4b6cb7, #182848);
-            color: white;
-        }
-        
-        .examples {
-            margin-top: 25px;
-            padding: 20px;
-            background: #f0f8ff;
-            border-radius: 10px;
-        }
-        
-        .examples h3 {
-            margin-bottom: 15px;
-            color: #2575fc;
-            border-bottom: 2px solid #2575fc;
-            padding-bottom: 8px;
-        }
-        
-        .example-text {
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 4px solid #6a11cb;
-        }
-        
-        .example-text:hover {
-            background: #e6e6ff;
-            transform: translateX(5px);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #f5f5f5;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .input-section {
-                border-right: none;
-                border-bottom: 2px dashed #ccc;
-            }
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); color: #333; min-height:100vh; padding:20px; display:flex; align-items:center; justify-content:center; }
+        .container { max-width:1000px; width:100%; background: rgba(255,255,255,0.98); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.18); overflow:hidden; }
+        header { text-align:center; padding:20px; background: linear-gradient(135deg,#6a11cb 0%, #2575fc 100%); color:white }
+        h1 { font-size:2rem }
+        .content { display:flex; flex-wrap:wrap }
+        .input-section { flex:1; min-width:300px; padding:18px; background:#fafafa; border-right:2px dashed #e6e6e6 }
+        .animation-section { flex:2; min-width:420px; padding:18px; background:white }
+        label { display:block; margin-bottom:8px; font-weight:600 }
+        textarea { width:100%; height:120px; padding:12px; border:2px solid #ddd; border-radius:8px; font-size:16px; resize:vertical }
+        .options { display:flex; gap:12px; margin-bottom:12px }
+        select, button { padding:10px 14px; border-radius:8px; border:none; font-size:15px; cursor:pointer }
+        select { background:white; border:2px solid #ddd; flex:1 }
+        button.primary { background: linear-gradient(135deg, #00b09b, #96c93d); color:white; font-weight:700 }
+        button.danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); color:white }
+        .canvas-container { border:3px dashed #6a11cb; border-radius:10px; min-height:360px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; background:white }
+        canvas { display:block; width:100%; height:100% }
+        .controls { display:flex; gap:12px; margin-top:12px }
+        .control-btn { padding:10px 12px; border-radius:8px; background:#f0f0f0; text-align:center; cursor:pointer; min-width:110px; font-weight:700 }
+        .examples { margin-top:18px; padding:12px; background:#f0f8ff; border-radius:8px }
+        .example-text { padding:10px; background:white; border-radius:8px; margin-bottom:8px; cursor:pointer; border-left:4px solid #6a11cb }
+        footer { text-align:center; padding:14px; background:#fafafa; color:#666 }
+        @media (max-width:768px) { .content{flex-direction:column} .input-section{border-right:none; border-bottom:2px dashed #e6e6e6} }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>أنيميشن وايت بورد</h1>
-            <p class="subtitle">اكتب النص وشاهد كيف يتحول إلى رسوم متحركة</p>
-        </header>
-        
-        <div class="content">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="text-input">أدخل النص الخاص بك:</label>
-                    <textarea id="text-input" placeholder="اكتب النص هنا..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>خيارات الأنيميشن:</label>
-                    <div class="options">
-                        <select id="animation-style">
-                            <option value="writing">كتابة يدوية</option>
-                            <option value="typing">كتابة آلية</option>
-                            <option value="drawing">رسم رسومي</option>
-                        </select>
-                        <select id="speed">
-                            <option value="slow">بطيء</option>
-                            <option value="medium" selected>متوسط</option>
-                            <option value="fast">سريع</option>
-                        </select>
-                    </div>
-                </div>
-                
+            <h1>أنيميشن وايت بورد — مُصلَّح</h1>
+            <p class="subtitle">تحسينات: دقة أعلى، تشغيل صحيح، استئناف، وتصدير فيديو WebM</p>
+        </header><div class="content">
+        <div class="input-section">
+            <div class="form-group">
+                <label for="text-input">أدخل النص:</label>
+                <textarea id="text-input" placeholder="اكتب نصك هنا..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>خيارات الأنيميشن:</label>
                 <div class="options">
-                    <button id="generate-btn">إنشاء الأنيميشن</button>
-                    <button id="clear-btn">مسح الكل</button>
-                </div>
-                
-                <div class="examples">
-                    <h3>نماذج نصية جاهزة:</h3>
-                    <div class="example-text" data-text="مرحبًا بك في عالم الأنيميشن! هنا يمكنك رؤية النص يكتب نفسه بطريقة سحرية.">نموذج 1: ترحيب</div>
-                    <div class="example-text" data-text="يمكن استخدام هذه الأداة لإنشاء عروض تقديمية مميزة، أو شرح الدروس، أو حتى إنشاء قصص مصورة.">نموذج 2: استخدامات الأداة</div>
-                    <div class="example-text" data-text="جرب كتابة نصك الخاص وشاهد كيف يتحول إلى رسوم متحركة أمام عينيك!">نموذج 3: تجربة شخصية</div>
+                    <select id="animation-style">
+                        <option value="writing">كتابة يدوية</option>
+                        <option value="typing">كتابة آلية</option>
+                        <option value="drawing">رسم خطي</option>
+                    </select>
+                    <select id="speed">
+                        <option value="slow">بطيء</option>
+                        <option value="medium" selected>متوسط</option>
+                        <option value="fast">سريع</option>
+                    </select>
                 </div>
             </div>
-            
-            <div class="animation-section">
-                <div class="canvas-container">
-                    <canvas id="whiteboard"></canvas>
-                </div>
-                
-                <div class="controls">
-                    <div class="control-btn" id="play-btn">تشغيل</div>
-                    <div class="control-btn" id="pause-btn">إيقاف</div>
-                    <div class="control-btn" id="reset-btn">إعادة تعيين</div>
-                </div>
+
+            <div class="options">
+                <button id="generate-btn" class="primary">إنشاء الأنيميشن</button>
+                <button id="clear-btn" class="danger">مسح الكل</button>
+            </div>
+
+            <div class="examples">
+                <h3>نماذج جاهزة:</h3>
+                <div class="example-text" data-text="مرحبًا بك في عالم الأنيميشن! هنا يمكنك رؤية النص يكتب نفسه بطريقة سحرية.">نموذج 1: ترحيب</div>
+                <div class="example-text" data-text="يمكن استخدام هذه الأداة لإنشاء عروض تقديمية مميزة، أو شرح الدروس، أو حتى إنشاء قصص مصورة.">نموذج 2: استخدامات</div>
+                <div class="example-text" data-text="جرب كتابة نصك الخاص وشاهد كيف يتحول إلى رسوم متحركة أمام عينيك!">نموذج 3: تجربة</div>
             </div>
         </div>
-        
-        <footer>
-            <p>صمم هذا المشروع لتحويل النص إلى رسوم متحركة بأسلوب السبورة البيضاء | يمكنك حفظ الأنيميشن عن طريق تصوير الشاشة</p>
-        </footer>
+
+        <div class="animation-section">
+            <div class="canvas-container">
+                <canvas id="whiteboard"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="control-btn" id="play-btn">تشغيل</div>
+                <div class="control-btn" id="pause-btn">إيقاف</div>
+                <div class="control-btn" id="reset-btn">إعادة</div>
+                <div class="control-btn" id="export-btn">تصدير فيديو</div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const canvas = document.getElementById('whiteboard');
-            const ctx = canvas.getContext('2d');
-            const textInput = document.getElementById('text-input');
-            const generateBtn = document.getElementById('generate-btn');
-            const clearBtn = document.getElementById('clear-btn');
-            const playBtn = document.getElementById('play-btn');
-            const pauseBtn = document.getElementById('pause-btn');
-            const resetBtn = document.getElementById('reset-btn');
-            const animationStyle = document.getElementById('animation-style');
-            const speedSelect = document.getElementById('speed');
-            const exampleTexts = document.querySelectorAll('.example-text');
-            
-            let animationId = null;
-            let isPlaying = false;
-            let animationProgress = 0;
-            let currentText = "";
-            let animationSpeed = 5;
-            let handPosition = { x: 50, y: 100 };
-            
-            // ضبط حجم الكانڤاس
-            function resizeCanvas() {
-                const container = canvas.parentElement;
-                canvas.width = container.offsetWidth;
-                canvas.height = container.offsetHeight;
-                
-                // تعيين خلفية بيضاء
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            
-            // الاستعداد للرسم عند تحميل الصفحة وتغيير حجم النافذة
-            window.addEventListener('load', resizeCanvas);
-            window.addEventListener('resize', resizeCanvas);
-            
-            // إنشاء الأنيميشن
-            generateBtn.addEventListener('click', function() {
-                if (textInput.value.trim() === "") {
-                    alert("يرجى إدخال نص أولاً");
-                    return;
-                }
-                
-                resetAnimation();
-                currentText = textInput.value;
-                drawAnimation();
-            });
-            
-            // مسح الكل
-            clearBtn.addEventListener('click', function() {
-                resetAnimation();
-                textInput.value = "";
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            });
-            
-            // تشغيل الأنيميشن
-            playBtn.addEventListener('click', function() {
-                if (currentText === "") return;
-                
-                isPlaying = true;
-                drawAnimation();
-            });
-            
-            // إيقاف الأنيميشن
-            pauseBtn.addEventListener('click', function() {
-                isPlaying = false;
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                }
-            });
-            
-            // إعادة التعيين
-            resetBtn.addEventListener('click', function() {
-                resetAnimation();
-                if (currentText !== "") {
-                    drawAnimation();
-                }
-            });
-            
-            // تغيير سرعة الأنيميشن
-            speedSelect.addEventListener('change', function() {
-                switch(speedSelect.value) {
-                    case 'slow':
-                        animationSpeed = 3;
-                        break;
-                    case 'medium':
-                        animationSpeed = 5;
-                        break;
-                    case 'fast':
-                        animationSpeed = 10;
-                        break;
-                }
-            });
-            
-            // إضافة نصوص الأمثلة
-            exampleTexts.forEach(example => {
-                example.addEventListener('click', function() {
-                    textInput.value = example.getAttribute('data-text');
-                });
-            });
-            
-            // رسم الأنيميشن
-            function drawAnimation() {
-                if (!isPlaying) return;
-                
-                // مسح جزء من اللوحة
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // رسم خلفية السبورة
-                drawBoardBackground();
-                
-                // حساب التقدم في الأنيميشن
-                const progress = Math.min(animationProgress / 100, 1);
-                const visibleText = currentText.substring(0, Math.floor(currentText.length * progress));
-                
-                // رسم النص
-                drawText(visibleText);
-                
-                // رسم اليد في حالة نمط الكتابة اليدوية
-                if (animationStyle.value === 'writing') {
-                    drawHand();
-                }
-                
-                // زيادة تقدم الأنيميشن
-                animationProgress += animationSpeed / 10;
-                
-                // الاستمرار في الأنيميشن إذا لم ينته بعد
-                if (animationProgress < 100) {
-                    animationId = requestAnimationFrame(drawAnimation);
-                } else {
-                    isPlaying = false;
-                }
-            }
-            
-            // رسم خلفية السبورة
-            function drawBoardBackground() {
-                // رسم خلفية شبكية خفيفة
-                ctx.strokeStyle = '#e0e0e0';
-                ctx.lineWidth = 0.5;
-                
-                // رسم خطوط أفقية
-                for (let y = 20; y < canvas.height; y += 20) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(canvas.width, y);
-                    ctx.stroke();
-                }
-                
-                // رسم إطار
-                ctx.strokeStyle = '#6a11cb';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
-            }
-            
-            // رسم النص
-            function drawText(text) {
-                const lines = wrapText(ctx, text, 50, 80, canvas.width - 100, 28);
-                
-                ctx.font = '28px Arial';
-                ctx.fillStyle = '#333';
-                
-                for (let i = 0; i < lines.length; i++) {
-                    ctx.fillText(lines[i], 50, 80 + (i * 35));
-                }
-                
-                // تحديد موضع اليد لأسطر النص
-                if (lines.length > 0) {
-                    const lastLine = lines[lines.length - 1];
-                    const metrics = ctx.measureText(lastLine);
-                    handPosition.x = 50 + metrics.width + 10;
-                    handPosition.y = 80 + ((lines.length - 1) * 35) - 10;
-                }
-            }
-            
-            // تقسيم النص إلى أسطر
-            function wrapText(context, text, x, y, maxWidth, lineHeight) {
-                const words = text.split(' ');
-                const lines = [];
-                let currentLine = '';
+    <footer>
+        <p>صُمم لتحويل النص إلى رسوم متحركة — جرب التصدير على متصفح كروم أو إيدج لنتيجة WebM أفضل.</p>
+    </footer>
+</div>
 
-                for (let i = 0; i < words.length; i++) {
-                    const testLine = currentLine + words[i] + ' ';
-                    const metrics = context.measureText(testLine);
-                    const testWidth = metrics.width;
-                    
-                    if (testWidth > maxWidth && i > 0) {
-                        lines.push(currentLine);
-                        currentLine = words[i] + ' ';
-                    } else {
-                        currentLine = testLine;
-                    }
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+        const textInput = document.getElementById('text-input');
+        const generateBtn = document.getElementById('generate-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const exportBtn = document.getElementById('export-btn');
+        const animationStyle = document.getElementById('animation-style');
+        const speedSelect = document.getElementById('speed');
+        const exampleTexts = document.querySelectorAll('.example-text');
+
+        // state
+        let animationId = null;
+        let isPlaying = false;
+        let animationProgress = 0; // 0..100
+        let currentText = "";
+        let animationSpeed = 5; // will be set by speedSelect
+
+        // visual config
+        const fontSize = 28;
+        const fontFamily = 'Arial, "Segoe UI", sans-serif';
+        const lineHeight = 35;
+        const paddingX = 50;
+        const paddingY = 80;
+
+        // HiDPI scaling
+        let ratio = window.devicePixelRatio || 1;
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const cssW = container.offsetWidth;
+            const cssH = container.offsetHeight;
+
+            canvas.style.width = cssW + 'px';
+            canvas.style.height = cssH + 'px';
+
+            canvas.width = Math.floor(cssW * ratio);
+            canvas.height = Math.floor(cssH * ratio);
+
+            // reset transform then scale to device pixel ratio
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(ratio, ratio);
+
+            // redraw current state
+            drawBoardBackground();
+            redrawCurrent();
+        }
+
+        window.addEventListener('resize', () => { ratio = window.devicePixelRatio || 1; resizeCanvas(); });
+        window.addEventListener('load', resizeCanvas);
+
+        // Helpers
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawBoardBackground() {
+            const w = canvas.width / ratio;
+            const h = canvas.height / ratio;
+
+            // background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, w, h);
+
+            // light grid
+            ctx.strokeStyle = '#eaeaea';
+            ctx.lineWidth = 0.5;
+            for (let y = 20; y < h; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+
+            // frame
+            ctx.strokeStyle = '#6a11cb';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(5, 5, w - 10, h - 10);
+        }
+
+        function wrapText(context, text, maxWidth, lineHeight) {
+            // assumes context.font already set
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                const testLine = currentLine ? currentLine + ' ' + word : word;
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && currentLine !== '') {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
                 }
-                
-                lines.push(currentLine);
-                return lines;
             }
-            
-            // رسم اليد
-            function drawHand() {
-                ctx.save();
-                ctx.translate(handPosition.x, handPosition.y);
-                
-                // رسم اليد
-                ctx.fillStyle = '#ffcc99';
-                ctx.beginPath();
-                ctx.arc(0, 0, 10, 0, Math.PI * 2);
-                ctx.fill();
-                
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(-5, 15);
-                ctx.lineTo(0, 12);
-                ctx.lineTo(5, 15);
-                ctx.closePath();
-                ctx.fill();
-                
-                // رسم القلم
-                ctx.fillStyle = '#333';
-                ctx.beginPath();
-                ctx.moveTo(5, -5);
-                ctx.lineTo(15, -15);
-                ctx.lineTo(20, -10);
-                ctx.lineTo(10, 0);
-                ctx.closePath();
-                ctx.fill();
-                
-                ctx.restore();
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+
+        function drawText(text) {
+            const w = canvas.width / ratio;
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            ctx.fillStyle = '#333';
+            ctx.textBaseline = 'top';
+
+            const maxWidth = w - paddingX * 2;
+            const lines = wrapText(ctx, text, maxWidth, lineHeight);
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                ctx.fillText(line, paddingX, paddingY + i * lineHeight);
             }
-            
-            // إعادة تعيين الأنيميشن
-            function resetAnimation() {
+
+            // update hand/caret position based on last line
+            if (lines.length > 0) {
+                const lastLine = lines[lines.length - 1];
+                const metrics = ctx.measureText(lastLine);
+                // position in CSS pixels
+                handPosition.x = paddingX + metrics.width + 10;
+                handPosition.y = paddingY + (lines.length - 1) * lineHeight - 10;
+            } else {
+                handPosition.x = paddingX;
+                handPosition.y = paddingY;
+            }
+        }
+
+        function redrawCurrent() {
+            // draw the text that corresponds to current animationProgress
+            const visibleCount = Math.floor(currentText.length * Math.min(animationProgress / 100, 1));
+            const visibleText = currentText.substring(0, visibleCount);
+            drawText(visibleText);
+        }
+
+        // simple linear interpolation for smoother hand movement
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
+        // hand/caret state
+        let handPosition = { x: paddingX, y: paddingY };
+        let displayedHand = { x: paddingX, y: paddingY };
+
+        function drawHand() {
+            // smooth follow
+            displayedHand.x = lerp(displayedHand.x, handPosition.x, 0.25);
+            displayedHand.y = lerp(displayedHand.y, handPosition.y, 0.25);
+
+            ctx.save();
+            ctx.translate(displayedHand.x, displayedHand.y);
+
+            // hand circle
+            ctx.fillStyle = '#ffcc99';
+            ctx.beginPath();
+            ctx.arc(0, 0, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // simple pen
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.moveTo(8, -6);
+            ctx.lineTo(18, -16);
+            ctx.lineTo(22, -12);
+            ctx.lineTo(12, -2);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawCaret() {
+            // caret blink based on time
+            const visible = Math.floor(Date.now() / 500) % 2 === 0;
+            if (!visible) return;
+            const x = displayedHand.x;
+            const y = displayedHand.y + 6;
+            ctx.fillRect(x, y, 2, fontSize - 6);
+        }
+
+        // main animation loop
+        function animate() {
+            // clear and draw frame
+            const w = canvas.width / ratio;
+            const h = canvas.height / ratio;
+            ctx.clearRect(0, 0, w, h);
+            drawBoardBackground();
+
+            const progress = Math.min(animationProgress / 100, 1);
+            const visibleCount = Math.floor(currentText.length * progress);
+            const visibleText = currentText.substring(0, visibleCount);
+
+            // style variations
+            if (animationStyle.value === 'drawing') {
+                // stroke style
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#222';
+                ctx.font = `${fontSize}px ${fontFamily}`;
+                const maxWidth = w - paddingX * 2;
+                const lines = wrapText(ctx, visibleText, maxWidth, lineHeight);
+                for (let i = 0; i < lines.length; i++) {
+                    ctx.strokeText(lines[i].trim(), paddingX, paddingY + i * lineHeight);
+                }
+            } else {
+                // fill style (writing / typing)
+                drawText(visibleText);
+            }
+
+            // draw hand or caret for writing/typing
+            if (animationStyle.value === 'writing') {
+                drawHand();
+            } else if (animationStyle.value === 'typing') {
+                drawCaret();
+            }
+
+            // advance progress
+            if (isPlaying && animationProgress < 100) {
+                animationProgress += animationSpeed / 10; // tweakable
+            }
+
+            if (isPlaying && animationProgress < 100) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                // finished or paused
                 isPlaying = false;
-                animationProgress = 0;
                 if (animationId) {
                     cancelAnimationFrame(animationId);
+                    animationId = null;
                 }
             }
-            
-            // رسم رسوم متحركة أولية عند التحميل
-            window.addEventListener('load', function() {
-                currentText = "مرحبًا بك في أداة أنيميشن السبورة البيضاء! اكتب نصك واضغط على إنشاء الأنيميشن.";
-                resizeCanvas();
-                drawBoardBackground();
-                drawText(currentText);
+        }
+
+        // UI handlers
+        generateBtn.addEventListener('click', () => {
+            const txt = textInput.value.trim();
+            if (!txt) { alert('يرجى إدخال نص أولاً'); return; }
+            currentText = txt;
+            animationProgress = 0;
+            // ensure speed variable consistent
+            switch (speedSelect.value) { case 'slow': animationSpeed = 3; break; case 'medium': animationSpeed = 5; break; case 'fast': animationSpeed = 10; break; }
+            isPlaying = true;
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+            animate();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            textInput.value = '';
+            currentText = '';
+            animationProgress = 0;
+            isPlaying = false;
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+            clearCanvas();
+            drawBoardBackground();
+        });
+
+        playBtn.addEventListener('click', () => {
+            if (!currentText) return;
+            if (animationProgress >= 100) return; // already finished
+            if (isPlaying) return;
+            isPlaying = true;
+            animate();
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            isPlaying = false;
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            animationProgress = 0;
+            isPlaying = false;
+            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+            clearCanvas();
+            drawBoardBackground();
+        });
+
+        speedSelect.addEventListener('change', () => {
+            switch (speedSelect.value) {
+                case 'slow': animationSpeed = 3; break;
+                case 'medium': animationSpeed = 5; break;
+                case 'fast': animationSpeed = 10; break;
+            }
+        });
+
+        exampleTexts.forEach(el => {
+            el.addEventListener('click', () => {
+                textInput.value = el.getAttribute('data-text');
+                // optional: auto-generate immediately
+                generateBtn.click();
             });
         });
-    </script>
+
+        // export video using MediaRecorder (WebM)
+        exportBtn.addEventListener('click', async () => {
+            if (!currentText) { alert('اكتب نص واضغط إنشاء قبل التصدير'); return; }
+
+            // if already finished, replay from start
+            animationProgress = 0;
+            isPlaying = true;
+
+            const fps = 60;
+            const stream = canvas.captureStream(fps);
+            const recordedChunks = [];
+            const mimeType = 'video/webm; codecs=vp9';
+            let options = {};
+            if (MediaRecorder.isTypeSupported(mimeType)) options = { mimeType };
+
+            try {
+                const recorder = new MediaRecorder(stream, options);
+                recorder.ondataavailable = (e) => { if (e.data && e.data.size) recordedChunks.push(e.data); };
+                recorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'whiteboard-animation.webm';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                };
+
+                recorder.start();
+                // play animation and wait for finish
+                if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+                animate();
+
+                // wait until animation stops
+                const waitFinish = () => new Promise((res) => {
+                    const check = setInterval(() => {
+                        if (!isPlaying) { clearInterval(check); res(); }
+                    }, 200);
+                });
+
+                await waitFinish();
+                // give recorder a moment
+                setTimeout(() => recorder.stop(), 200);
+            } catch (err) {
+                alert('التصدير غير مدعوم في متصفحك أو حدث خطأ. جرب كروم/إيدج.
+
+' + err.message); } });
+
+// initial sample text drawn once
+        window.addEventListener('load', () => {
+            currentText = "مرحبًا بك في أداة أنيميشن السبورة البيضاء! اكتب نصك واضغط على إنشاء الأنيميشن.";
+            animationProgress = 100; // show full text
+            resizeCanvas();
+            // redrawCurrent will be called from resize
+        });
+    });
+</script>
+
 </body>
 </html>
