@@ -3,519 +3,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التعليم الإلكتروني</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>أنيميشن وايت بورد</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #fff;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
         
         header {
             text-align: center;
-            padding: 30px 0;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            display: inline-block;
+            padding: 25px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
         }
         
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
         
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
         }
         
-        .grades-container {
+        .content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 40px;
         }
         
-        .grade-box {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-radius: 20px;
-            padding: 30px 25px;
-            width: 220px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s ease;
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-right: 2px dashed #ccc;
+        }
+        
+        .animation-section {
+            flex: 2;
+            min-width: 400px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+        
+        .options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        select, button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        select {
+            flex: 1;
+            background: white;
+            border: 2px solid #ddd;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-weight: 600;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #generate-btn {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+        }
+        
+        #clear-btn {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+        
+        .canvas-container {
+            flex: 1;
+            border: 3px dashed #6a11cb;
+            border-radius: 10px;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            z-index: 1;
+            background: white;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        .grade-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        #whiteboard {
+            background-color: white;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
         }
         
-        .grade-box:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-        
-        .grade-box:hover::before {
-            opacity: 0.3;
-        }
-        
-        .grade-icon {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            display: block;
-            transition: all 0.4s ease;
-        }
-        
-        .grade-box:hover .grade-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-        
-        .grade-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .grade-desc {
-            font-size: 0.95rem;
-            opacity: 0.8;
-        }
-        
-        .books-page {
-            display: none;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .books-header {
+        .controls {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 15px;
+            flex-wrap: wrap;
         }
         
-        .back-button {
-            background: linear-gradient(45deg, #ff8a00, #e52e71);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 15px rgba(229, 46, 113, 0.3);
-        }
-        
-        .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(229, 46, 113, 0.4);
-        }
-        
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-        }
-        
-        .book-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 25px;
+        .control-btn {
+            flex: 1;
+            padding: 12px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .book-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .book-icon {
-            font-size: 2.8rem;
-            color: #4a00e0;
-            margin-bottom: 20px;
-            display: block;
-            transition: all 0.3s ease;
-        }
-        
-        .book-card:hover .book-icon {
-            transform: scale(1.2);
-            color: #ff8a00;
-        }
-        
-        .book-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        
-        .download-btn {
-            background: linear-gradient(45deg, #4a00e0, #8e2de2);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 15px rgba(74, 0, 224, 0.3);
+            transition: all 0.3s;
+            min-width: 120px;
         }
         
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.4);
-            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+        .control-btn:hover {
+            background: #e0e0e0;
         }
         
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+        #play-btn {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: white;
         }
         
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0);
-            opacity: 0.3;
-            animation: float 15s infinite linear;
+        #pause-btn {
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            color: white;
         }
         
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-            }
+        #reset-btn {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
         }
         
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .examples {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f0f8ff;
+            border-radius: 10px;
+        }
+        
+        .examples h3 {
+            margin-bottom: 15px;
+            color: #2575fc;
+            border-bottom: 2px solid #2575fc;
+            padding-bottom: 8px;
+        }
+        
+        .example-text {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #6a11cb;
+        }
+        
+        .example-text:hover {
+            background: #e6e6ff;
+            transform: translateX(5px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #666;
+            font-size: 0.9rem;
         }
         
         @media (max-width: 768px) {
-            .grades-container {
-                gap: 20px;
+            .content {
+                flex-direction: column;
             }
             
-            .grade-box {
-                width: 180px;
-                padding: 25px 20px;
-            }
-            
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .grade-box {
-                width: 160px;
-                padding: 20px 15px;
-            }
-            
-            .grade-icon {
-                font-size: 3rem;
-            }
-            
-            .books-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
+            .input-section {
+                border-right: none;
+                border-bottom: 2px dashed #ccc;
             }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
     <div class="container">
         <header>
-            <div class="logo">EduWave</div>
-            <h1>منصة التعليم الإلكتروني</h1>
-            <p class="subtitle">اختر الصف الدراسي للوصول إلى الكتب التعليمية والمواد الدراسية</p>
+            <h1>أنيميشن وايت بورد</h1>
+            <p class="subtitle">اكتب النص وشاهد كيف يتحول إلى رسوم متحركة</p>
         </header>
         
-        <main>
-            <div class="grades-container" id="gradesContainer">
-                <!-- سيتم إضافة الصناديق dynamically باستخدام JavaScript -->
-            </div>
-            
-            <div class="books-page" id="booksPage">
-                <div class="books-header">
-                    <h2 id="selectedGradeTitle">كتب الصف الرابع الابتدائي</h2>
-                    <button class="back-button" id="backButton">
-                        <i class="fas fa-arrow-right"></i>
-                        <span>العودة إلى الصفوف</span>
-                    </button>
+        <div class="content">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="text-input">أدخل النص الخاص بك:</label>
+                    <textarea id="text-input" placeholder="اكتب النص هنا..."></textarea>
                 </div>
                 
-                <div class="books-grid" id="booksGrid">
-                    <!-- سيتم إضافة الكتب dynamically -->
+                <div class="form-group">
+                    <label>خيارات الأنيميشن:</label>
+                    <div class="options">
+                        <select id="animation-style">
+                            <option value="writing">كتابة يدوية</option>
+                            <option value="typing">كتابة آلية</option>
+                            <option value="drawing">رسم رسومي</option>
+                        </select>
+                        <select id="speed">
+                            <option value="slow">بطيء</option>
+                            <option value="medium" selected>متوسط</option>
+                            <option value="fast">سريع</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="options">
+                    <button id="generate-btn">إنشاء الأنيميشن</button>
+                    <button id="clear-btn">مسح الكل</button>
+                </div>
+                
+                <div class="examples">
+                    <h3>نماذج نصية جاهزة:</h3>
+                    <div class="example-text" data-text="مرحبًا بك في عالم الأنيميشن! هنا يمكنك رؤية النص يكتب نفسه بطريقة سحرية.">نموذج 1: ترحيب</div>
+                    <div class="example-text" data-text="يمكن استخدام هذه الأداة لإنشاء عروض تقديمية مميزة، أو شرح الدروس، أو حتى إنشاء قصص مصورة.">نموذج 2: استخدامات الأداة</div>
+                    <div class="example-text" data-text="جرب كتابة نصك الخاص وشاهد كيف يتحول إلى رسوم متحركة أمام عينيك!">نموذج 3: تجربة شخصية</div>
                 </div>
             </div>
-        </main>
+            
+            <div class="animation-section">
+                <div class="canvas-container">
+                    <canvas id="whiteboard"></canvas>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-btn" id="play-btn">تشغيل</div>
+                    <div class="control-btn" id="pause-btn">إيقاف</div>
+                    <div class="control-btn" id="reset-btn">إعادة تعيين</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>صمم هذا المشروع لتحويل النص إلى رسوم متحركة بأسلوب السبورة البيضاء | يمكنك حفظ الأنيميشن عن طريق تصوير الشاشة</p>
+        </footer>
     </div>
 
     <script>
-        // بيانات الصفوف والكتب
-        const gradesData = [
-            {
-                id: 1,
-                name: "الصف الرابع الابتدائي",
-                icon: "🧒",
-                books: [
-                    { name: "اللغة العربية", file: "arabic4.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math4.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science4.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english4.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social4.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion4.pdf", icon: "☪️" }
-                ]
-            },
-            {
-                id: 2,
-                name: "الصف الخامس الابتدائي",
-                icon: "👦",
-                books: [
-                    { name: "اللغة العربية", file: "arabic5.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math5.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science5.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english5.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social5.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion5.pdf", icon: "☪️" }
-                ]
-            },
-            {
-                id: 3,
-                name: "الصف السادس الابتدائي",
-                icon: "👧",
-                books: [
-                    { name: "اللغة العربية", file: "arabic6.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math6.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science6.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english6.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social6.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion6.pdf", icon: "☪️" }
-                ]
-            },
-            {
-                id: 4,
-                name: "الصف الأول الإعدادي",
-                icon: "👨",
-                books: [
-                    { name: "اللغة العربية", file: "arabic7.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math7.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science7.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english7.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social7.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion7.pdf", icon: "☪️" }
-                ]
-            },
-            {
-                id: 5,
-                name: "الصف الثاني الإعدادي",
-                icon: "👩",
-                books: [
-                    { name: "اللغة العربية", file: "arabic8.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math8.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science8.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english8.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social8.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion8.pdf", icon: "☪️" }
-                ]
-            },
-            {
-                id: 6,
-                name: "الصف الثالث الإعدادي",
-                icon: "👴",
-                books: [
-                    { name: "اللغة العربية", file: "arabic9.pdf", icon: "📖" },
-                    { name: "الرياضيات", file: "math9.pdf", icon: "➗" },
-                    { name: "العلوم", file: "science9.pdf", icon: "🔬" },
-                    { name: "اللغة الإنجليزية", file: "english9.pdf", icon: "🔠" },
-                    { name: "الدراسات الاجتماعية", file: "social9.pdf", icon: "🗺️" },
-                    { name: "التربية الدينية", file: "religion9.pdf", icon: "☪️" }
-                ]
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('whiteboard');
+            const ctx = canvas.getContext('2d');
+            const textInput = document.getElementById('text-input');
+            const generateBtn = document.getElementById('generate-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const playBtn = document.getElementById('play-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const animationStyle = document.getElementById('animation-style');
+            const speedSelect = document.getElementById('speed');
+            const exampleTexts = document.querySelectorAll('.example-text');
+            
+            let animationId = null;
+            let isPlaying = false;
+            let animationProgress = 0;
+            let currentText = "";
+            let animationSpeed = 5;
+            let handPosition = { x: 50, y: 100 };
+            
+            // ضبط حجم الكانڤاس
+            function resizeCanvas() {
+                const container = canvas.parentElement;
+                canvas.width = container.offsetWidth;
+                canvas.height = container.offsetHeight;
+                
+                // تعيين خلفية بيضاء
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-        ];
-
-        // عناصر DOM
-        const gradesContainer = document.getElementById('gradesContainer');
-        const booksPage = document.getElementById('booksPage');
-        const selectedGradeTitle = document.getElementById('selectedGradeTitle');
-        const booksGrid = document.getElementById('booksGrid');
-        const backButton = document.getElementById('backButton');
-        const particlesContainer = document.getElementById('particles');
-
-        // إنشاء تأثير الجسيمات
-        function createParticles() {
-            const colors = ['#ff8a00', '#e52e71', '#4a00e0'];
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 50 + 10;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                particle.style.background = `linear-gradient(45deg, ${colors[Math.floor(Math.random() * colors.length)]}, ${colors[Math.floor(Math.random() * colors.length)]})`;
-                
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                
-                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // إنشاء صناديق الصفوف
-        function renderGrades() {
-            gradesData.forEach(grade => {
-                const gradeBox = document.createElement('div');
-                gradeBox.className = 'grade-box';
-                gradeBox.setAttribute('data-grade-id', grade.id);
-                
-                gradeBox.innerHTML = `
-                    <div class="grade-icon">${grade.icon}</div>
-                    <h3 class="grade-title">${grade.name}</h3>
-                    <p class="grade-desc">اضغط لعرض الكتب</p>
-                `;
-                
-                gradeBox.addEventListener('click', () => showBooks(grade.id));
-                gradesContainer.appendChild(gradeBox);
-            });
-        }
-
-        // عرض كتب صف معين
-        function showBooks(gradeId) {
-            const grade = gradesData.find(g => g.id === gradeId);
-            if (!grade) return;
             
-            // تحديث العنوان
-            selectedGradeTitle.textContent = `كتب ${grade.name}`;
+            // الاستعداد للرسم عند تحميل الصفحة وتغيير حجم النافذة
+            window.addEventListener('load', resizeCanvas);
+            window.addEventListener('resize', resizeCanvas);
             
-            // مسح الكتب السابقة
-            booksGrid.innerHTML = '';
-            
-            // إضافة الكتب الجديدة
-            grade.books.forEach(book => {
-                const bookCard = document.createElement('div');
-                bookCard.className = 'book-card';
+            // إنشاء الأنيميشن
+            generateBtn.addEventListener('click', function() {
+                if (textInput.value.trim() === "") {
+                    alert("يرجى إدخال نص أولاً");
+                    return;
+                }
                 
-                bookCard.innerHTML = `
-                    <div class="book-icon">${book.icon}</div>
-                    <h3 class="book-title">${book.name}</h3>
-                    <button class="download-btn" onclick="downloadBook('${book.file}')">
-                        <i class="fas fa-download"></i>
-                        <span>تحميل</span>
-                    </button>
-                `;
-                
-                booksGrid.appendChild(bookCard);
+                resetAnimation();
+                currentText = textInput.value;
+                drawAnimation();
             });
             
-            // إظهار صفحة الكتب وإخفاء صفحة الصفوف
-            gradesContainer.style.display = 'none';
-            booksPage.style.display = 'block';
-        }
+            // مسح الكل
+            clearBtn.addEventListener('click', function() {
+                resetAnimation();
+                textInput.value = "";
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // تشغيل الأنيميشن
+            playBtn.addEventListener('click', function() {
+                if (currentText === "") return;
+                
+                isPlaying = true;
+                drawAnimation();
+            });
+            
+            // إيقاف الأنيميشن
+            pauseBtn.addEventListener('click', function() {
+                isPlaying = false;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            });
+            
+            // إعادة التعيين
+            resetBtn.addEventListener('click', function() {
+                resetAnimation();
+                if (currentText !== "") {
+                    drawAnimation();
+                }
+            });
+            
+            // تغيير سرعة الأنيميشن
+            speedSelect.addEventListener('change', function() {
+                switch(speedSelect.value) {
+                    case 'slow':
+                        animationSpeed = 3;
+                        break;
+                    case 'medium':
+                        animationSpeed = 5;
+                        break;
+                    case 'fast':
+                        animationSpeed = 10;
+                        break;
+                }
+            });
+            
+            // إضافة نصوص الأمثلة
+            exampleTexts.forEach(example => {
+                example.addEventListener('click', function() {
+                    textInput.value = example.getAttribute('data-text');
+                });
+            });
+            
+            // رسم الأنيميشن
+            function drawAnimation() {
+                if (!isPlaying) return;
+                
+                // مسح جزء من اللوحة
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // رسم خلفية السبورة
+                drawBoardBackground();
+                
+                // حساب التقدم في الأنيميشن
+                const progress = Math.min(animationProgress / 100, 1);
+                const visibleText = currentText.substring(0, Math.floor(currentText.length * progress));
+                
+                // رسم النص
+                drawText(visibleText);
+                
+                // رسم اليد في حالة نمط الكتابة اليدوية
+                if (animationStyle.value === 'writing') {
+                    drawHand();
+                }
+                
+                // زيادة تقدم الأنيميشن
+                animationProgress += animationSpeed / 10;
+                
+                // الاستمرار في الأنيميشن إذا لم ينته بعد
+                if (animationProgress < 100) {
+                    animationId = requestAnimationFrame(drawAnimation);
+                } else {
+                    isPlaying = false;
+                }
+            }
+            
+            // رسم خلفية السبورة
+            function drawBoardBackground() {
+                // رسم خلفية شبكية خفيفة
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 0.5;
+                
+                // رسم خطوط أفقية
+                for (let y = 20; y < canvas.height; y += 20) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+                
+                // رسم إطار
+                ctx.strokeStyle = '#6a11cb';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
+            }
+            
+            // رسم النص
+            function drawText(text) {
+                const lines = wrapText(ctx, text, 50, 80, canvas.width - 100, 28);
+                
+                ctx.font = '28px Arial';
+                ctx.fillStyle = '#333';
+                
+                for (let i = 0; i < lines.length; i++) {
+                    ctx.fillText(lines[i], 50, 80 + (i * 35));
+                }
+                
+                // تحديد موضع اليد لأسطر النص
+                if (lines.length > 0) {
+                    const lastLine = lines[lines.length - 1];
+                    const metrics = ctx.measureText(lastLine);
+                    handPosition.x = 50 + metrics.width + 10;
+                    handPosition.y = 80 + ((lines.length - 1) * 35) - 10;
+                }
+            }
+            
+            // تقسيم النص إلى أسطر
+            function wrapText(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                const lines = [];
+                let currentLine = '';
 
-        // محاكاة عملية التحميل
-        function downloadBook(filename) {
-            alert(`جاري تحميل الملف: ${filename}\n(هذه محاكاة للتحميل، في التطبيق الفعلي سيبدأ التحميل الفعلي)`);
-        }
-
-        // العودة إلى صفحة الصفوف
-        backButton.addEventListener('click', () => {
-            booksPage.style.display = 'none';
-            gradesContainer.style.display = 'flex';
-        });
-
-        // تهيئة الصفحة
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGrades();
-            createParticles();
+                for (let i = 0; i < words.length; i++) {
+                    const testLine = currentLine + words[i] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    
+                    if (testWidth > maxWidth && i > 0) {
+                        lines.push(currentLine);
+                        currentLine = words[i] + ' ';
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                
+                lines.push(currentLine);
+                return lines;
+            }
+            
+            // رسم اليد
+            function drawHand() {
+                ctx.save();
+                ctx.translate(handPosition.x, handPosition.y);
+                
+                // رسم اليد
+                ctx.fillStyle = '#ffcc99';
+                ctx.beginPath();
+                ctx.arc(0, 0, 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-5, 15);
+                ctx.lineTo(0, 12);
+                ctx.lineTo(5, 15);
+                ctx.closePath();
+                ctx.fill();
+                
+                // رسم القلم
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.moveTo(5, -5);
+                ctx.lineTo(15, -15);
+                ctx.lineTo(20, -10);
+                ctx.lineTo(10, 0);
+                ctx.closePath();
+                ctx.fill();
+                
+                ctx.restore();
+            }
+            
+            // إعادة تعيين الأنيميشن
+            function resetAnimation() {
+                isPlaying = false;
+                animationProgress = 0;
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            }
+            
+            // رسم رسوم متحركة أولية عند التحميل
+            window.addEventListener('load', function() {
+                currentText = "مرحبًا بك في أداة أنيميشن السبورة البيضاء! اكتب نصك واضغط على إنشاء الأنيميشن.";
+                resizeCanvas();
+                drawBoardBackground();
+                drawText(currentText);
+            });
         });
     </script>
 </body>
