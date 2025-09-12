@@ -3,586 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة فنانيس الرمضانية - منصة الكتب الإلكترونية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>منصة التعليم الإلكتروني</title>
     <style>
-        :root {
-            --primary-color: #8e44ad;
-            --secondary-color: #f1c40f;
-            --accent-color: #e67e22;
-            --light-color: #f8f5ee;
-            --dark-color: #2c3e50;
-            --ramadan-green: #2ecc71;
-            --ramadan-moon: #f9e79f;
-        }
-        
+        /* تنسيقات عامة */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
             color: #333;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f8f5ee" width="100" height="100"/><path fill="%23e67e22" opacity="0.2" d="M0 0h100v100H0z"/><path fill="%238e44ad" opacity="0.1" d="M0 0h50v50H0z"/></svg>');
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo img {
-            height: 50px;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        
-        .logo span {
-            color: var(--secondary-color);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        nav a:hover {
-            color: var(--secondary-color);
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(46, 204, 113, 0.9), rgba(142, 68, 173, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f8f5ee" width="100" height="100"/><path fill="%232ecc71" opacity="0.2" d="M0 0h100v100H0z"/><path fill="%238e44ad" opacity="0.1" d="M0 0h50v50H0z"/></svg>');
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
             line-height: 1.6;
         }
         
-        .cta-button {
-            display: inline-block;
-            background-color: var(--secondary-color);
-            color: var(--dark-color);
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
         
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Books Section */
-        .section-title {
+        header {
+            background: linear-gradient(135deg, #4a6fa5, #2c3e50);
+            color: white;
             text-align: center;
-            margin: 40px 0 30px;
-            position: relative;
-            color: var(--primary-color);
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .section-title:after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
-            margin: 10px auto;
-            border-radius: 2px;
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        /* تنسيقات الصفوف الدراسية */
+        .grades-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .grade-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 20px;
+            padding: 25px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grade-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+        }
+        
+        .grade-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+        
+        .grade-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .grade-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* تنسيقات صفحة الكتب */
+        .books-page {
+            display: none;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        .books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .back-button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button:hover {
+            background-color: #3a5a80;
         }
         
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            gap: 20px;
         }
         
         .book-card {
-            background: white;
+            background: #f9f9f9;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
         }
         
         .book-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .book-cover {
-            height: 200px;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-        }
-        
-        .book-details {
-            padding: 20px;
-            flex-grow: 1;
-        }
-        
-        .book-details h3 {
-            margin-bottom: 10px;
-            color: var(--dark-color);
-        }
-        
-        .book-details p {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .book-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-        
-        /* Fanis Family Section */
-        .fanis-family {
-            background: linear-gradient(to right, #f8f5ee, #fff);
-            padding: 50px 0;
-            border-radius: 20px;
-            margin: 40px 0;
-            text-align: center;
-        }
-        
-        .family-members {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-        
-        .family-member {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            width: 180px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
-        
-        .family-member:hover {
-            transform: scale(1.05);
-        }
-        
-        .member-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5rem;
-        }
-        
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 50px 0;
-        }
-        
-        .feature {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .feature:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .feature i {
+        .book-icon {
             font-size: 2.5rem;
-            color: var(--primary-color);
+            color: #e74c3c;
             margin-bottom: 15px;
         }
         
-        .feature h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
+        .book-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
         }
         
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+        .download-btn {
+            background-color: #27ae60;
             color: white;
-            padding: 40px 0 20px;
-            margin-top: 60px;
-            border-radius: 20px 20px 0 0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+        .download-btn:hover {
+            background-color: #219653;
         }
         
-        .footer-section h3 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-section h3:after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary-color);
-        }
-        
-        .footer-section p {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Ramadan Decorations */
-        .decoration {
-            position: absolute;
-            z-index: 1;
-        }
-        
-        .moon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--ramadan-moon);
-            box-shadow: 0 0 20px var(--ramadan-moon);
-            top: 20px;
-            right: 10%;
-        }
-        
-        .star {
-            width: 30px;
-            height: 30px;
-            background: var(--secondary-color);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: twinkle 3s infinite alternate;
-        }
-        
-        @keyframes twinkle {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.2); }
-        }
-        
-        .star1 { top: 15%; left: 15%; animation-delay: 0.5s; }
-        .star2 { top: 25%; right: 20%; animation-delay: 1s; }
-        .star3 { bottom: 30%; left: 20%; animation-delay: 1.5s; }
-        .star4 { bottom: 20%; right: 25%; animation-delay: 2s; }
-        
-        /* Responsive Design */
+        /* تنسيقات للهواتف */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
+            .grades-container {
                 gap: 15px;
             }
             
-            nav ul {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
+            .grade-box {
+                width: 160px;
+                padding: 20px 15px;
             }
             
-            .hero h2 {
-                font-size: 2rem;
+            .grade-icon {
+                font-size: 2.5rem;
             }
             
             .books-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
         }
+        
+        @media (max-width: 480px) {
+            .grade-box {
+                width: 130px;
+                padding: 15px 10px;
+            }
+            
+            .grade-title {
+                font-size: 1.2rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-book-open fa-2x" style="color: var(--secondary-color);"></i>
-                <h1>مكتبة <span>فنانيس</span></h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#"><i class="fas fa-home"></i> الرئيسية</a></li>
-                    <li><a href="#"><i class="fas fa-book"></i> المكتبة</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> العائلة</a></li>
-                    <li><a href="#"><i class="fas fa-gift"></i> العروض</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
-                </ul>
-            </nav>
+        <div class="container">
+            <h1>منصة التعليم الإلكتروني</h1>
+            <p>اختر الصف الدراسي للوصول إلى الكتب التعليمية</p>
         </div>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="decoration moon"></div>
-        <div class="decoration star star1"></div>
-        <div class="decoration star star2"></div>
-        <div class="decoration star star3"></div>
-        <div class="decoration star star4"></div>
+    
+    <main class="container">
+        <div class="grades-container" id="gradesContainer">
+            <!-- سيتم إضافة الصناديق dynamically باستخدام JavaScript -->
+        </div>
         
-        <div class="container hero-content">
-            <h2>رمضان كريم مع منصة فنانيس للكتب التعليمية</h2>
-            <p>استمتع بأجواء رمضانية تعليمية مميزة مع عائلة فنانيس. اكتشف مجموعة واسعة من الكتب الإلكترونية المناسبة لجميع أفراد العائلة خلال شهر الخير والبركة.</p>
-            <a href="#" class="cta-button">ابدأ الرحلة الآن <i class="fas fa-arrow-left"></i></a>
+        <div class="books-page" id="booksPage">
+            <div class="books-header">
+                <h2 id="selectedGradeTitle">كتب الصف الرابع الابتدائي</h2>
+                <button class="back-button" id="backButton">
+                    <span>العودة إلى الصفوف</span>
+                    <i>←</i>
+                </button>
+            </div>
+            
+            <div class="books-grid" id="booksGrid">
+                <!-- سيتم إضافة الكتب dynamically -->
+            </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Featured Books Section -->
-    <div class="container">
-        <h2 class="section-title">كتب مميزة لهذا الشهر</h2>
-        <div class="books-grid">
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-details">
-                    <h3>قصص الأنبياء للصغار</h3>
-                    <p>مجموعة قصصية مصورة عن حياة الأنبياء مقدمة بأسلوب شيق يناسب الأطفال.</p>
-                    <div class="book-meta">
-                        <span>7-12 سنة</span>
-                        <span><i class="fas fa-star" style="color: var(--secondary-color);"></i> 4.8</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-details">
-                    <h3>العبادات في الإسلام</h3>
-                    <p>دليل مبسط لتعليم الأطفال أساسيات العبادات في الإسلام مع أنشطة تفاعلية.</p>
-                    <div class="book-meta">
-                        <span>5-10 سنة</span>
-                        <span><i class="fas fa-star" style="color: var(--secondary-color);"></i> 4.9</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-details">
-                    <h3>موسوعة العلوم للأطفال</h3>
-                    <p>رحلة شيقة في عالم العلوم والمعارف تناسب curious الأطفال بمحتوى تعليمي جذاب.</p>
-                    <div class="book-meta">
-                        <span>8-14 سنة</span>
-                        <span><i class="fas fa-star" style="color: var(--secondary-color);"></i> 4.7</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="book-card">
-                <div class="book-cover">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="book-details">
-                    <h3>القرآن الكريم المصور</h3>
-                    <p>نسخة مصورة من القرآن الكريم مع تفسير مبسط يناسب فهم الأطفال.</p>
-                    <div class="book-meta">
-                        <span>جميع الأعمار</span>
-                        <span><i class="fas fa-star" style="color: var(--secondary-color);"></i> 5.0</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // بيانات الصفوف والكتب
+        const gradesData = [
+            {
+                id: 1,
+                name: "الصف الرابع الابتدائي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic4.pdf" },
+                    { name: "الرياضيات", file: "math4.pdf" },
+                    { name: "العلوم", file: "science4.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english4.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social4.pdf" },
+                    { name: "التربية الدينية", file: "religion4.pdf" }
+                ]
+            },
+            {
+                id: 2,
+                name: "الصف الخامس الابتدائي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic5.pdf" },
+                    { name: "الرياضيات", file: "math5.pdf" },
+                    { name: "العلوم", file: "science5.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english5.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social5.pdf" },
+                    { name: "التربية الدينية", file: "religion5.pdf" }
+                ]
+            },
+            {
+                id: 3,
+                name: "الصف السادس الابتدائي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic6.pdf" },
+                    { name: "الرياضيات", file: "math6.pdf" },
+                    { name: "العلوم", file: "science6.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english6.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social6.pdf" },
+                    { name: "التربية الدينية", file: "religion6.pdf" }
+                ]
+            },
+            {
+                id: 4,
+                name: "الصف الأول الإعدادي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic7.pdf" },
+                    { name: "الرياضيات", file: "math7.pdf" },
+                    { name: "العلوم", file: "science7.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english7.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social7.pdf" },
+                    { name: "التربية الدينية", file: "religion7.pdf" }
+                ]
+            },
+            {
+                id: 5,
+                name: "الصف الثاني الإعدادي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic8.pdf" },
+                    { name: "الرياضيات", file: "math8.pdf" },
+                    { name: "العلوم", file: "science8.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english8.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social8.pdf" },
+                    { name: "التربية الدينية", file: "religion8.pdf" }
+                ]
+            },
+            {
+                id: 6,
+                name: "الصف الثالث الإعدادي",
+                books: [
+                    { name: "اللغة العربية", file: "arabic9.pdf" },
+                    { name: "الرياضيات", file: "math9.pdf" },
+                    { name: "العلوم", file: "science9.pdf" },
+                    { name: "اللغة الإنجليزية", file: "english9.pdf" },
+                    { name: "الدراسات الاجتماعية", file: "social9.pdf" },
+                    { name: "التربية الدينية", file: "religion9.pdf" }
+                ]
+            }
+        ];
 
-    <!-- Fanis Family Section -->
-    <div class="container">
-        <div class="fanis-family">
-            <h2 class="section-title">عائلة فنانيس الرمضانية</h2>
-            <p>تعرف على شخصيات عائلة فنانيس التي سترافقك في رحلتك التعليمية هذا الشهر</p>
-            
-            <div class="family-members">
-                <div class="family-member">
-                    <div class="member-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>فنان</h3>
-                    <p>الأب</p>
-                </div>
-                
-                <div class="family-member">
-                    <div class="member-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>فنونة</h3>
-                    <p>الأم</p>
-                </div>
-                
-                <div class="family-member">
-                    <div class="member-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>فنوش</h3>
-                    <p>الابن</p>
-                </div>
-                
-                <div class="family-member">
-                    <div class="member-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3>فنونة</h3>
-                    <p>الابنة</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        // عناصر DOM
+        const gradesContainer = document.getElementById('gradesContainer');
+        const booksPage = document.getElementById('booksPage');
+        const selectedGradeTitle = document.getElementById('selectedGradeTitle');
+        const booksGrid = document.getElementById('booksGrid');
+        const backButton = document.getElementById('backButton');
 
-    <!-- Features Section -->
-    <div class="container">
-        <h2 class="section-title">مميزات منصتنا الرمضانية</h2>
-        <div class="features">
-            <div class="feature">
-                <i class="fas fa-laptop"></i>
-                <h3>متاحة على جميع الأجهزة</h3>
-                <p>استمتع بالقراءة على هاتفك، حاسوبك أو جهازك اللوحي في أي وقت ومن أي مكان.</p>
-            </div>
-            
-            <div class="feature">
-                <i class="fas fa-star"></i>
-                <h3>محتوى تعليمي مميز</h3>
-                <p>كتب منتقاة بعناية لتلائم جميع الأعمار وتواكب المنهج التعليمي الحديث.</p>
-            </div>
-            
-            <div class="feature">
-                <i class="fas fa-gift"></i>
-                <h3>عروض رمضانية حصرية</h3>
-                <p>استفد من العروض الخاصة خلال شهر رمضان المبارك على الاشتراكات والكتب الجديدة.</p>
-            </div>
-        </div>
-    </div>
+        // إنشاء صناديق الصفوف
+        function renderGrades() {
+            gradesData.forEach(grade => {
+                const gradeBox = document.createElement('div');
+                gradeBox.className = 'grade-box';
+                gradeBox.setAttribute('data-grade-id', grade.id);
+                
+                gradeBox.innerHTML = `
+                    <div class="grade-icon">📚</div>
+                    <h3 class="grade-title">${grade.name}</h3>
+                    <p class="grade-desc">اضغط لعرض الكتب</p>
+                `;
+                
+                gradeBox.addEventListener('click', () => showBooks(grade.id));
+                gradesContainer.appendChild(gradeBox);
+            });
+        }
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>عن مكتبة فنانيس</h3>
-                    <p>منصة تعليمية تقدم محتوى ثقافياً وتعليمياً مميزاً للأطفال والعائلة خلال شهر رمضان المبارك وخلال العام.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <p><a href="#" style="color: white;">الكتب الجديدة</a></p>
-                    <p><a href="#" style="color: white;">الفئات العمرية</a></p>
-                    <p><a href="#" style="color: white;">العروض الخاصة</a></p>
-                    <p><a href="#" style="color: white;">الأسئلة الشائعة</a></p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>اتصل بنا</h3>
-                    <p><i class="fas fa-envelope"></i> info@fanisbooks.com</p>
-                    <p><i class="fas fa-phone"></i> +966 12 345 6789</p>
-                    <div style="margin-top: 15px;">
-                        <i class="fab fa-facebook-f" style="margin-right: 10px;"></i>
-                        <i class="fab fa-twitter" style="margin-right: 10px;"></i>
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                </div>
-            </div>
+        // عرض كتب صف معين
+        function showBooks(gradeId) {
+            const grade = gradesData.find(g => g.id === gradeId);
+            if (!grade) return;
             
-            <div class="footer-bottom">
-                <p>جميع الحقوق محفوظة &copy; 2023 مكتبة فنانيس الرمضانية | تهنئة منا بشهر الخير والبركة</p>
-            </div>
-        </div>
-    </footer>
+            // تحديث العنوان
+            selectedGradeTitle.textContent = `كتب ${grade.name}`;
+            
+            // مسح الكتب السابقة
+            booksGrid.innerHTML = '';
+            
+            // إضافة الكتب الجديدة
+            grade.books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                
+                bookCard.innerHTML = `
+                    <div class="book-icon">📖</div>
+                    <h3 class="book-title">${book.name}</h3>
+                    <button class="download-btn" onclick="downloadBook('${book.file}')">
+                        <span>تحميل</span>
+                        <i>⬇️</i>
+                    </button>
+                `;
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            // إظهار صفحة الكتب وإخفاء صفحة الصفوف
+            gradesContainer.style.display = 'none';
+            booksPage.style.display = 'block';
+        }
+
+        // محاكاة عملية التحميل
+        function downloadBook(filename) {
+            alert(`جاري تحميل الملف: ${filename}\n(هذه محاكاة للتحميل، في التطبيق الفعلي سيبدأ التحميل الفعلي)`);
+            // في التطبيق الحقيقي، هنا سيتم توجيه المستخدم إلى رابط التحميل
+        }
+
+        // العودة إلى صفحة الصفوف
+        backButton.addEventListener('click', () => {
+            booksPage.style.display = 'none';
+            gradesContainer.style.display = 'flex';
+        });
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', renderGrades);
+    </script>
 </body>
 </html>
