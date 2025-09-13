@@ -1,445 +1,374 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أنيميشن وايت بورد - مُصلَّح</title>
+    <title>خريطة أفريقيا التفاعلية</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); color: #333; min-height:100vh; padding:20px; display:flex; align-items:center; justify-content:center; }
-        .container { max-width:1000px; width:100%; background: rgba(255,255,255,0.98); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.18); overflow:hidden; }
-        header { text-align:center; padding:20px; background: linear-gradient(135deg,#6a11cb 0%, #2575fc 100%); color:white }
-        h1 { font-size:2rem }
-        .content { display:flex; flex-wrap:wrap }
-        .input-section { flex:1; min-width:300px; padding:18px; background:#fafafa; border-right:2px dashed #e6e6e6 }
-        .animation-section { flex:2; min-width:420px; padding:18px; background:white }
-        label { display:block; margin-bottom:8px; font-weight:600 }
-        textarea { width:100%; height:120px; padding:12px; border:2px solid #ddd; border-radius:8px; font-size:16px; resize:vertical }
-        .options { display:flex; gap:12px; margin-bottom:12px }
-        select, button { padding:10px 14px; border-radius:8px; border:none; font-size:15px; cursor:pointer }
-        select { background:white; border:2px solid #ddd; flex:1 }
-        button.primary { background: linear-gradient(135deg, #00b09b, #96c93d); color:white; font-weight:700 }
-        button.danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); color:white }
-        .canvas-container { border:3px dashed #6a11cb; border-radius:10px; min-height:360px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; background:white }
-        canvas { display:block; width:100%; height:100% }
-        .controls { display:flex; gap:12px; margin-top:12px }
-        .control-btn { padding:10px 12px; border-radius:8px; background:#f0f0f0; text-align:center; cursor:pointer; min-width:110px; font-weight:700 }
-        .examples { margin-top:18px; padding:12px; background:#f0f8ff; border-radius:8px }
-        .example-text { padding:10px; background:white; border-radius:8px; margin-bottom:8px; cursor:pointer; border-left:4px solid #6a11cb }
-        footer { text-align:center; padding:14px; background:#fafafa; color:#666 }
-        @media (max-width:768px) { .content{flex-direction:column} .input-section{border-right:none; border-bottom:2px dashed #e6e6e6} }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* تأثير المياه في الخلفية */
+        .water-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Cpath fill='%23000000' fill-opacity='0.1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,261.3C672,256,768,224,864,224C960,224,1056,256,1152,272C1248,288,1344,288,1392,288L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            opacity: 0.5;
+            z-index: -1;
+            animation: waterFlow 20s linear infinite;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .map-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .africa-map {
+            width: 100%;
+            height: 500px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .country {
+            fill: #2a6b8a;
+            stroke: #fff;
+            stroke-width: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .country:hover {
+            fill: #38b6ff;
+            transform: translateY(-2px);
+        }
+        
+        .info-panel {
+            position: fixed;
+            bottom: -400px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(0, 30, 60, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            transition: bottom 0.5s ease;
+        }
+        
+        .info-panel.active {
+            bottom: 0;
+        }
+        
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-title {
+            font-size: 1.8rem;
+            color: #38b6ff;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #ff6b6b;
+        }
+        
+        .info-content {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .info-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .info-content::-webkit-scrollbar-thumb {
+            background: #38b6ff;
+            border-radius: 4px;
+        }
+        
+        .country-info {
+            line-height: 1.6;
+        }
+        
+        .country-info p {
+            margin-bottom: 10px;
+        }
+        
+        .country-info strong {
+            color: #38b6ff;
+        }
+        
+        .water-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            background: linear-gradient(to top, rgba(26, 42, 108, 0.7), transparent);
+            pointer-events: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /*animations*/
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes waterFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .africa-map { height: 400px; }
+            .info-title { font-size: 1.5rem; }
+        }
+        
+        @media (max-width: 480px) {
+            h1 { font-size: 1.7rem; }
+            .africa-map { height: 350px; }
+            .info-panel { padding: 15px; }
+        }
     </style>
 </head>
 <body>
+    <div class="water-effect"></div>
+    
     <div class="container">
         <header>
-            <h1>أنيميشن وايت بورد — مُصلَّح</h1>
-            <p class="subtitle">تحسينات: دقة أعلى، تشغيل صحيح، استئناف، وتصدير فيديو WebM</p>
-        </header><div class="content">
-        <div class="input-section">
-            <div class="form-group">
-                <label for="text-input">أدخل النص:</label>
-                <textarea id="text-input" placeholder="اكتب نصك هنا..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>خيارات الأنيميشن:</label>
-                <div class="options">
-                    <select id="animation-style">
-                        <option value="writing">كتابة يدوية</option>
-                        <option value="typing">كتابة آلية</option>
-                        <option value="drawing">رسم خطي</option>
-                    </select>
-                    <select id="speed">
-                        <option value="slow">بطيء</option>
-                        <option value="medium" selected>متوسط</option>
-                        <option value="fast">سريع</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="options">
-                <button id="generate-btn" class="primary">إنشاء الأنيميشن</button>
-                <button id="clear-btn" class="danger">مسح الكل</button>
-            </div>
-
-            <div class="examples">
-                <h3>نماذج جاهزة:</h3>
-                <div class="example-text" data-text="مرحبًا بك في عالم الأنيميشن! هنا يمكنك رؤية النص يكتب نفسه بطريقة سحرية.">نموذج 1: ترحيب</div>
-                <div class="example-text" data-text="يمكن استخدام هذه الأداة لإنشاء عروض تقديمية مميزة، أو شرح الدروس، أو حتى إنشاء قصص مصورة.">نموذج 2: استخدامات</div>
-                <div class="example-text" data-text="جرب كتابة نصك الخاص وشاهد كيف يتحول إلى رسوم متحركة أمام عينيك!">نموذج 3: تجربة</div>
-            </div>
+            <h1>خريطة أفريقيا التفاعلية</h1>
+            <p class="subtitle">انقر على أي دولة لمعرفة المعلومات عنها</p>
+        </header>
+        
+        <div class="map-container">
+            <svg class="africa-map" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                <!-- تمثيل مبسط لخريطة أفريقيا -->
+                <path class="country" id="egypt" d="M550,150 L570,160 L580,180 L560,190 L540,180 Z" />
+                <path class="country" id="algeria" d="M400,120 L450,130 L440,180 L390,170 Z" />
+                <path class="country" id="nigeria" d="M420,280 L450,290 L440,320 L410,310 Z" />
+                <path class="country" id="south-africa" d="M470,500 L520,510 L510,560 L460,550 Z" />
+                <path class="country" id="kenya" d="M560,320 L590,330 L580,360 L550,350 Z" />
+                <path class="country" id="ethiopia" d="M570,280 L600,290 L590,320 L560,310 Z" />
+                <path class="country" id="morocco" d="M380,150 L410,160 L400,200 L370,190 Z" />
+                <path class="country" id="ghana" d="M410,270 L430,275 L425,300 L405,295 Z" />
+                <text x="550" y="170" fill="white" font-size="10">مصر</text>
+                <text x="420" y="150" fill="white" font-size="10">الجزائر</text>
+                <text x="430" y="300" fill="white" font-size="10">نيجيريا</text>
+                <text x="490" y="530" fill="white" font-size="10">جنوب أفريقيا</text>
+                <text x="570" y="340" fill="white" font-size="10">كينيا</text>
+                <text x="580" y="300" fill="white" font-size="10">إثيوبيا</text>
+                <text x="390" y="180" fill="white" font-size="10">المغرب</text>
+                <text x="415" y="285" fill="white" font-size="8">غانا</text>
+            </svg>
+            <div class="water-overlay"></div>
         </div>
-
-        <div class="animation-section">
-            <div class="canvas-container">
-                <canvas id="whiteboard"></canvas>
-            </div>
-
-            <div class="controls">
-                <div class="control-btn" id="play-btn">تشغيل</div>
-                <div class="control-btn" id="pause-btn">إيقاف</div>
-                <div class="control-btn" id="reset-btn">إعادة</div>
-                <div class="control-btn" id="export-btn">تصدير فيديو</div>
+    </div>
+    
+    <div class="info-panel" id="infoPanel">
+        <div class="info-header">
+            <h2 class="info-title" id="countryName">اسم الدولة</h2>
+            <button class="close-btn" id="closeBtn">×</button>
+        </div>
+        <div class="info-content">
+            <div class="country-info" id="countryInfo">
+                <!-- سيتم ملء المعلومات هنا ديناميكيًا -->
             </div>
         </div>
     </div>
-
+    
     <footer>
-        <p>صُمم لتحويل النص إلى رسوم متحركة — جرب التصدير على متصفح كروم أو إيدج لنتيجة WebM أفضل.</p>
+        <p>خريطة أفريقيا التفاعلية - تم إنشاؤها باستخدام HTML5 SVG و CSS3 و JavaScript</p>
     </footer>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const canvas = document.getElementById('whiteboard');
-        const ctx = canvas.getContext('2d');
-        const textInput = document.getElementById('text-input');
-        const generateBtn = document.getElementById('generate-btn');
-        const clearBtn = document.getElementById('clear-btn');
-        const playBtn = document.getElementById('play-btn');
-        const pauseBtn = document.getElementById('pause-btn');
-        const resetBtn = document.getElementById('reset-btn');
-        const exportBtn = document.getElementById('export-btn');
-        const animationStyle = document.getElementById('animation-style');
-        const speedSelect = document.getElementById('speed');
-        const exampleTexts = document.querySelectorAll('.example-text');
-
-        // state
-        let animationId = null;
-        let isPlaying = false;
-        let animationProgress = 0; // 0..100
-        let currentText = "";
-        let animationSpeed = 5; // will be set by speedSelect
-
-        // visual config
-        const fontSize = 28;
-        const fontFamily = 'Arial, "Segoe UI", sans-serif';
-        const lineHeight = 35;
-        const paddingX = 50;
-        const paddingY = 80;
-
-        // HiDPI scaling
-        let ratio = window.devicePixelRatio || 1;
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            const cssW = container.offsetWidth;
-            const cssH = container.offsetHeight;
-
-            canvas.style.width = cssW + 'px';
-            canvas.style.height = cssH + 'px';
-
-            canvas.width = Math.floor(cssW * ratio);
-            canvas.height = Math.floor(cssH * ratio);
-
-            // reset transform then scale to device pixel ratio
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.scale(ratio, ratio);
-
-            // redraw current state
-            drawBoardBackground();
-            redrawCurrent();
-        }
-
-        window.addEventListener('resize', () => { ratio = window.devicePixelRatio || 1; resizeCanvas(); });
-        window.addEventListener('load', resizeCanvas);
-
-        // Helpers
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function drawBoardBackground() {
-            const w = canvas.width / ratio;
-            const h = canvas.height / ratio;
-
-            // background
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, w, h);
-
-            // light grid
-            ctx.strokeStyle = '#eaeaea';
-            ctx.lineWidth = 0.5;
-            for (let y = 20; y < h; y += 20) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(w, y);
-                ctx.stroke();
+    <script>
+        // بيانات الدول
+        const countriesData = {
+            egypt: {
+                name: "مصر",
+                info: `<p><strong>العاصمة:</strong> القاهرة</p>
+                       <p><strong>عدد السكان:</strong> 104 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 1,010,408 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> العربية</p>
+                       <p><strong>العملة:</strong> الجنيه المصري</p>
+                       <p>تشتهر مصر بالأهرامات وأبو الهول وآثار الفراعنة، كما أنها تمتلك أحد أقدم الحضارات في العالم.</p>`
+            },
+            algeria: {
+                name: "الجزائر",
+                info: `<p><strong>العاصمة:</strong> الجزائر</p>
+                       <p><strong>عدد السكان:</strong> 43 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 2,381,741 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> العربية والأمازيغية</p>
+                       <p><strong>العملة:</strong> الدينار الجزائري</p>
+                       <p>الجزائر هي أكبر دولة في أفريقيا من حيث المساحة، وتشتهر بصناعة النفط والغاز الطبيعي.</p>`
+            },
+            nigeria: {
+                name: "نيجيريا",
+                info: `<p><strong>العاصمة:</strong> أبوجا</p>
+                       <p><strong>عدد السكان:</strong> 206 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 923,768 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> الإنجليزية</p>
+                       <p><strong>العملة:</strong> النايرا النيجيري</p>
+                       <p>نيجيريا هي الأكثر سكاناً في أفريقيا، وتعتبر قوة اقتصادية كبيرة في القارة.</p>`
+            },
+            "south-africa": {
+                name: "جنوب أفريقيا",
+                info: `<p><strong>العاصمة:</strong> بريتوريا (السلطة التنفيذية)</p>
+                       <p><strong>عدد السكان:</strong> 59 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 1,221,037 كم²</p>
+                       <p><strong>اللغات الرسمية:</strong> 11 لغة بما فيها الزولو والإنجليزية والأفريكانس</p>
+                       <p><strong>العملة:</strong> الراند الجنوب أفريقي</p>
+                       <p>جنوب أفريقيا هي واحدة من أكثر الدول تنوعاً في أفريقيا وتعرف باسم أمة قوس قزح.</p>`
+            },
+            kenya: {
+                name: "كينيا",
+                info: `<p><strong>العاصمة:</strong> نيروبي</p>
+                       <p><strong>عدد السكان:</strong> 53 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 580,367 كم²</p>
+                       <p><strong>اللغات الرسمية:</strong> السواحيلية والإنجليزية</p>
+                       <p><strong>العملة:</strong> الشيلينغ الكيني</p>
+                       <p>تشتهر كينيا بالمحميات الطبيعية والحياة البرية المتنوعة،尤其是الأسود والفيلة والزراف.</p>`
+            },
+            ethiopia: {
+                name: "إثيوبيا",
+                info: `<p><strong>العاصمة:</strong> أديس أبابا</p>
+                       <p><strong>عدد السكان:</strong> 114 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 1,104,300 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> الأمهرية</p>
+                       <p><strong>العملة:</strong> بير إثيوبي</p>
+                       <p>إثيوبيا هي ثاني أكبر دولة من حيث عدد السكان في أفريقيا ولم يتم استعمارها من قبل القوى الأوروبية.</p>`
+            },
+            morocco: {
+                name: "المغرب",
+                info: `<p><strong>العاصمة:</strong> الرباط</p>
+                       <p><strong>عدد السكان:</strong> 36 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 710,850 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> العربية والأمازيغية</p>
+                       <p><strong>العملة:</strong> الدرهم المغربي</p>
+                       <p>يقع المغرب في أقصى شمال غرب أفريقيا، ويتميز بمناخ mediterranean وتضاريس متنوعة بين الجبال والصحاري.</p>`
+            },
+            ghana: {
+                name: "غانا",
+                info: `<p><strong>العاصمة:</strong> أكرا</p>
+                       <p><strong>عدد السكان:</strong> 31 مليون نسمة</p>
+                       <p><strong>المساحة:</strong> 238,535 كم²</p>
+                       <p><strong>اللغة الرسمية:</strong> الإنجليزية</p>
+                       <p><strong>العملة:</strong> سيدي غاني</p>
+                       <p>كانت غانا أول دولة في أفريقيا جنوب الصحراء تحصل على الاستقلال من الاستعمار البريطاني في عام 1957.</p>`
             }
+        };
 
-            // frame
-            ctx.strokeStyle = '#6a11cb';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(5, 5, w - 10, h - 10);
-        }
+        // عناصر DOM
+        const countries = document.querySelectorAll('.country');
+        const infoPanel = document.getElementById('infoPanel');
+        const countryName = document.getElementById('countryName');
+        const countryInfo = document.getElementById('countryInfo');
+        const closeBtn = document.getElementById('closeBtn');
 
-        function wrapText(context, text, maxWidth, lineHeight) {
-            // assumes context.font already set
-            const words = text.split(' ');
-            const lines = [];
-            let currentLine = '';
-
-            for (let i = 0; i < words.length; i++) {
-                const word = words[i];
-                const testLine = currentLine ? currentLine + ' ' + word : word;
-                const metrics = context.measureText(testLine);
-                const testWidth = metrics.width;
-                if (testWidth > maxWidth && currentLine !== '') {
-                    lines.push(currentLine);
-                    currentLine = word;
-                } else {
-                    currentLine = testLine;
-                }
-            }
-            if (currentLine) lines.push(currentLine);
-            return lines;
-        }
-
-        function drawText(text) {
-            const w = canvas.width / ratio;
-            ctx.font = `${fontSize}px ${fontFamily}`;
-            ctx.fillStyle = '#333';
-            ctx.textBaseline = 'top';
-
-            const maxWidth = w - paddingX * 2;
-            const lines = wrapText(ctx, text, maxWidth, lineHeight);
-
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                ctx.fillText(line, paddingX, paddingY + i * lineHeight);
-            }
-
-            // update hand/caret position based on last line
-            if (lines.length > 0) {
-                const lastLine = lines[lines.length - 1];
-                const metrics = ctx.measureText(lastLine);
-                // position in CSS pixels
-                handPosition.x = paddingX + metrics.width + 10;
-                handPosition.y = paddingY + (lines.length - 1) * lineHeight - 10;
-            } else {
-                handPosition.x = paddingX;
-                handPosition.y = paddingY;
-            }
-        }
-
-        function redrawCurrent() {
-            // draw the text that corresponds to current animationProgress
-            const visibleCount = Math.floor(currentText.length * Math.min(animationProgress / 100, 1));
-            const visibleText = currentText.substring(0, visibleCount);
-            drawText(visibleText);
-        }
-
-        // simple linear interpolation for smoother hand movement
-        function lerp(a, b, t) { return a + (b - a) * t; }
-
-        // hand/caret state
-        let handPosition = { x: paddingX, y: paddingY };
-        let displayedHand = { x: paddingX, y: paddingY };
-
-        function drawHand() {
-            // smooth follow
-            displayedHand.x = lerp(displayedHand.x, handPosition.x, 0.25);
-            displayedHand.y = lerp(displayedHand.y, handPosition.y, 0.25);
-
-            ctx.save();
-            ctx.translate(displayedHand.x, displayedHand.y);
-
-            // hand circle
-            ctx.fillStyle = '#ffcc99';
-            ctx.beginPath();
-            ctx.arc(0, 0, 10, 0, Math.PI * 2);
-            ctx.fill();
-
-            // simple pen
-            ctx.fillStyle = '#333';
-            ctx.beginPath();
-            ctx.moveTo(8, -6);
-            ctx.lineTo(18, -16);
-            ctx.lineTo(22, -12);
-            ctx.lineTo(12, -2);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.restore();
-        }
-
-        function drawCaret() {
-            // caret blink based on time
-            const visible = Math.floor(Date.now() / 500) % 2 === 0;
-            if (!visible) return;
-            const x = displayedHand.x;
-            const y = displayedHand.y + 6;
-            ctx.fillRect(x, y, 2, fontSize - 6);
-        }
-
-        // main animation loop
-        function animate() {
-            // clear and draw frame
-            const w = canvas.width / ratio;
-            const h = canvas.height / ratio;
-            ctx.clearRect(0, 0, w, h);
-            drawBoardBackground();
-
-            const progress = Math.min(animationProgress / 100, 1);
-            const visibleCount = Math.floor(currentText.length * progress);
-            const visibleText = currentText.substring(0, visibleCount);
-
-            // style variations
-            if (animationStyle.value === 'drawing') {
-                // stroke style
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#222';
-                ctx.font = `${fontSize}px ${fontFamily}`;
-                const maxWidth = w - paddingX * 2;
-                const lines = wrapText(ctx, visibleText, maxWidth, lineHeight);
-                for (let i = 0; i < lines.length; i++) {
-                    ctx.strokeText(lines[i].trim(), paddingX, paddingY + i * lineHeight);
-                }
-            } else {
-                // fill style (writing / typing)
-                drawText(visibleText);
-            }
-
-            // draw hand or caret for writing/typing
-            if (animationStyle.value === 'writing') {
-                drawHand();
-            } else if (animationStyle.value === 'typing') {
-                drawCaret();
-            }
-
-            // advance progress
-            if (isPlaying && animationProgress < 100) {
-                animationProgress += animationSpeed / 10; // tweakable
-            }
-
-            if (isPlaying && animationProgress < 100) {
-                animationId = requestAnimationFrame(animate);
-            } else {
-                // finished or paused
-                isPlaying = false;
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                }
-            }
-        }
-
-        // UI handlers
-        generateBtn.addEventListener('click', () => {
-            const txt = textInput.value.trim();
-            if (!txt) { alert('يرجى إدخال نص أولاً'); return; }
-            currentText = txt;
-            animationProgress = 0;
-            // ensure speed variable consistent
-            switch (speedSelect.value) { case 'slow': animationSpeed = 3; break; case 'medium': animationSpeed = 5; break; case 'fast': animationSpeed = 10; break; }
-            isPlaying = true;
-            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-            animate();
-        });
-
-        clearBtn.addEventListener('click', () => {
-            textInput.value = '';
-            currentText = '';
-            animationProgress = 0;
-            isPlaying = false;
-            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-            clearCanvas();
-            drawBoardBackground();
-        });
-
-        playBtn.addEventListener('click', () => {
-            if (!currentText) return;
-            if (animationProgress >= 100) return; // already finished
-            if (isPlaying) return;
-            isPlaying = true;
-            animate();
-        });
-
-        pauseBtn.addEventListener('click', () => {
-            isPlaying = false;
-            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-        });
-
-        resetBtn.addEventListener('click', () => {
-            animationProgress = 0;
-            isPlaying = false;
-            if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-            clearCanvas();
-            drawBoardBackground();
-        });
-
-        speedSelect.addEventListener('change', () => {
-            switch (speedSelect.value) {
-                case 'slow': animationSpeed = 3; break;
-                case 'medium': animationSpeed = 5; break;
-                case 'fast': animationSpeed = 10; break;
-            }
-        });
-
-        exampleTexts.forEach(el => {
-            el.addEventListener('click', () => {
-                textInput.value = el.getAttribute('data-text');
-                // optional: auto-generate immediately
-                generateBtn.click();
+        // إضافة مستمعي الأحداث
+        countries.forEach(country => {
+            country.addEventListener('click', () => {
+                const countryId = country.id;
+                showCountryInfo(countryId);
             });
         });
 
-        // export video using MediaRecorder (WebM)
-        exportBtn.addEventListener('click', async () => {
-            if (!currentText) { alert('اكتب نص واضغط إنشاء قبل التصدير'); return; }
+        closeBtn.addEventListener('click', hideInfoPanel);
 
-            // if already finished, replay from start
-            animationProgress = 0;
-            isPlaying = true;
+        // وظائف العرض والإخفاء
+        function showCountryInfo(countryId) {
+            if (countriesData[countryId]) {
+                countryName.textContent = countriesData[countryId].name;
+                countryInfo.innerHTML = countriesData[countryId].info;
+                infoPanel.classList.add('active');
+            }
+        }
 
-            const fps = 60;
-            const stream = canvas.captureStream(fps);
-            const recordedChunks = [];
-            const mimeType = 'video/webm; codecs=vp9';
-            let options = {};
-            if (MediaRecorder.isTypeSupported(mimeType)) options = { mimeType };
+        function hideInfoPanel() {
+            infoPanel.classList.remove('active');
+        }
 
-            try {
-                const recorder = new MediaRecorder(stream, options);
-                recorder.ondataavailable = (e) => { if (e.data && e.data.size) recordedChunks.push(e.data); };
-                recorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'whiteboard-animation.webm';
-                    a.click();
-                    URL.revokeObjectURL(url);
-                };
-
-                recorder.start();
-                // play animation and wait for finish
-                if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-                animate();
-
-                // wait until animation stops
-                const waitFinish = () => new Promise((res) => {
-                    const check = setInterval(() => {
-                        if (!isPlaying) { clearInterval(check); res(); }
-                    }, 200);
-                });
-
-                await waitFinish();
-                // give recorder a moment
-                setTimeout(() => recorder.stop(), 200);
-            } catch (err) {
-                alert('التصدير غير مدعوم في متصفحك أو حدث خطأ. جرب كروم/إيدج.
-
-' + err.message); } });
-
-// initial sample text drawn once
-        window.addEventListener('load', () => {
-            currentText = "مرحبًا بك في أداة أنيميشن السبورة البيضاء! اكتب نصك واضغط على إنشاء الأنيميشن.";
-            animationProgress = 100; // show full text
-            resizeCanvas();
-            // redrawCurrent will be called from resize
+        // تأثيرات إضافية عند التمرير
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const waterEffect = document.querySelector('.water-effect');
+            waterEffect.style.backgroundPosition = `0 ${scrolled * 0.5}px`;
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
