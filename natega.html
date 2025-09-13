@@ -1,374 +1,385 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خريطة أفريقيا التفاعلية</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #fff;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-        
-        /* تأثير المياه في الخلفية */
-        .water-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Cpath fill='%23000000' fill-opacity='0.1' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,261.3C672,256,768,224,864,224C960,224,1056,256,1152,272C1248,288,1344,288,1392,288L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            background-size: cover;
-            opacity: 0.5;
-            z-index: -1;
-            animation: waterFlow 20s linear infinite;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 20px 0;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .map-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .africa-map {
-            width: 100%;
-            height: 500px;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .country {
-            fill: #2a6b8a;
-            stroke: #fff;
-            stroke-width: 1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .country:hover {
-            fill: #38b6ff;
-            transform: translateY(-2px);
-        }
-        
-        .info-panel {
-            position: fixed;
-            bottom: -400px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            background: rgba(0, 30, 60, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px 15px 0 0;
-            padding: 20px;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
-            z-index: 100;
-            transition: bottom 0.5s ease;
-        }
-        
-        .info-panel.active {
-            bottom: 0;
-        }
-        
-        .info-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .info-title {
-            font-size: 1.8rem;
-            color: #38b6ff;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .close-btn:hover {
-            color: #ff6b6b;
-        }
-        
-        .info-content {
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        .info-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .info-content::-webkit-scrollbar-thumb {
-            background: #38b6ff;
-            border-radius: 4px;
-        }
-        
-        .country-info {
-            line-height: 1.6;
-        }
-        
-        .country-info p {
-            margin-bottom: 10px;
-        }
-        
-        .country-info strong {
-            color: #38b6ff;
-        }
-        
-        .water-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 20%;
-            background: linear-gradient(to top, rgba(26, 42, 108, 0.7), transparent);
-            pointer-events: none;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        /*animations*/
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes waterFlow {
-            0% { background-position: 0 0; }
-            100% { background-position: 100% 0; }
-        }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .africa-map { height: 400px; }
-            .info-title { font-size: 1.5rem; }
-        }
-        
-        @media (max-width: 480px) {
-            h1 { font-size: 1.7rem; }
-            .africa-map { height: 350px; }
-            .info-panel { padding: 15px; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خريطة أفريقيا التفاعلية — نسخة أشيك</title>
+  <style>
+    :root{
+      --bg1:#0f1724; /* dark navy */
+      --accent:#2dd4bf; /* teal */
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(7,15,30,0.7);
+      --radius:16px;
+      --soft-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      --glass-border: rgba(255,255,255,0.06);
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    }*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  min-height:100%;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(45,212,191,0.06), transparent),
+              linear-gradient(180deg,var(--bg1), #071029 120%);
+  color:#e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
+  padding:32px;
+}
+
+.app{
+  max-width:1200px;
+  margin:0 auto;
+  height:calc(100vh - 64px);
+  display:grid;
+  grid-template-columns: 1fr 380px;
+  gap:24px;
+  align-items:stretch;
+}
+
+header{
+  grid-column:1/-1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:6px;
+}
+
+h1{font-size:1.4rem;margin:0}
+p.lead{margin:0;color:var(--muted);font-size:0.95rem}
+
+/* left: map area */
+.panel-map{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--radius);
+  padding:18px;
+  box-shadow: var(--soft-shadow);
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--glass-border);
+}
+
+.map-toolbar{
+  display:flex;gap:8px;align-items:center;margin-bottom:12px;
+}
+.search{
+  flex:1;background:var(--glass);border-radius:10px;padding:8px 12px;display:flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,0.03);
+}
+.search input{background:transparent;border:0;outline:none;color:inherit;font-size:0.95rem;width:100%}
+.btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;cursor:pointer}
+
+.map-wrap{width:100%;height:calc(100% - 96px);display:flex;align-items:center;justify-content:center}
+svg.africa{
+  width:100%;height:100%;max-height:860px;display:block;user-select:none
+}
+
+/* country styles */
+.country{fill:#0b3140;stroke:rgba(255,255,255,0.06);stroke-width:0.8;transition:transform 220ms,fill 220ms,filter 220ms}
+.country:hover{fill:linear-gradient(90deg,#0fb5a3,#38bdf8);transform:translateY(-4px);filter:brightness(1.06) saturate(1.1)}
+.country.active{fill:var(--accent);filter:drop-shadow(0 6px 18px rgba(45,212,191,0.12))}
+
+/* right: info panel */
+.panel-info{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:var(--soft-shadow);
+  border:1px solid var(--glass-border);
+  display:flex;flex-direction:column;gap:12px;overflow:hidden
+}
+
+.info-head{display:flex;align-items:center;gap:12px}
+.flag-placeholder{width:64px;height:44px;border-radius:8px;background:linear-gradient(90deg,#071832,#0f3a2f);display:flex;align-items:center;justify-content:center;font-weight:700;color:rgba(255,255,255,0.85)}
+
+.info-title{font-size:1.1rem;margin:0}
+.meta{color:var(--muted);font-size:0.9rem}
+
+.info-stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,0.02);padding:8px;border-radius:10px;min-width:calc(50% - 6px)}
+.stat strong{display:block;font-size:1rem}
+.stat span{font-size:0.85rem;color:var(--muted)}
+
+.info-body{flex:1;overflow:auto;padding-right:6px}
+.info-body p{line-height:1.6;color:#dceef7}
+.info-links{display:flex;gap:8px;flex-wrap:wrap}
+a.link{display:inline-block;padding:8px 10px;border-radius:10px;text-decoration:none;border:1px solid rgba(255,255,255,0.04);font-size:0.9rem}
+
+.small{font-size:0.82rem;color:var(--muted)}
+
+footer.app-foot{grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.8rem}
+
+/* panel slide-in (mobile) */
+@media (max-width:1000px){
+  .app{grid-template-columns:1fr;grid-auto-rows:auto;gap:16px;padding-bottom:12px}
+  .panel-map{order:2;height:620px}
+  .panel-info{order:1}
+  body{padding:16px}
+}
+
+/* tooltip */
+.tooltip{position:absolute;pointer-events:none;padding:8px 10px;border-radius:8px;background:var(--card);border:1px solid rgba(255,255,255,0.04);font-size:0.85rem;color:var(--muted);transform:translate(-50%,-140%);white-space:nowrap}
+
+/* subtle animations */
+.fade-in{animation:fadeIn .36s ease-out both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  </style>
 </head>
 <body>
-    <div class="water-effect"></div>
-    
-    <div class="container">
-        <header>
-            <h1>خريطة أفريقيا التفاعلية</h1>
-            <p class="subtitle">انقر على أي دولة لمعرفة المعلومات عنها</p>
-        </header>
-        
-        <div class="map-container">
-            <svg class="africa-map" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                <!-- تمثيل مبسط لخريطة أفريقيا -->
-                <path class="country" id="egypt" d="M550,150 L570,160 L580,180 L560,190 L540,180 Z" />
-                <path class="country" id="algeria" d="M400,120 L450,130 L440,180 L390,170 Z" />
-                <path class="country" id="nigeria" d="M420,280 L450,290 L440,320 L410,310 Z" />
-                <path class="country" id="south-africa" d="M470,500 L520,510 L510,560 L460,550 Z" />
-                <path class="country" id="kenya" d="M560,320 L590,330 L580,360 L550,350 Z" />
-                <path class="country" id="ethiopia" d="M570,280 L600,290 L590,320 L560,310 Z" />
-                <path class="country" id="morocco" d="M380,150 L410,160 L400,200 L370,190 Z" />
-                <path class="country" id="ghana" d="M410,270 L430,275 L425,300 L405,295 Z" />
-                <text x="550" y="170" fill="white" font-size="10">مصر</text>
-                <text x="420" y="150" fill="white" font-size="10">الجزائر</text>
-                <text x="430" y="300" fill="white" font-size="10">نيجيريا</text>
-                <text x="490" y="530" fill="white" font-size="10">جنوب أفريقيا</text>
-                <text x="570" y="340" fill="white" font-size="10">كينيا</text>
-                <text x="580" y="300" fill="white" font-size="10">إثيوبيا</text>
-                <text x="390" y="180" fill="white" font-size="10">المغرب</text>
-                <text x="415" y="285" fill="white" font-size="8">غانا</text>
-            </svg>
-            <div class="water-overlay"></div>
-        </div>
+  <div class="app">
+    <header>
+      <div>
+        <h1>خريطة أفريقيا التفاعلية — نسخة أشيك</h1>
+        <p class="lead">انقر أو اضغط على أي دولة للحصول على معلومات سريعة — مع بحث، تكبير/تصغير، وتظليل.</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn" id="zoomIn">+</button>
+        <button class="btn" id="zoomOut">−</button>
+        <button class="btn" id="resetZoom">⟲</button>
+      </div>
+    </header><div class="panel-map">
+  <div class="map-toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <input id="searchInput" placeholder="ابحث عن دولة (مثال: مصر)" aria-label="search country">
     </div>
-    
-    <div class="info-panel" id="infoPanel">
-        <div class="info-header">
-            <h2 class="info-title" id="countryName">اسم الدولة</h2>
-            <button class="close-btn" id="closeBtn">×</button>
-        </div>
-        <div class="info-content">
-            <div class="country-info" id="countryInfo">
-                <!-- سيتم ملء المعلومات هنا ديناميكيًا -->
-            </div>
-        </div>
+    <div style="min-width:120px;text-align:center;color:var(--muted);font-size:0.9rem">معلومات فورية</div>
+  </div>
+
+  <div class="map-wrap">
+    <!-- خريطة SVG مبسطة ومصقولة (مقاسات نسبية) -->
+    <!-- ملاحظة: لإصدار نهائي بدقة جغرافية كاملة استبدل الـ paths بخريطة SVG تفصيلية أو استخدم GeoJSON -->
+    <svg class="africa" viewBox="0 0 1000 1100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة أفريقيا">
+      <defs>
+        <filter id="softGlow"><feGaussianBlur stdDeviation="2.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- ocean background subtle -->
+      <rect x="0" y="0" width="1000" height="1100" fill="transparent"/>
+
+      <!-- NOTE: تم تبسيط الأشكال لتخفيض حجم الملف مع الاحتفاظ بتفاعل حقيقي -->
+
+      <!-- شمال أفريقيا -->
+      <path class="country" id="morocco" d="M110 120 C130 110 200 120 240 150 C280 180 300 220 310 250 C290 260 260 250 230 260 C190 230 140 200 120 170 Z" data-name="المغرب" />
+      <path class="country" id="algeria" d="M240 150 C320 140 380 160 420 210 C430 250 420 300 380 320 C320 340 260 330 230 290 C210 250 220 200 240 170 Z" data-name="الجزائر" />
+      <path class="country" id="tunisia" d="M430 140 C445 138 460 140 468 150 C455 155 440 152 432 148 Z" data-name="تونس" />
+      <path class="country" id="libya" d="M480 170 C520 160 600 170 640 200 C660 245 650 300 600 330 C560 340 520 330 490 300 C470 250 470 210 480 180 Z" data-name="ليبيا" />
+      <path class="country" id="egypt" d="M650 170 C700 180 760 210 780 240 C800 270 820 320 820 360 C800 380 740 370 720 360 C690 330 660 300 650 260 C640 220 640 190 650 170 Z" data-name="مصر" />
+
+      <!-- غرب أفريقيا -->
+      <path class="country" id="mauritania" d="M180 240 C200 230 240 230 270 250 C250 270 210 270 190 260 Z" data-name="موريتانيا" />
+      <path class="country" id="mali" d="M260 260 C300 260 340 280 360 310 C340 320 300 320 280 300 C260 280 260 270 260 260 Z" data-name="مالي" />
+      <path class="country" id="niger" d="M400 290 C440 300 480 330 500 360 C480 370 440 360 420 350 C400 330 390 310 400 290 Z" data-name="النيجر" />
+      <path class="country" id="senegal" d="M160 300 C180 300 200 310 210 330 C190 340 160 335 150 320 Z" data-name="السنغال" />
+      <path class="country" id="ghana" d="M360 360 C380 360 400 370 410 390 C390 400 360 395 350 380 Z" data-name="غانا" />
+      <path class="country" id="nigeria" d="M420 320 C450 320 480 340 490 370 C470 380 440 375 420 360 C410 340 410 330 420 320 Z" data-name="نيجيريا" />
+
+      <!-- شرق أفريقيا -->
+      <path class="country" id="sudan" d="M560 220 C590 230 620 250 640 280 C620 300 590 310 560 300 C540 270 540 240 560 220 Z" data-name="السودان" />
+      <path class="country" id="ethiopia" d="M610 270 C640 280 670 310 680 340 C660 350 630 350 610 330 C590 300 600 290 610 270 Z" data-name="إثيوبيا" />
+      <path class="country" id="kenya" d="M650 330 C680 340 710 370 720 400 C700 410 670 410 650 390 C640 360 640 340 650 330 Z" data-name="كينيا" />
+      <path class="country" id="somalia" d="M740 330 C770 340 800 360 820 390 C800 400 770 390 750 380 C740 360 740 345 740 330 Z" data-name="الصومال" />
+
+      <!-- وسط وجنوب أفريقيا -->
+      <path class="country" id="cameroon" d="M470 360 C490 360 510 380 520 400 C500 410 470 410 450 395 C440 380 450 370 470 360 Z" data-name="الكاميرون" />
+      <path class="country" id="congo" d="M520 430 C560 430 600 460 610 500 C580 520 520 520 490 500 C480 470 490 450 520 430 Z" data-name="جمهورية الكونغو" />
+      <path class="country" id="tanzania" d="M600 430 C630 430 660 450 680 480 C660 500 620 500 600 480 C590 455 590 440 600 430 Z" data-name="تنزانيا" />
+      <path class="country" id="angola" d="M420 520 C460 520 500 540 520 580 C480 600 420 590 400 560 C390 540 400 530 420 520 Z" data-name="أنغولا" />
+      <path class="country" id="south-africa" d="M480 680 C520 680 580 700 600 740 C560 760 480 760 440 740 C420 710 440 690 480 680 Z" data-name="جنوب أفريقيا" />
+
+      <!-- small labels (for accessibility) -->
+      <g font-size="11" fill="#bfeef0" style="pointer-events:none">
+        <text x="660" y="200">مصر</text>
+        <text x="430" y="150">الجزائر</text>
+        <text x="420" y="330">نيجيريا</text>
+        <text x="490" y="520">الكونغو</text>
+        <text x="470" y="700">جنوب أفريقيا</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- tooltip -->
+  <div id="tooltip" class="tooltip" style="display:none"></div>
+</div>
+
+<aside class="panel-info fade-in">
+  <div class="info-head">
+    <div class="flag-placeholder" id="flagPlaceholder">🌍</div>
+    <div>
+      <h2 class="info-title" id="infoName">اضغط على دولة</h2>
+      <div class="meta" id="infoSub">معلومات عامة سريعة</div>
     </div>
-    
-    <footer>
-        <p>خريطة أفريقيا التفاعلية - تم إنشاؤها باستخدام HTML5 SVG و CSS3 و JavaScript</p>
-    </footer>
+  </div>
 
-    <script>
-        // بيانات الدول
-        const countriesData = {
-            egypt: {
-                name: "مصر",
-                info: `<p><strong>العاصمة:</strong> القاهرة</p>
-                       <p><strong>عدد السكان:</strong> 104 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 1,010,408 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> العربية</p>
-                       <p><strong>العملة:</strong> الجنيه المصري</p>
-                       <p>تشتهر مصر بالأهرامات وأبو الهول وآثار الفراعنة، كما أنها تمتلك أحد أقدم الحضارات في العالم.</p>`
-            },
-            algeria: {
-                name: "الجزائر",
-                info: `<p><strong>العاصمة:</strong> الجزائر</p>
-                       <p><strong>عدد السكان:</strong> 43 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 2,381,741 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> العربية والأمازيغية</p>
-                       <p><strong>العملة:</strong> الدينار الجزائري</p>
-                       <p>الجزائر هي أكبر دولة في أفريقيا من حيث المساحة، وتشتهر بصناعة النفط والغاز الطبيعي.</p>`
-            },
-            nigeria: {
-                name: "نيجيريا",
-                info: `<p><strong>العاصمة:</strong> أبوجا</p>
-                       <p><strong>عدد السكان:</strong> 206 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 923,768 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> الإنجليزية</p>
-                       <p><strong>العملة:</strong> النايرا النيجيري</p>
-                       <p>نيجيريا هي الأكثر سكاناً في أفريقيا، وتعتبر قوة اقتصادية كبيرة في القارة.</p>`
-            },
-            "south-africa": {
-                name: "جنوب أفريقيا",
-                info: `<p><strong>العاصمة:</strong> بريتوريا (السلطة التنفيذية)</p>
-                       <p><strong>عدد السكان:</strong> 59 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 1,221,037 كم²</p>
-                       <p><strong>اللغات الرسمية:</strong> 11 لغة بما فيها الزولو والإنجليزية والأفريكانس</p>
-                       <p><strong>العملة:</strong> الراند الجنوب أفريقي</p>
-                       <p>جنوب أفريقيا هي واحدة من أكثر الدول تنوعاً في أفريقيا وتعرف باسم أمة قوس قزح.</p>`
-            },
-            kenya: {
-                name: "كينيا",
-                info: `<p><strong>العاصمة:</strong> نيروبي</p>
-                       <p><strong>عدد السكان:</strong> 53 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 580,367 كم²</p>
-                       <p><strong>اللغات الرسمية:</strong> السواحيلية والإنجليزية</p>
-                       <p><strong>العملة:</strong> الشيلينغ الكيني</p>
-                       <p>تشتهر كينيا بالمحميات الطبيعية والحياة البرية المتنوعة،尤其是الأسود والفيلة والزراف.</p>`
-            },
-            ethiopia: {
-                name: "إثيوبيا",
-                info: `<p><strong>العاصمة:</strong> أديس أبابا</p>
-                       <p><strong>عدد السكان:</strong> 114 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 1,104,300 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> الأمهرية</p>
-                       <p><strong>العملة:</strong> بير إثيوبي</p>
-                       <p>إثيوبيا هي ثاني أكبر دولة من حيث عدد السكان في أفريقيا ولم يتم استعمارها من قبل القوى الأوروبية.</p>`
-            },
-            morocco: {
-                name: "المغرب",
-                info: `<p><strong>العاصمة:</strong> الرباط</p>
-                       <p><strong>عدد السكان:</strong> 36 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 710,850 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> العربية والأمازيغية</p>
-                       <p><strong>العملة:</strong> الدرهم المغربي</p>
-                       <p>يقع المغرب في أقصى شمال غرب أفريقيا، ويتميز بمناخ mediterranean وتضاريس متنوعة بين الجبال والصحاري.</p>`
-            },
-            ghana: {
-                name: "غانا",
-                info: `<p><strong>العاصمة:</strong> أكرا</p>
-                       <p><strong>عدد السكان:</strong> 31 مليون نسمة</p>
-                       <p><strong>المساحة:</strong> 238,535 كم²</p>
-                       <p><strong>اللغة الرسمية:</strong> الإنجليزية</p>
-                       <p><strong>العملة:</strong> سيدي غاني</p>
-                       <p>كانت غانا أول دولة في أفريقيا جنوب الصحراء تحصل على الاستقلال من الاستعمار البريطاني في عام 1957.</p>`
-            }
-        };
+  <div class="info-stats" id="infoStats">
+    <div class="stat"><strong id="capital">-</strong><span>العاصمة</span></div>
+    <div class="stat"><strong id="population">-</strong><span>عدد السكان</span></div>
+    <div class="stat"><strong id="area">-</strong><span>المساحة</span></div>
+    <div class="stat"><strong id="currency">-</strong><span>العملة</span></div>
+  </div>
 
-        // عناصر DOM
-        const countries = document.querySelectorAll('.country');
-        const infoPanel = document.getElementById('infoPanel');
-        const countryName = document.getElementById('countryName');
-        const countryInfo = document.getElementById('countryInfo');
-        const closeBtn = document.getElementById('closeBtn');
+  <div class="info-body" id="infoBody">
+    <p class="small">يمكنك البحث عن دولة من صندوق البحث أعلاه أو استخدام أزرار التكبير/التصغير للتحكم بالخريطة. البيانات هنا مخزنة داخل ملف HTML كـ object — يمكن بسهولة ربطها بملف JSON خارجي أو API.</p>
+    <div id="countryDesc"></div>
+  </div>
 
-        // إضافة مستمعي الأحداث
-        countries.forEach(country => {
-            country.addEventListener('click', () => {
-                const countryId = country.id;
-                showCountryInfo(countryId);
-            });
-        });
+  <div class="info-links">
+    <a class="link" id="wikipediaLink" target="_blank" rel="noopener">عرض في ويكيبيديا</a>
+    <a class="link" id="moreLink" target="_blank" rel="noopener">مزيد من التفاصيل</a>
+  </div>
 
-        closeBtn.addEventListener('click', hideInfoPanel);
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div class="small">مصدر البيانات: تقديري داخل الكود. اطلب ربط API لو حبيت.</div>
+    <div>
+      <button class="btn" id="highlightBtn">تظليل</button>
+      <button class="btn" id="downloadBtn">تنزيل SVG</button>
+    </div>
+  </div>
+</aside>
 
-        // وظائف العرض والإخفاء
-        function showCountryInfo(countryId) {
-            if (countriesData[countryId]) {
-                countryName.textContent = countriesData[countryId].name;
-                countryInfo.innerHTML = countriesData[countryId].info;
-                infoPanel.classList.add('active');
-            }
-        }
+<footer class="app-foot">نسخة مصقولة — إذا عايز أضيف كل دول أفريقيا بالـ shapes الحقيقية أقدر أجيبلك ملف SVG كامل أو أستخدم GeoJSON + D3.</footer>
 
-        function hideInfoPanel() {
-            infoPanel.classList.remove('active');
-        }
+  </div>  <script>
+    // ----- بيانات بسيطة للقارات (كمثال) -----
+    const countriesData = {
+      egypt:{name:'مصر',capital:'القاهرة',population:'104,000,000',area:'1,010,408 كم²',currency:'الجنيه المصري',desc:'تشتهر مصر بالأهرامات ووادي النيل وتراث حضارة الفراعنة.' , wiki:'https://ar.wikipedia.org/wiki/%D9%85%D8%B5%D8%B1'},
+      algeria:{name:'الجزائر',capital:'الجزائر',population:'43,000,000',area:'2,381,741 كم²',currency:'الدينار الجزائري',desc:'أكبر دولة في أفريقيا من حيث المساحة وتتميز بثروات نفطية وغازية.',wiki:'https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D8%AC%D8%B2%D8%A7%D8%A6%D8%B1'},
+      nigeria:{name:'نيجيريا',capital:'أبوجا',population:'206,000,000',area:'923,768 كم²',currency:'النايرا',desc:'أكبر دول أفريقيا من حيث عدد السكان وقوة اقتصادية إقليمية.',wiki:'https://ar.wikipedia.org/wiki/%D9%86%D9%8A%D8%AC%D9%8A%D8%B1%D9%8A%D8%A7'},
+      morocco:{name:'المغرب',capital:'الرباط',population:'36,000,000',area:'710,850 كم²',currency:'الدرهم المغربي',desc:'بلد شمالي غربي يتمتع بتنوع جغرافي وغنى ثقافي.',wiki:'https://ar.wikipedia.org/wiki/%D8%A7%D9%84%D9%85%D8%BA%D8%B1%D8%A8'},
+      ethiopia:{name:'إثيوبيا',capital:'أديس أبابا',population:'114,000,000',area:'1,104,300 كم²',currency:'البير الإثيوبي',desc:'دولة ذات تاريخ عريق وثقافة ولغات متعددة.',wiki:'https://ar.wikipedia.org/wiki/%D8%A5%D9%8A%D8%AB%D9%8A%D9%88%D8%A8%D9%8A%D8%A7'},
+      kenya:{name:'كينيا',capital:'نيروبي',population:'53,000,000',area:'580,367 كم²',currency:'الشيلنغ الكيني',desc:'معروفة بمحميات الحياة البرية والمناظر الطبيعية الخلابة.',wiki:'https://ar.wikipedia.org/wiki/%D9%83%D9%8A%D9%86%D9%8A%D8%A7'},
+      ghana:{name:'غانا',capital:'أكرا',population:'31,000,000',area:'238,535 كم²',currency:'السيدي الغاني',desc:'أكبر اقتصادات غرب أفريقيا وذات تاريخ استقلال مبكر.',wiki:'https://ar.wikipedia.org/wiki/%D8%BA%D8%A7%D9%86%D8%A7'},
+      'south-africa':{name:'جنوب أفريقيا',capital:'بريتوريا',population:'59,000,000',area:'1,221,037 كم²',currency:'الراند',desc:'معروفة بتنوعها الثقافي والطبيعي.',wiki:'https://ar.wikipedia.org/wiki/%D8%AC%D9%86%D9%88%D8%A8_%D8%A3%D9%81%D8%B1%D9%8A%D9%82%D9%8A%D8%A7'}
+    };
 
-        // تأثيرات إضافية عند التمرير
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const waterEffect = document.querySelector('.water-effect');
-            waterEffect.style.backgroundPosition = `0 ${scrolled * 0.5}px`;
-        });
-    </script>
-</body>
+    // عناصر DOM
+    const svg = document.querySelector('svg.africa');
+    const countries = Array.from(svg.querySelectorAll('.country'));
+    const tooltip = document.getElementById('tooltip');
+    const infoName = document.getElementById('infoName');
+    const infoSub = document.getElementById('infoSub');
+    const capitalEl = document.getElementById('capital');
+    const populationEl = document.getElementById('population');
+    const areaEl = document.getElementById('area');
+    const currencyEl = document.getElementById('currency');
+    const countryDesc = document.getElementById('countryDesc');
+    const flagPlaceholder = document.getElementById('flagPlaceholder');
+    const wikipediaLink = document.getElementById('wikipediaLink');
+    const moreLink = document.getElementById('moreLink');
+
+    // search and zoom controls
+    const searchInput = document.getElementById('searchInput');
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+    const resetZoomBtn = document.getElementById('resetZoom');
+    const highlightBtn = document.getElementById('highlightBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // simple pan/zoom state
+    let viewBox = {x:0,y:0,w:1000,h:1100};
+    let zoomLevel = 1;
+
+    function setViewBox(){
+      svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+    }
+
+    function zoom(factor){
+      zoomLevel *= factor;
+      const w = 1000 / zoomLevel;
+      const h = 1100 / zoomLevel;
+      // center on mid
+      viewBox = {x:(1000-w)/2, y:(1100-h)/2, w, h};
+      setViewBox();
+    }
+
+    zoomInBtn.addEventListener('click', ()=>zoom(1.25));
+    zoomOutBtn.addEventListener('click', ()=>zoom(0.8));
+    resetZoomBtn.addEventListener('click', ()=>{zoomLevel=1;viewBox={x:0,y:0,w:1000,h:1100};setViewBox();});
+
+    // basic tooltip & click behavior
+    countries.forEach(c => {
+      c.addEventListener('mouseenter', e => {
+        const name = c.dataset.name || c.getAttribute('id');
+        tooltip.style.display = 'block';
+        tooltip.textContent = name;
+      });
+      c.addEventListener('mousemove', e => {
+        tooltip.style.left = (e.clientX - svg.getBoundingClientRect().left) + 'px';
+        tooltip.style.top = (e.clientY - svg.getBoundingClientRect().top) + 'px';
+      });
+      c.addEventListener('mouseleave', e => { tooltip.style.display='none'; });
+
+      c.addEventListener('click', e => {
+        // clear previous
+        countries.forEach(x=>x.classList.remove('active'));
+        c.classList.add('active');
+
+        const id = c.id;
+        const data = countriesData[id] || {name: c.dataset.name || id, capital:'—', population:'—', area:'—', currency:'—', desc:'لا توجد بيانات مفصلة لهذه الدولة بعد.'};
+
+        // fill info panel
+        infoName.textContent = data.name;
+        infoSub.textContent = data.capital ? `العاصمة: ${data.capital}` : '';
+        capitalEl.textContent = data.capital || '-';
+        populationEl.textContent = data.population || '-';
+        areaEl.textContent = data.area || '-';
+        currencyEl.textContent = data.currency || '-';
+        countryDesc.innerHTML = `<p>${data.desc || ''}</p>`;
+        wikipediaLink.href = data.wiki || '#';
+        moreLink.href = data.wiki || '#';
+
+        // placeholder flag (يمكن ربط بعلامات علم حقيقية لاحقًا)
+        flagPlaceholder.textContent = data.name.slice(0,2).toUpperCase();
+
+        // zoom toward the clicked country
+        const bbox = c.getBBox();
+        const padding = 40;
+        viewBox = {x: Math.max(0,bbox.x - padding), y: Math.max(0,bbox.y - padding), w: bbox.width + padding*2, h: bbox.height + padding*2};
+        // limit minimal box
+        if (viewBox.w < 250) { viewBox.w = 250 }
+        if (viewBox.h < 200) { viewBox.h = 200 }
+        svg.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+      });
+    });
+
+    // search
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) { countries.forEach(c=>c.style.opacity='1'); return }
+      countries.forEach(c=>{
+        const name = (c.dataset.name || c.id).toLowerCase();
+        if (name.includes(q)) { c.style.opacity='1'; c.classList.add('active'); } else { c.style.opacity='0.18'; c.classList.remove('active'); }
+      });
+    });
+
+    // highlight button toggles some effect
+    highlightBtn.addEventListener('click', ()=>{
+      countries.forEach((c,i)=>{
+        c.style.transitionDelay = (i*8)+'ms';
+        c.classList.toggle('active');
+      });
+    });
+
+    // download SVG
+    downloadBtn.addEventListener('click', ()=>{
+      const serializer = new XMLSerializer();
+      const source = serializer.serializeToString(svg);
+      const blob = new Blob([source], {type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'africa-map.svg'; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // responsive tooltip repositioning
+    window.addEventListener('resize', ()=>{ tooltip.style.display='none' });
+
+    // keyboard: quick search focus
+    window.addEventListener('keydown', e=>{ if(e.key === '/'){ e.preventDefault(); searchInput.focus(); }});
+
+    // initial viewBox
+    setViewBox();
+  </script></body>
 </html>
