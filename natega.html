@@ -1,247 +1,68 @@
-<!--
-وايت بورد أنيميشن بسيط بملف HTML واحد
-ميزات:
-- رسم خطوط SVG مع تأثير stroke-dasharray لإظهار أنها تُرسَم
-- عنصر "يد" يتبع مسار الرسم باستخدام getPointAtLength
-- تحكمات: تشغيل/إيقاف/إعادة تشغيل وتغيير السرعة
-- قابل للتعديل: استبدل المسارات (path) بـ SVG من رسوماتك أو نصوص محولة لـ paths
-
-حفظ الملف باسم: whiteboard-hand.html ثم افتحه في المتصفح
---><!doctype html>
-
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>وايت بورد أنيميشن — يد ترسم</title>
+  <meta charset="UTF-8">
+  <title>تحضير درس</title>
   <style>
-    :root{--bg:#ffffff;--ink:#111;--accent:#2b6cb0}
-    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans Arabic',sans-serif;background:var(--bg);color:var(--ink)}
-    .stage{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:flex-start;padding:18px}
-    .board{width:920px;max-width:95%;height:540px;background:linear-gradient(180deg,#fff 0,#fbfbfb 100%);border:1px solid #eee;box-shadow:0 6px 24px rgba(11,22,50,0.06);position:relative;overflow:hidden;border-radius:8px}
-    /* hand */
-    .hand{position:absolute;width:48px;height:48px;transform:translate(-50%,-50%);pointer-events:none;z-index:30;filter:drop-shadow(0 6px 8px rgba(0,0,0,0.12));}
-    .hand .palm{font-size:40px;line-height:48px;text-align:center}/* controls */
-.controls{display:flex;gap:8px;align-items:center}
-button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
-button.secondary{background:#f3f4f6;color:#111;font-weight:600}
-label{display:inline-flex;align-items:center;gap:8px}
-input[type=range]{width:180px}
-
-/* svg paths style */
-svg{width:100%;height:100%}
-.ink{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.ink.thick{stroke-width:5}
-
-/* subtle paper texture lines */
-.paper-lines{position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(0,0,0,0.02) 1px, transparent 1px);background-size:100% 28px;opacity:0.6}
-
-/* small caption */
-.meta{font-size:13px;color:#666}
-
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      text-align: center;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
-  <div class="stage">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:920px;max-width:95%;">
-      <div>
-        <h2 style="margin:0 0 6px 0">وايت بورد أنيميشن — يد ترسم</h2>
-        <div class="meta">حفظ الملف وافتحه بالمتصفح. استبدل الـ &lt;path&gt; بالـ SVG الخاص بك.</div>
-      </div>
-      <div class="controls">
-        <button id="playBtn">تشغيل</button>
-        <button id="pauseBtn" class="secondary">إيقاف</button>
-        <button id="restartBtn" class="secondary">إعادة</button>
-        <label>السرعة <input id="speedRange" type="range" min="0.25" max="2" step="0.05" value="1"> <span id="speedVal">1x</span></label>
-      </div>
-    </div><div class="board" id="board">
-  <div class="paper-lines"></div>
 
-  <!-- اليد: يمكن استبدالها بصورة أو أيقونة أفضل -->
-  <div class="hand" id="hand" aria-hidden="true">
-    <div class="palm">✍️</div>
-  </div>
+  <table>
+    <tr>
+      <th>اليوم</th>
+      <th>التاريخ</th>
+      <th>الصف</th>
+      <th>الفصل</th>
+      <th>الفترة</th>
+      <th>المادة</th>
+      <th>عنوان الدرس</th>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 
-  <!-- هنا الـ SVG: استبدل المسارات بمحتواك - كل path يمثل خطوة رسم واحدة -->
-  <svg id="svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-    <g transform="translate(20,20)">
-      <!-- مثال: رسم مربع (Path1) -->
-      <path id="p1" class="ink thick" d="M40 40 L400 40 L400 300 L40 300 Z" />
+  <br>
 
-      <!-- مثال: رسم سهم ونص (Path2) -->
-      <path id="p2" class="ink" d="M460 120 C540 40, 740 40, 820 120" />
-      <path id="p2a" class="ink" d="M780 80 L820 120 L780 160" />
+  <table>
+    <tr>
+      <th>تمهيد الدرس / تهيئة</th>
+      <th>الأهداف التعليمية</th>
+      <th>الأنشطة التعليمية</th>
+      <th>الوسائل التعليمية</th>
+      <th>المصادر</th>
+      <th>أساليب التقويم</th>
+      <th>التوسع والإثراء المنهجي</th>
+    </tr>
+    <tr>
+      <td style="height:100px;"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 
-      <!-- مثال: كتابة كلمة (Path3) - هنا مسار بسيط يمثل حروف مرسومة -->
-      <path id="p3" class="ink" d="M120 360 q40 -40 80 0 t80 0" />
-
-      <!-- مثال: دائرة كمثال توضيحي -->
-      <path id="p4" class="ink" d="M520 320 a80 80 0 1 1 -0.1 0" />
-
-      <!-- اضف مسارات اخرى حسب الحاجة -->
-    </g>
-  </svg>
-</div>
-
-  </div>  <script>
-    // إعداد المسارات بالترتيب المراد رسمه
-    const pathIds = ['p1','p2','p2a','p3','p4']
-    const paths = pathIds.map(id => document.getElementById(id)).filter(Boolean)
-    const hand = document.getElementById('hand')
-    const playBtn = document.getElementById('playBtn')
-    const pauseBtn = document.getElementById('pauseBtn')
-    const restartBtn = document.getElementById('restartBtn')
-    const speedRange = document.getElementById('speedRange')
-    const speedVal = document.getElementById('speedVal')
-
-    let animations = []
-    let currentAnimIndex = 0
-    let globalSpeed = parseFloat(speedRange.value)
-    let running = false
-
-    function preparePaths(){
-      animations = []
-      paths.forEach((p, idx) => {
-        const len = p.getTotalLength()
-        // اعداد الخط ليخفيه بالكامل
-        p.style.transition = 'none'
-        p.style.strokeDasharray = len
-        p.style.strokeDashoffset = len
-        // force reflow
-        p.getBoundingClientRect()
-
-        // كل animation يخزن البيانات لبدء التشغيل لاحقًا
-        animations.push({el:p,len:len,delay: idx * 300})
-      })
-    }
-
-    // دالة تحريك مسار واحد مع تحريك اليد على طول الطريق
-    function animatePath(item, duration){
-      return new Promise(resolve => {
-        const {el,len,delay} = item
-        const totalDuration = duration // ms
-        el.style.transition = `stroke-dashoffset ${totalDuration}ms linear ${0}ms`
-        // أنيميشن اليد: تحديث موقعها على طول المسار
-        let start = null
-        function step(timestamp){
-          if (!start) start = timestamp
-          const elapsed = timestamp - start
-          const t = Math.min(1, elapsed / totalDuration)
-
-          // تحديث stroke
-          const offset = Math.round((1 - t) * len)
-          el.style.strokeDashoffset = offset
-
-          // موقع اليد
-          try{
-            const point = el.getPointAtLength(t * len)
-            // el موجود داخل g مع translate(20,20) لذلك نضيف إزاحة
-            const svg = document.getElementById('svg')
-            const ctm = svg.getScreenCTM()
-            const x = point.x * ctm.a + ctm.e
-            const y = point.y * ctm.d + ctm.f
-            hand.style.left = x + 'px'
-            hand.style.top = y + 'px'
-          }catch(e){ /* some paths (e.g., invisible) may fail */ }
-
-          if (t < 1 && running) requestAnimationFrame(step)
-          else {
-            // تأكد من وضع اليد في نهاية المسار
-            try{ const p = el.getPointAtLength(len); const svg = document.getElementById('svg'); const ctm = svg.getScreenCTM(); hand.style.left = (p.x * ctm.a + ctm.e)+'px'; hand.style.top = (p.y * ctm.d + ctm.f)+'px' }catch(e){}
-            resolve()
-          }
-        }
-
-        // ابدأ بعد تأخير قصير
-        setTimeout(()=>{
-          if (!running) return resolve()
-          requestAnimationFrame(step)
-        }, delay / globalSpeed)
-      })
-    }
-
-    async function runAll(){
-      running = true
-      playBtn.disabled = true
-      pauseBtn.disabled = false
-
-      for (let i = currentAnimIndex; i < animations.length; i++){
-        if (!running) break
-        const item = animations[i]
-        // مدة مرنة بحسب طول الخط
-        const dur = Math.max(400, Math.min(2500, item.len * 2)) / globalSpeed
-        await animatePath(item, dur)
-        currentAnimIndex = i + 1
-      }
-
-      running = false
-      playBtn.disabled = false
-      pauseBtn.disabled = true
-    }
-
-    function pauseAll(){
-      running = false
-      // إزالة الانتقالات لجعل الرسم متوقف في الوضع الحالي
-      animations.forEach(a => {
-        if (a && a.el){
-          const style = window.getComputedStyle(a.el)
-          // نأخذ قيمة offset الحالية
-          const dash = style.strokeDashoffset
-          a.el.style.transition = 'none'
-          a.el.style.strokeDashoffset = dash
-        }
-      })
-      playBtn.disabled = false
-      pauseBtn.disabled = true
-    }
-
-    function restart(){
-      pauseAll()
-      preparePaths()
-      currentAnimIndex = 0
-      // ضع اليد خارج اللوحة أولاً
-      hand.style.left = '-100px'
-      hand.style.top = '-100px'
-    }
-
-    // إعداد أولي
-    preparePaths()
-
-    playBtn.addEventListener('click', ()=>{
-      if (!running) runAll()
-    })
-    pauseBtn.addEventListener('click', ()=>{
-      pauseAll()
-    })
-    restartBtn.addEventListener('click', ()=>{
-      restart()
-    })
-
-    speedRange.addEventListener('input', ()=>{
-      globalSpeed = parseFloat(speedRange.value)
-      speedVal.textContent = globalSpeed.toFixed(2) + 'x'
-    })
-
-    // جعل الأزرار الافتراضية
-    pauseBtn.disabled = true
-
-    // استجابة لإعادة تحجيم الشاشة: نعيد وضع اليد حسب آخر نقطة مرسومة
-    window.addEventListener('resize', ()=>{
-      try{
-        // استخدم آخر مسار مكتمل أو الجاري
-        const lastIndex = Math.max(0, currentAnimIndex-1)
-        const candidate = animations[lastIndex]
-        if (candidate){
-          const p = candidate.el.getPointAtLength(candidate.el.getTotalLength())
-          const svg = document.getElementById('svg')
-          const ctm = svg.getScreenCTM()
-          hand.style.left = (p.x * ctm.a + ctm.e)+'px'
-          hand.style.top = (p.y * ctm.d + ctm.f)+'px'
-        }
-      }catch(e){}
-    })
-
-    // نصيحة: لتحويل نص إلى paths يمكنك استخدام Inkscape أو Adobe Illustrator -> Convert to Path
-
-  </script></body>
+</body>
 </html>
