@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة تحميل مقاطع من يوتيوب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input, button {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        input {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid transparent;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border: 2px solid #4a9eff;
+        }
+        
+        button {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .time-inputs > div {
+            flex: 1;
+        }
+        
+        .video-preview {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .video-preview iframe {
+            width: 100%;
+            height: 315px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .instructions h2 {
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+        
+        .instructions ol {
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .note {
+            background-color: rgba(255, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-right: 4px solid #ff4b2b;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .time-inputs {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>أداة تحميل مقاطع من فيديو يوتيوب</h1>
+        
+        <div class="input-group">
+            <label for="videoUrl">رابط فيديو يوتيوب:</label>
+            <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." dir="ltr">
+        </div>
+        
+        <div class="time-inputs">
+            <div>
+                <label for="startTime">وقت البداية (بالثواني):</label>
+                <input type="number" id="startTime" placeholder="0" min="0">
+            </div>
+            <div>
+                <label for="endTime">وقت النهاية (بالثواني):</label>
+                <input type="number" id="endTime" placeholder="60" min="1">
+            </div>
+        </div>
+        
+        <button id="previewBtn">معاينة المقطع</button>
+        <button id="downloadBtn">تحميل المقطع</button>
+        
+        <div class="video-preview" id="videoPreview">
+            <!-- سيتم عرض المعاينة هنا -->
+        </div>
+        
+        <div class="instructions">
+            <h2>كيفية الاستخدام:</h2>
+            <ol>
+                <li>انسخ رابط فيديو يوتيوب من المتصفح</li>
+                <li>الصق الرابط في الحقل المخصص</li>
+                <li>حدد وقت البداية والنهاية للمقطع الذي تريد تحميله (بالثواني)</li>
+                <li>انقر على "معاينة المقطع" للتأكد من الجزء المطلوب</li>
+                <li>انقر على "تحميل المقطع" لبدء التحميل</li>
+            </ol>
+        </div>
+        
+        <div class="note">
+            <strong>ملاحظة:</strong> هذه الأداة تعمل من خلال المتصفح فقط ولا يمكنها تحميل الفيديوهات مباشرة بسبب قيود أمنية. لتحميل مقاطع يوتيوب، تحتاج إلى استخدام أدوات خاصة أو خدمات خارجية.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('previewBtn').addEventListener('click', function() {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            
+            if (!videoUrl) {
+                alert('يرجى إدخال رابط فيديو يوتيوب');
+                return;
+            }
+            
+            // استخراج معرف الفيديو من الرابط
+            const videoId = extractVideoId(videoUrl);
+            
+            if (!videoId) {
+                alert('رابط يوتيوب غير صالح');
+                return;
+            }
+            
+            // بناء رابط التشغيل مع وقت البداية
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime || 0}&end=${endTime || 60}`;
+            
+            // عرض المعاينة
+            const previewDiv = document.getElementById('videoPreview');
+            previewDiv.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
+        });
+        
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            alert('للأسف، تحميل فيديوهات يوتيوب مباشرة من المتصفح غير ممكن بسبب قيود أمنية. يمكنك استخدام أدوات خارجية مثل yt-dlp أو مواقع متخصصة لتحميل مقاطع يوتيوب.');
+        });
+        
+        // دالة لاستخراج معرف الفيديو من رابط يوتيوب
+        function extractVideoId(url) {
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[7].length === 11) ? match[7] : false;
+        }
+    </script>
+</body>
+</html>
