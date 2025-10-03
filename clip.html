@@ -3,231 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة تحميل مقاطع من يوتيوب</title>
+    <title>محول PDF - تحويل PDF إلى صور والعكس</title>
     <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
             min-height: 100vh;
             padding: 20px;
-            line-height: 1.6;
         }
-        
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-        
-        h1 {
+
+        header {
             text-align: center;
+            padding: 30px 0;
             margin-bottom: 30px;
-            font-size: 2.2rem;
-            color: #fff;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-        
-        .input-group {
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+
+        .converter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .converter-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .converter-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
         }
-        
-        label {
+
+        .section-title i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-left: 10px;
+        }
+
+        .section-title h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-area p {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: #5a08a0;
+        }
+
+        .preview-container {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .preview-area {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--light);
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .options {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .option-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .option-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
+            color: var(--dark);
         }
-        
-        input, button {
+
+        .option-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
         }
-        
-        input {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border: 2px solid transparent;
-            transition: border 0.3s;
-        }
-        
-        input:focus {
-            outline: none;
-            border: 2px solid #4a9eff;
-        }
-        
-        button {
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-top: 10px;
-        }
-        
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .time-inputs {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .time-inputs > div {
-            flex: 1;
-        }
-        
-        .video-preview {
-            margin-top: 30px;
+
+        .loading {
+            display: none;
             text-align: center;
-        }
-        
-        .video-preview iframe {
-            width: 100%;
-            height: 315px;
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .instructions {
-            background-color: rgba(255, 255, 255, 0.15);
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
         }
-        
-        .instructions h2 {
-            margin-bottom: 15px;
-            color: #ffcc00;
+
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
         }
-        
-        .instructions ol {
-            padding-right: 20px;
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        
-        .instructions li {
-            margin-bottom: 10px;
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: var(--dark);
+            opacity: 0.7;
+            font-size: 0.9rem;
         }
-        
-        .note {
-            background-color: rgba(255, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-right: 4px solid #ff4b2b;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .time-inputs {
+
+        @media (max-width: 768px) {
+            .converter-container {
                 flex-direction: column;
-                gap: 10px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>أداة تحميل مقاطع من فيديو يوتيوب</h1>
-        
-        <div class="input-group">
-            <label for="videoUrl">رابط فيديو يوتيوب:</label>
-            <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." dir="ltr">
-        </div>
-        
-        <div class="time-inputs">
-            <div>
-                <label for="startTime">وقت البداية (بالثواني):</label>
-                <input type="number" id="startTime" placeholder="0" min="0">
+        <header>
+            <h1>محول PDF الاحترافي</h1>
+            <p>قم بتحويل ملفات PDF إلى صور والعكس بسهولة وسرعة</p>
+        </header>
+
+        <div class="converter-container">
+            <!-- قسم تحويل PDF إلى صور -->
+            <div class="converter-section">
+                <div class="section-title">
+                    <i class="fas fa-file-pdf"></i>
+                    <h2>PDF إلى صور</h2>
+                </div>
+                
+                <div class="upload-area" id="pdfUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>اسحب وأفلت ملف PDF هنا أو انقر للاختيار</p>
+                    <input type="file" id="pdfInput" accept=".pdf" style="display: none;">
+                    <button class="btn" id="selectPdfBtn">اختر ملف PDF</button>
+                </div>
+                
+                <div class="options">
+                    <div class="option-group">
+                        <label for="imageFormat">صيغة الصورة:</label>
+                        <select id="imageFormat">
+                            <option value="jpg">JPG</option>
+                            <option value="png">PNG</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="imageQuality">جودة الصورة:</label>
+                        <select id="imageQuality">
+                            <option value="1">عالية</option>
+                            <option value="0.8">متوسطة</option>
+                            <option value="0.6">منخفضة</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary" id="convertToImagesBtn" style="width: 100%; margin-top: 20px;">تحويل إلى صور</button>
+                
+                <div class="loading" id="pdfToImageLoading">
+                    <div class="loading-spinner"></div>
+                    <p>جاري تحويل PDF إلى صور...</p>
+                </div>
+                
+                <div class="preview-container" id="imagesPreviewContainer">
+                    <h3 class="preview-title">معاينة الصور</h3>
+                    <div class="preview-area image-preview" id="imagesPreview">
+                        <!-- سيتم إضافة الصور هنا -->
+                    </div>
+                    <button class="btn" id="downloadImagesBtn" style="width: 100%; margin-top: 15px;">تحميل الصور</button>
+                </div>
             </div>
-            <div>
-                <label for="endTime">وقت النهاية (بالثواني):</label>
-                <input type="number" id="endTime" placeholder="60" min="1">
+
+            <!-- قسم تحويل الصور إلى PDF -->
+            <div class="converter-section">
+                <div class="section-title">
+                    <i class="fas fa-images"></i>
+                    <h2>الصور إلى PDF</h2>
+                </div>
+                
+                <div class="upload-area" id="imagesUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>اسحب وأفلت الصور هنا أو انقر للاختيار</p>
+                    <input type="file" id="imagesInput" accept="image/*" multiple style="display: none;">
+                    <button class="btn" id="selectImagesBtn">اختر الصور</button>
+                </div>
+                
+                <div class="preview-container" id="imagesToPdfPreviewContainer">
+                    <h3 class="preview-title">الصور المختارة</h3>
+                    <div class="preview-area image-preview" id="imagesToPdfPreview">
+                        <!-- سيتم إضافة الصور هنا -->
+                    </div>
+                </div>
+                
+                <div class="options">
+                    <div class="option-group">
+                        <label for="pageSize">حجم الصفحة:</label>
+                        <select id="pageSize">
+                            <option value="a4">A4</option>
+                            <option value="letter">Letter</option>
+                            <option value="legal">Legal</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="pageOrientation">اتجاه الصفحة:</label>
+                        <select id="pageOrientation">
+                            <option value="portrait">عمودي</option>
+                            <option value="landscape">أفقي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-secondary" id="convertToPdfBtn" style="width: 100%; margin-top: 20px;">تحويل إلى PDF</button>
+                
+                <div class="loading" id="imagesToPdfLoading">
+                    <div class="loading-spinner"></div>
+                    <p>جاري تحويل الصور إلى PDF...</p>
+                </div>
+                
+                <div class="preview-container" id="pdfPreviewContainer">
+                    <h3 class="preview-title">معاينة PDF</h3>
+                    <div class="preview-area" id="pdfPreview">
+                        <!-- سيتم إضافة معاينة PDF هنا -->
+                    </div>
+                    <button class="btn" id="downloadPdfBtn" style="width: 100%; margin-top: 15px;">تحميل PDF</button>
+                </div>
             </div>
         </div>
-        
-        <button id="previewBtn">معاينة المقطع</button>
-        <button id="downloadBtn">تحميل المقطع</button>
-        
-        <div class="video-preview" id="videoPreview">
-            <!-- سيتم عرض المعاينة هنا -->
-        </div>
-        
-        <div class="instructions">
-            <h2>كيفية الاستخدام:</h2>
-            <ol>
-                <li>انسخ رابط فيديو يوتيوب من المتصفح</li>
-                <li>الصق الرابط في الحقل المخصص</li>
-                <li>حدد وقت البداية والنهاية للمقطع الذي تريد تحميله (بالثواني)</li>
-                <li>انقر على "معاينة المقطع" للتأكد من الجزء المطلوب</li>
-                <li>انقر على "تحميل المقطع" لبدء التحميل</li>
-            </ol>
-        </div>
-        
-        <div class="note">
-            <strong>ملاحظة:</strong> هذه الأداة تعمل من خلال المتصفح فقط ولا يمكنها تحميل الفيديوهات مباشرة بسبب قيود أمنية. لتحميل مقاطع يوتيوب، تحتاج إلى استخدام أدوات خاصة أو خدمات خارجية.
-        </div>
+
+        <footer>
+            <p>© 2023 محول PDF الاحترافي - جميع الحقوق محفوظة</p>
+        </footer>
     </div>
 
+    <!-- مكتبات JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        document.getElementById('previewBtn').addEventListener('click', function() {
-            const videoUrl = document.getElementById('videoUrl').value;
-            const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime').value;
-            
-            if (!videoUrl) {
-                alert('يرجى إدخال رابط فيديو يوتيوب');
-                return;
-            }
-            
-            // استخراج معرف الفيديو من الرابط
-            const videoId = extractVideoId(videoUrl);
-            
-            if (!videoId) {
-                alert('رابط يوتيوب غير صالح');
-                return;
-            }
-            
-            // بناء رابط التشغيل مع وقت البداية
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime || 0}&end=${endTime || 60}`;
-            
-            // عرض المعاينة
-            const previewDiv = document.getElementById('videoPreview');
-            previewDiv.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
-        });
+        // تهيئة مكتبة PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        // العناصر في واجهة المستخدم
+        const pdfInput = document.getElementById('pdfInput');
+        const selectPdfBtn = document.getElementById('selectPdfBtn');
+        const pdfUploadArea = document.getElementById('pdfUploadArea');
+        const convertToImagesBtn = document.getElementById('convertToImagesBtn');
+        const pdfToImageLoading = document.getElementById('pdfToImageLoading');
+        const imagesPreviewContainer = document.getElementById('imagesPreviewContainer');
+        const imagesPreview = document.getElementById('imagesPreview');
+        const downloadImagesBtn = document.getElementById('downloadImagesBtn');
         
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            alert('للأسف، تحميل فيديوهات يوتيوب مباشرة من المتصفح غير ممكن بسبب قيود أمنية. يمكنك استخدام أدوات خارجية مثل yt-dlp أو مواقع متخصصة لتحميل مقاطع يوتيوب.');
+        const imagesInput = document.getElementById('imagesInput');
+        const selectImagesBtn = document.getElementById('selectImagesBtn');
+        const imagesUploadArea = document.getElementById('imagesUploadArea');
+        const imagesToPdfPreview = document.getElementById('imagesToPdfPreview');
+        const imagesToPdfPreviewContainer = document.getElementById('imagesToPdfPreviewContainer');
+        const convertToPdfBtn = document.getElementById('convertToPdfBtn');
+        const imagesToPdfLoading = document.getElementById('imagesToPdfLoading');
+        const pdfPreviewContainer = document.getElementById('pdfPreviewContainer');
+        const pdfPreview = document.getElementById('pdfPreview');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+
+        // أحداث لتحويل PDF إلى صور
+        selectPdfBtn.addEventListener('click', () => pdfInput.click());
+        pdfUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            pdfUploadArea.style.borderColor = 'var(--primary)';
+            pdfUploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
         });
-        
-        // دالة لاستخراج معرف الفيديو من رابط يوتيوب
-        function extractVideoId(url) {
-            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[7].length === 11) ? match[7] : false;
+        pdfUploadArea.addEventListener('dragleave', () => {
+            pdfUploadArea.style.borderColor = '#ccc';
+            pdfUploadArea.style.backgroundColor = '';
+        });
+        pdfUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            pdfUploadArea.style.borderColor = '#ccc';
+            pdfUploadArea.style.backgroundColor = '';
+            if (e.dataTransfer.files.length > 0) {
+                pdfInput.files = e.dataTransfer.files;
+                handlePdfSelection();
+            }
+        });
+        pdfInput.addEventListener('change', handlePdfSelection);
+
+        function handlePdfSelection() {
+            if (pdfInput.files.length > 0) {
+                const fileName = pdfInput.files[0].name;
+                pdfUploadArea.querySelector('p').textContent = `تم اختيار الملف: ${fileName}`;
+            }
         }
+
+        convertToImagesBtn.addEventListener('click', convertPdfToImages);
+
+        async function convertPdfToImages() {
+            if (!pdfInput.files.length) {
+                alert('يرجى اختيار ملف PDF أولاً');
+                return;
+            }
+
+            pdfToImageLoading.style.display = 'block';
+            imagesPreviewContainer.style.display = 'none';
+            imagesPreview.innerHTML = '';
+
+            try {
+                const file = pdfInput.files[0];
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                const imageFormat = document.getElementById('imageFormat').value;
+                const imageQuality = parseFloat(document.getElementById('imageQuality').value);
+
+                const images = [];
+                
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 2.0 });
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                    
+                    const imageData = canvas.toDataURL(`image/${imageFormat}`, imageQuality);
+                    images.push(imageData);
+                    
+                    // إضافة معاينة للصورة
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imageData;
+                    imagesPreview.appendChild(imgElement);
+                }
+                
+                // حفظ الصور للتحميل لاحقاً
+                imagesPreviewContainer.dataset.images = JSON.stringify(images);
+                imagesPreviewContainer.style.display = 'block';
+                
+            } catch (error) {
+                console.error('خطأ في تحويل PDF:', error);
+                alert('حدث خطأ أثناء تحويل PDF إلى صور. يرجى المحاولة مرة أخرى.');
+            } finally {
+                pdfToImageLoading.style.display = 'none';
+            }
+        }
+
+        downloadImagesBtn.addEventListener('click', downloadImages);
+
+        function downloadImages() {
+            const images = JSON.parse(imagesPreviewContainer.dataset.images || '[]');
+            if (images.length === 0) {
+                alert('لا توجد صور للتحميل');
+                return;
+            }
+
+            images.forEach((imageData, index) => {
+                const link = document.createElement('a');
+                link.href = imageData;
+                link.download = `صفحة_${index + 1}.${document.getElementById('imageFormat').value}`;
+                link.click();
+            });
+        }
+
+        // أحداث لتحويل الصور إلى PDF
+        selectImagesBtn.addEventListener('click', () => imagesInput.click());
+        imagesUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imagesUploadArea.style.borderColor = 'var(--primary)';
+            imagesUploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+        });
+        imagesUploadArea.addEventListener('dragleave', () => {
+            imagesUploadArea.style.borderColor = '#ccc';
+            imagesUploadArea.style.backgroundColor = '';
+        });
+        imagesUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imagesUploadArea.style.borderColor = '#ccc';
+            imagesUploadArea.style.backgroundColor = '';
+            if (e.dataTransfer.files.length > 0) {
+                imagesInput.files = e.dataTransfer.files;
+                handleImagesSelection();
+            }
+        });
+        imagesInput.addEventListener('change', handleImagesSelection);
+
+        function handleImagesSelection() {
+            imagesToPdfPreview.innerHTML = '';
+            
+            if (imagesInput.files.length > 0) {
+                imagesToPdfPreviewContainer.style.display = 'block';
+                const fileCount = imagesInput.files.length;
+                imagesUploadArea.querySelector('p').textContent = `تم اختيار ${fileCount} صورة`;
+                
+                Array.from(imagesInput.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = e.target.result;
+                        imagesToPdfPreview.appendChild(imgElement);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                imagesToPdfPreviewContainer.style.display = 'none';
+            }
+        }
+
+        convertToPdfBtn.addEventListener('click', convertImagesToPdf);
+
+        async function convertImagesToPdf() {
+            if (!imagesInput.files.length) {
+                alert('يرجى اختيار صورة واحدة على الأقل');
+                return;
+            }
+
+            imagesToPdfLoading.style.display = 'block';
+            pdfPreviewContainer.style.display = 'none';
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                
+                const pageSize = document.getElementById('pageSize').value;
+                const orientation = document.getElementById('pageOrientation').value;
+                
+                // تحميل الصور وتحويلها
+                for (let i = 0; i < imagesInput.files.length; i++) {
+                    const file = imagesInput.files[i];
+                    const imageData = await readFileAsDataURL(file);
+                    
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // حساب أبعاد الصورة لتناسب الصفحة
+                    const imgProps = pdf.getImageProperties(imageData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    
+                    let imgWidth = pdfWidth;
+                    let imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
+                    if (imgHeight > pdfHeight) {
+                        imgHeight = pdfHeight;
+                        imgWidth = (imgProps.width * pdfHeight) / imgProps.height;
+                    }
+                    
+                    const x = (pdfWidth - imgWidth) / 2;
+                    const y = (pdfHeight - imgHeight) / 2;
+                    
+                    pdf.addImage(imageData, 'JPEG', x, y, imgWidth, imgHeight);
+                }
+                
+                // حفظ PDF للتحميل لاحقاً
+                const pdfData = pdf.output('datauristring');
+                pdfPreview.innerHTML = `<iframe src="${pdfData}" width="100%" height="100%" style="border: none;"></iframe>`;
+                pdfPreviewContainer.dataset.pdfData = pdfData;
+                pdfPreviewContainer.style.display = 'block';
+                
+            } catch (error) {
+                console.error('خطأ في تحويل الصور إلى PDF:', error);
+                alert('حدث خطأ أثناء تحويل الصور إلى PDF. يرجى المحاولة مرة أخرى.');
+            } finally {
+                imagesToPdfLoading.style.display = 'none';
+            }
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        downloadPdfBtn.addEventListener('click', () => {
+            const pdfData = pdfPreviewContainer.dataset.pdfData;
+            if (!pdfData) {
+                alert('لا يوجد PDF للتحميل');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.href = pdfData;
+            link.download = 'صور_محولة.pdf';
+            link.click();
+        });
     </script>
 </body>
 </html>
