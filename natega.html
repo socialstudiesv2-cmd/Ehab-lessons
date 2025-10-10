@@ -1,68 +1,373 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html>
+
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>تحضير درس</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>منصة امتحانات بسيطة</title>
   <style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      text-align: center;
-    }
-    th, td {
-      border: 1px solid black;
-      padding: 8px;
-    }
-    th {
-      background-color: #f0f0f0;
-    }
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#0b63d3;--muted:#666}
+    body{font-family:Tahoma, Arial, "Noto Kufi Arabic", sans-serif;direction:rtl;background:var(--bg);margin:0;padding:20px}
+    .container{max-width:900px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .card{background:var(--card);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);padding:18px;margin-bottom:14px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    label{display:block;margin-bottom:6px}
+    input[type=text], select, textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #ddd}
+    .exam-list button{display:block;width:100%;text-align:right;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid #eee;background:#fafafa}
+    .questions{margin-top:12px}
+    .question{padding:12px;border-radius:8px;border:1px solid #f0f0f0;margin-bottom:10px}
+    .small{font-size:13px}
+    .top-controls{display:flex;gap:8px;align-items:center}
+    .center{text-align:center}
+    .right{text-align:right}
+    .hidden{display:none}
+    footer{margin-top:20px;text-align:center;color:#888;font-size:13px}
+    .flex{display:flex;gap:8px}
+    .badge{background:#eef6ff;color:#0b63d3;padding:6px 8px;border-radius:999px;font-size:13px}
+    pre{white-space:pre-wrap;word-break:break-word}
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1>منصة امتحانات - نسخة بسيطة</h1>
+      <div class="top-controls">
+        <span class="badge">جاهزة للويب / WebView</span>
+        <button id="adminBtn" class="btn">لوحة المدرس</button>
+      </div>
+    </header><div id="studentArea" class="card">
+  <div class="right">
+    <label>اختر الصف (مثال: أول إعدادي)</label>
+    <select id="classSelect"></select>
+  </div>
+  <hr />
+  <div id="examsContainer">
+    <h3>سلاسل الامتحانات المتاحة</h3>
+    <div class="exam-list" id="examList"></div>
+    <p class="muted">اضغط على اسم الامتحان ليظهر للطالب.</p>
+  </div>
 
-  <table>
-    <tr>
-      <th>اليوم</th>
-      <th>التاريخ</th>
-      <th>الصف</th>
-      <th>الفصل</th>
-      <th>الفترة</th>
-      <th>المادة</th>
-      <th>عنوان الدرس</th>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+  <div id="takeExamArea" class="hidden">
+    <h3 id="examTitle"></h3>
+    <p class="muted" id="examDesc"></p>
+    <div style="margin:8px 0">
+      <label>أدخل الاسم (الاسم الأول)</label>
+      <input id="studentName" type="text" placeholder="مثال: محمد" />
+    </div>
+    <div id="questionsWrapper"></div>
+    <div class="flex" style="margin-top:10px;justify-content:flex-end">
+      <button id="submitExam" class="btn">سلم الإجابات</button>
+      <button id="cancelExam" class="btn" style="background:#999">إلغاء</button>
+    </div>
+  </div>
+</div>
 
-  <br>
+<div id="adminPanel" class="card hidden">
+  <h3>لوحة المدرس (حفظ محلي)</h3>
+  <p class="muted">يمكنك إضافة صفوف، سلاسل امتحانات، وأسئلة. البيانات تُحفظ في متصفحك ويمكن تصديرها CSV.</p>
+  <div style="display:flex;gap:8px;align-items:center">
+    <input id="adminPass" type="password" placeholder="ادخل كلمة المرور لفتح اللوحة (افتراضي: 1234)" />
+    <button id="unlockBtn" class="btn">افتح اللوحة</button>
+  </div>
+  <div id="adminContent" class="hidden">
+    <hr />
+    <div class="row">
+      <div style="flex:1" class="card">
+        <h4>إضافة صف جديد</h4>
+        <input id="newClassName" type="text" placeholder="مثال: أول إعدادي" />
+        <button id="addClassBtn" class="btn">أضف الصف</button>
+      </div>
+      <div style="flex:2" class="card">
+        <h4>إنشاء سلسلة امتحانات</h4>
+        <label>اختر الصف</label>
+        <select id="adminClassSelect"></select>
+        <label>عنوان السلسلة</label>
+        <input id="newExamTitle" type="text" placeholder="اختبار الجغرافيا الأسبوعي" />
+        <label>وصف (اختياري)</label>
+        <input id="newExamDesc" type="text" placeholder="مثلاً: جبهة المدن" />
+        <button id="createExamBtn" class="btn">أنشئ السلسلة</button>
+      </div>
+    </div>
 
-  <table>
-    <tr>
-      <th>تمهيد الدرس / تهيئة</th>
-      <th>الأهداف التعليمية</th>
-      <th>الأنشطة التعليمية</th>
-      <th>الوسائل التعليمية</th>
-      <th>المصادر</th>
-      <th>أساليب التقويم</th>
-      <th>التوسع والإثراء المنهجي</th>
-    </tr>
-    <tr>
-      <td style="height:100px;"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+    <hr />
+    <div class="row">
+      <div style="flex:1" class="card">
+        <h4>أضف سؤال للسلسلة</h4>
+        <label>اختر السلسلة</label>
+        <select id="chooseExamForQ"></select>
+        <label>نوع السؤال</label>
+        <select id="qType"><option value="mcq">اختيار من متعدد</option><option value="tf">صح/خطأ</option><option value="short">إجابة قصيرة (تصحيح يدوي)</option></select>
+        <label>السؤال</label>
+        <textarea id="qText"></textarea>
+        <div id="mcqOptions">
+          <label>الخيارات (واحد في كل سطر)</label>
+          <textarea id="qOptions" placeholder="أ. القاهرة\nب. الإسكندرية\nج. أسوان"></textarea>
+          <label>الرقم/الصف (1..n) للإجابة الصحيحة</label>
+          <input id="qAnswerIndex" type="number" min="1" />
+        </div>
+        <div id="tfOptions" class="hidden">
+          <label>اختر الإجابة الصحيحة</label>
+          <select id="qAnswerTF"><option value="true">صح</option><option value="false">خطأ</option></select>
+        </div>
+        <div style="margin-top:8px">
+          <button id="addQuestionBtn" class="btn">أضف السؤال</button>
+        </div>
+      </div>
 
+      <div style="flex:1.2" class="card">
+        <h4>إدارة وحفظ</h4>
+        <p class="small">عرض سريع للبيانات الحالية وحفظ/تحميل</p>
+        <button id="exportCSV" class="btn">تصدير نتائج CSV</button>
+        <button id="exportData" class="btn" style="background:#0a8">تصدير بيانات المنصة (JSON)</button>
+        <button id="importData" class="btn" style="background:#666">استيراد بيانات (استبدال)</button>
+        <input id="importFile" type="file" accept="application/json" />
+        <hr />
+        <h5>نتائج الطلاب (مخزنة محليًا)</h5>
+        <div id="resultsPreview" style="max-height:200px;overflow:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>نسخة مبسطة: يحفظ محليًا ويمكن تحويله لاحقًا لتطبيق WebView. — صنع خصيصًا لك</footer>
+
+  </div>  <script>
+    // Data model stored in localStorage under key 'exam_platform_data_v1'
+    const STORAGE_KEY = 'exam_platform_data_v1';
+    const DEFAULT_ADMIN_PASS = '1234';
+
+    function loadData(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return {classes: [], exams: [], results: []};
+      try{ return JSON.parse(raw);}catch(e){return {classes: [], exams: [], results: []};}
+    }
+    function saveData(d){ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+    let data = loadData();
+
+    // UI elements
+    const classSelect = document.getElementById('classSelect');
+    const examList = document.getElementById('examList');
+    const adminBtn = document.getElementById('adminBtn');
+    const adminPanel = document.getElementById('adminPanel');
+    const adminPass = document.getElementById('adminPass');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const adminContent = document.getElementById('adminContent');
+    const adminClassSelect = document.getElementById('adminClassSelect');
+    const newClassName = document.getElementById('newClassName');
+    const addClassBtn = document.getElementById('addClassBtn');
+    const createExamBtn = document.getElementById('createExamBtn');
+    const newExamTitle = document.getElementById('newExamTitle');
+    const newExamDesc = document.getElementById('newExamDesc');
+    const examTitle = document.getElementById('examTitle');
+    const examDesc = document.getElementById('examDesc');
+    const takeExamArea = document.getElementById('takeExamArea');
+    const questionsWrapper = document.getElementById('questionsWrapper');
+    const submitExam = document.getElementById('submitExam');
+    const cancelExam = document.getElementById('cancelExam');
+    const studentName = document.getElementById('studentName');
+    const chooseExamForQ = document.getElementById('chooseExamForQ');
+    const qType = document.getElementById('qType');
+    const qText = document.getElementById('qText');
+    const qOptions = document.getElementById('qOptions');
+    const qAnswerIndex = document.getElementById('qAnswerIndex');
+    const qAnswerTF = document.getElementById('qAnswerTF');
+    const addQuestionBtn = document.getElementById('addQuestionBtn');
+    const mcqOptionsDiv = document.getElementById('mcqOptions');
+    const tfOptionsDiv = document.getElementById('tfOptions');
+    const chooseClassForExam = document.getElementById('adminClassSelect');
+    const chooseExamSelect = document.getElementById('chooseExamForQ');
+    const examListContainer = document.getElementById('examList');
+    const exportCSV = document.getElementById('exportCSV');
+    const exportData = document.getElementById('exportData');
+    const importData = document.getElementById('importData');
+    const importFile = document.getElementById('importFile');
+    const resultsPreview = document.getElementById('resultsPreview');
+
+    // Helpers
+    function renderClasses(){
+      classSelect.innerHTML = '';
+      adminClassSelect.innerHTML = '';
+      data.classes.forEach(cls =>{
+        const opt = document.createElement('option'); opt.value = cls.id; opt.textContent = cls.name;
+        classSelect.appendChild(opt);
+        const opt2 = opt.cloneNode(true); adminClassSelect.appendChild(opt2);
+      });
+      // also update admin class select for creating exams
+      renderExamsForClass();
+    }
+
+    function renderExamsForClass(){
+      const sel = classSelect.value || (data.classes[0] && data.classes[0].id) || '';
+      examList.innerHTML = '';
+      const exams = data.exams.filter(e=>e.classId===sel);
+      if(exams.length===0) examList.innerHTML = '<p class="muted">لا يوجد امتحانات لهذا الصف بعد.</p>';
+      exams.forEach(ex =>{
+        const btn = document.createElement('button'); btn.textContent = ex.title; btn.addEventListener('click', ()=>openExamForStudent(ex.id));
+        examList.appendChild(btn);
+      });
+      // fill chooseExamForQ
+      chooseExamForQ.innerHTML = '';
+      data.exams.forEach(e=>{ const o=document.createElement('option'); o.value=e.id; o.textContent=e.title + ' — ' + (getClassName(e.classId)||''); chooseExamForQ.appendChild(o);});
+    }
+
+    function getClassName(id){ const c = data.classes.find(x=>x.id===id); return c?c.name:'' }
+
+    function openExamForStudent(examId){
+      const ex = data.exams.find(x=>x.id===examId); if(!ex) return alert('خطأ: الامتحان غير موجود');
+      document.getElementById('examsContainer').classList.add('hidden');
+      takeExamArea.classList.remove('hidden');
+      examTitle.textContent = ex.title;
+      examDesc.textContent = ex.desc || '';
+      takeExamArea.dataset.examId = examId;
+      studentName.value = '';
+      renderQuestionsForExam(examId);
+    }
+
+    function renderQuestionsForExam(examId){
+      questionsWrapper.innerHTML = '';
+      const ex = data.exams.find(x=>x.id===examId);
+      ex.questions.forEach((q, idx)=>{
+        const div = document.createElement('div'); div.className='question';
+        div.innerHTML = `<div class="right"><strong>س ${idx+1}.</strong> <span>${q.text}</span></div>`;
+        if(q.type==='mcq'){
+          const opts = q.options.map((op,i)=>`<label><input type=radio name=q${idx} value="${i}" /> ${op}</label>`).join('<br/>');
+          div.innerHTML += `<div class='questions'>${opts}</div>`;
+        }else if(q.type==='tf'){
+          div.innerHTML += `<div class='questions'><label><input type=radio name=q${idx} value="true" /> صح</label><br/><label><input type=radio name=q${idx} value="false" /> خطأ</label></div>`;
+        }else{
+          div.innerHTML += `<div class='questions'><textarea name=q${idx} placeholder='اكتب إجابتك هنا' style='width:100%;min-height:70px'></textarea></div>`;}
+    questionsWrapper.appendChild(div);
+  });
+}
+
+submitExam.addEventListener('click', ()=>{
+  const name = studentName.value.trim();
+  if(!name) return alert('اكتب اسمك الأول عشان نعرفك');
+  const examId = takeExamArea.dataset.examId;
+  const ex = data.exams.find(x=>x.id===examId);
+  let score = 0; let totalAuto = 0; let answers = [];
+  ex.questions.forEach((q, idx)=>{
+    const el = document.getElementsByName('q'+idx);
+    if(q.type==='mcq'){
+      totalAuto++;
+      let chosen = Array.from(el).find(r=>r.checked);
+      const val = chosen?parseInt(chosen.value):-1;
+      answers.push({type:'mcq', chosen:val});
+      if(val===q.answerIndex) score++;
+    }else if(q.type==='tf'){
+      totalAuto++;
+      let chosen = Array.from(el).find(r=>r.checked);
+      const val = chosen? (chosen.value==='true') : null;
+      answers.push({type:'tf', chosen:val});
+      if(val===q.answerTF) score++;
+    }else{
+      const val = el[0].value.trim();
+      answers.push({type:'short', text:val});
+    }
+  });
+  const percent = totalAuto? Math.round((score/totalAuto)*100) : 0;
+  // save result
+  const res = {id:Date.now()+Math.random().toString(36).slice(2,6), examId, classId:ex.classId, name, answers, scoreAuto:score, totalAuto, percent, timestamp:new Date().toISOString()};
+  data.results.push(res); saveData(data); renderResultsPreview();
+  alert('انتهى الامتحان — نتيجتك التقريبية: ' + percent + '%\n(الأسئلة النصية تحتاج تصحيح يدوي)');
+  // return to exams list
+  takeExamArea.classList.add('hidden');
+  document.getElementById('examsContainer').classList.remove('hidden');
+});
+
+cancelExam.addEventListener('click', ()=>{ takeExamArea.classList.add('hidden'); document.getElementById('examsContainer').classList.remove('hidden'); });
+
+// Admin actions
+adminBtn.addEventListener('click', ()=>{ adminPanel.classList.toggle('hidden'); });
+unlockBtn.addEventListener('click', ()=>{
+  if(adminPass.value===DEFAULT_ADMIN_PASS){ adminContent.classList.remove('hidden'); adminPass.value=''; renderAdmin(); } else alert('كلمة المرور خاطئة');
+});
+
+addClassBtn.addEventListener('click', ()=>{
+  const name = newClassName.value.trim(); if(!name) return alert('اكتب اسم الصف');
+  const id = 'c_'+Date.now(); data.classes.push({id,name}); saveData(data); newClassName.value=''; renderClasses();
+});
+
+createExamBtn.addEventListener('click', ()=>{
+  const cls = adminClassSelect.value; const title=newExamTitle.value.trim(); if(!cls||!title) return alert('اختر الصف واكتب عنوان السلسلة');
+  const id = 'e_'+Date.now(); data.exams.push({id, classId:cls, title, desc:newExamDesc.value||'', questions:[]}); saveData(data); newExamTitle.value=''; newExamDesc.value=''; renderExamsForClass(); renderAdmin();
+});
+
+qType.addEventListener('change', ()=>{ if(qType.value==='mcq'){ mcqOptionsDiv.classList.remove('hidden'); tfOptionsDiv.classList.add('hidden'); } else if(qType.value==='tf'){ mcqOptionsDiv.classList.add('hidden'); tfOptionsDiv.classList.remove('hidden'); } else { mcqOptionsDiv.classList.add('hidden'); tfOptionsDiv.classList.add('hidden'); } });
+
+addQuestionBtn.addEventListener('click', ()=>{
+  const exId = chooseExamForQ.value; const type = qType.value; const text = qText.value.trim(); if(!exId||!text) return alert('اختار السلسلة واكتب السؤال');
+  const ex = data.exams.find(x=>x.id===exId);
+  if(!ex) return alert('الامتحان غير موجود');
+  const q = {id:'q_'+Date.now(), type, text};
+  if(type==='mcq'){
+    const opts = qOptions.value.split('\n').map(s=>s.trim()).filter(Boolean);
+    if(opts.length<2) return alert('حط على الأقل خيارين');
+    const ans = parseInt(qAnswerIndex.value) -1;
+    if(isNaN(ans) || ans<0 || ans>=opts.length) return alert('اختار رقم صحيح للإجابة الصحيحة');
+    q.options = opts; q.answerIndex = ans;
+  }else if(type==='tf'){
+    q.answerTF = (qAnswerTF.value==='true');
+  }
+  ex.questions.push(q); saveData(data); qText.value=''; qOptions.value=''; qAnswerIndex.value=''; renderExamsForClass(); renderAdmin(); alert('تم إضافة السؤال');
+});
+
+function renderAdmin(){
+  // fill chooseExamForQ and adminClassSelect done elsewhere
+  chooseExamForQ.innerHTML = '';
+  data.exams.forEach(e=>{ const o=document.createElement('option'); o.value=e.id; o.textContent = e.title + ' ('+ getClassName(e.classId) +')'; chooseExamForQ.appendChild(o);});
+  adminClassSelect.innerHTML = '';
+  data.classes.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; adminClassSelect.appendChild(o);});
+  renderResultsPreview();
+}
+
+function renderResultsPreview(){
+  resultsPreview.innerHTML='';
+  if(data.results.length===0) resultsPreview.textContent = 'لا يوجد نتائج حتى الآن';
+  data.results.slice().reverse().forEach(r=>{
+    const d = document.createElement('div'); d.style.padding='6px;borderBottom='; d.innerHTML = `<strong>${r.name}</strong> — ${getClassName(r.classId)} — ${r.percent}% — ${new Date(r.timestamp).toLocaleString()}`;
+    resultsPreview.appendChild(d);
+  });
+}
+
+exportCSV.addEventListener('click', ()=>{
+  if(data.results.length===0) return alert('لا يوجد نتائج للتصدير');
+  const rows = [ ['name','class','exam','percent','scoreAuto','totalAuto','timestamp','answers'] ];
+  data.results.forEach(r=>{ rows.push([r.name, getClassName(r.classId), (data.exams.find(e=>e.id===r.examId)||{}).title || '', r.percent, r.scoreAuto, r.totalAuto, r.timestamp, JSON.stringify(r.answers)]); });
+  const csv = rows.map(r=> r.map(c=> '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download = 'results.csv'; a.click(); URL.revokeObjectURL(url);
+});
+
+exportData.addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(data, null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='platform_data.json'; a.click(); URL.revokeObjectURL(url);
+});
+
+importFile.addEventListener('change', (ev)=>{
+  const f = ev.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ()=>{ try{ const obj = JSON.parse(reader.result); if(confirm('استبدال البيانات الحالية بالبيانات المستوردة؟')){ data = obj; saveData(data); renderClasses(); renderExamsForClass(); renderAdmin(); alert('تم الاستيراد'); } }catch(e){alert('ملف غير صالح');} }; reader.readAsText(f);
+});
+
+// init with sample data if empty
+if(data.classes.length===0 && data.exams.length===0){
+  const c1 = {id:'c_1', name:'أول إعدادي'}; const c2 = {id:'c_2', name:'ثاني إعدادي'};
+  data.classes.push(c1,c2);
+  const e1 = {id:'e_1', classId:c1.id, title:'امتحان الجغرافيا الأسبوعي', desc:'أسئلة اختيار من متعدد', questions:[{id:'q1',type:'mcq',text:'ما هي عاصمة مصر؟',options:['القاهرة','الإسكندرية','أسوان'],answerIndex:0},{id:'q2',type:'tf',text:'النيل أطول نهر في العالم',answerTF:false}] };
+  data.exams.push(e1);
+  saveData(data);
+}
+
+// initial render
+renderClasses(); renderExamsForClass(); renderAdmin();
+
+// when class changes
+classSelect.addEventListener('change', renderExamsForClass);
+
+  </script>
 </body>
 </html>
