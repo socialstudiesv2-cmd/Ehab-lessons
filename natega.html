@@ -115,41 +115,31 @@
       margin-bottom:22px;
       position: relative;
     }
+    
+    /* شعار جديد بدون خلفية */
     .logo{
-      font-size:2.6rem;
-      color:var(--accent);
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:12px;
-      background:linear-gradient(90deg, rgba(46,163,255,0.12), rgba(46,163,255,0.04));
-      box-shadow: 0 6px 20px rgba(11,22,35,0.35);
-      position: relative;
-      overflow: hidden;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 0;
+      background: linear-gradient(90deg, #2ea3ff, #27c0ff, #6ee2ff, #2ea3ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease infinite;
+      text-shadow: 0 0 20px rgba(46, 163, 255, 0.3);
+      letter-spacing: -1px;
     }
 
-    .logo::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        to bottom right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: rotate(30deg);
-      animation: shine 6s infinite linear;
-    }
-
-    @keyframes shine {
+    @keyframes gradientShift {
       0% {
-        transform: translateX(-100%) translateY(-100%) rotate(30deg);
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
       }
       100% {
-        transform: translateX(100%) translateY(100%) rotate(30deg);
+        background-position: 0% 50%;
       }
     }
 
@@ -363,6 +353,7 @@
     @media (max-width:720px){
       .iframe-wrap{ height:66vh; }
       header.app h1{ font-size:1.3rem; }
+      .logo { font-size: 2.8rem; }
     }
   </style>
 </head>
