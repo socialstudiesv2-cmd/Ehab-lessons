@@ -1,422 +1,180 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EduExam - منصة الامتحانات (رابع -> أول ثانوي)</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>منصة امتحانات الطلاب</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cairo", sans-serif;
+}
 
-  <!-- خط Cairo من جوجل -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+body {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  color: #fff;
+}
 
-  <style>
-    :root{
-      --bg1:#0c1520;
-      --bg2:#142a3a;
-      --card: rgba(255,255,255,0.06);
-      --accent: #2ea3ff;
-      --glass: rgba(255,255,255,0.04);
-      --text:#e6eef8;
-      --muted:#b8c6d6;
-      --radius:16px;
-      --transition: all .35s cubic-bezier(.2,.9,.3,1);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Cairo",sans-serif;
-      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-      direction:rtl;
-    }
+header {
+  text-align: center;
+  padding: 30px 10px;
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
 
-    .wrap{max-width:1200px;margin:30px auto;padding:20px;}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 90%;
+  margin: auto;
+}
 
-    header.app{
-      text-align:center;
-      margin-bottom:22px;
-    }
-    .logo{
-      font-size:2.6rem;
-      color:var(--accent);
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:12px;
-      background:linear-gradient(90deg, rgba(46,163,255,0.12), rgba(46,163,255,0.04));
-      box-shadow: 0 6px 20px rgba(11,22,35,0.35);
-    }
-    header.app h1{
-      margin:12px 0 6px;
-      font-size:1.9rem;
-      letter-spacing:0.5px;
-    }
-    header.app p{color:var(--muted); margin:0 0 8px;}
+.grade-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 30px 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
 
-    /* layout */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-      gap:18px;
-    }
+.grade-card:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.05);
+}
 
-    .grade-card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius: var(--radius);
-      padding:20px;
-      box-shadow: 0 8px 30px rgba(2,6,12,0.45);
-      transition: var(--transition);
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      min-height:140px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .grade-card:hover{ transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(2,6,12,0.6); }
+.grade-title {
+  font-size: 22px;
+  font-weight: bold;
+}
 
-    .grade-badge{
-      position:absolute; top:12px; left:12px;
-      background:var(--glass); padding:6px 12px; border-radius:999px; font-size:0.9rem; color:var(--muted);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .grade-icon{ font-size:2.6rem; margin-bottom:8px; }
-    .grade-title{ font-size:1.25rem; font-weight:700; margin-bottom:6px; }
-    .grade-desc{ color:var(--muted); font-size:0.95rem; }
+.exams-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-    /* page views */
-    .page{
-      display:none;
-      margin-top:18px;
-    }
-    .page.active{ display:block; }
+.exams-page.active {
+  display: flex;
+}
 
-    .back-btn{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding:10px 16px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border-radius:999px;
-      color:var(--text);
-      border:1px solid rgba(255,255,255,0.03);
-      cursor:pointer;
-      transition:var(--transition);
-      margin-bottom:14px;
-    }
-    .back-btn:hover{ transform:translateY(-3px); }
+.exam-container {
+  width: 90%;
+  height: 80%;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
 
-    /* exams grid */
-    .exams-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-      margin-top:10px;
-    }
-    .exam-card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;
-      padding:16px;
-      box-shadow: 0 8px 24px rgba(2,6,12,0.5);
-      transition:var(--transition);
-      border:1px solid rgba(255,255,255,0.03);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-height:120px;
-    }
-    .exam-card h3{ margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
-    .exam-card p{ margin:0; color:var(--muted); font-size:0.95rem; }
+.exam-header {
+  background: #2a5298;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    .exam-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
-    .start-btn{
-      padding:9px 14px;
-      border-radius:999px;
-      border:none;
-      background: linear-gradient(90deg,var(--accent), #27c0ff);
-      color:#042032;
-      font-weight:700;
-      cursor:pointer;
-      transition:var(--transition);
-      box-shadow: 0 8px 20px rgba(46,163,255,0.12);
-    }
-    .start-btn:hover{ transform:translateY(-3px); }
+iframe {
+  width: 100%;
+  height: calc(100% - 60px);
+  border: none;
+}
 
-    .info-btn{
-      padding:8px 12px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.04);
-      background:transparent;
-      color:var(--muted);
-      cursor:default;
-      font-size:0.9rem;
-    }
+.back-btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: #fff;
+  color: #2a5298;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    /* iframe exam view */
-    .exam-view{
-      display:none;
-      margin-top:10px;
-    }
-    .exam-view.active{ display:block; }
-
-    .iframe-wrap{
-      background:var(--card);
-      border-radius:12px;
-      padding:10px;
-      height:75vh;
-      max-height:820px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
-    }
-    .exam-iframe{
-      width:100%;
-      height:100%;
-      border:0;
-      border-radius:8px;
-      background:#fff;
-    }
-
-    /* footer small */
-    footer{ margin-top:26px; text-align:center; color:var(--muted); font-size:0.9rem; }
-
-    @media (max-width:720px){
-      .iframe-wrap{ height:66vh; }
-      header.app h1{ font-size:1.3rem; }
-    }
-  </style>
+.back-btn:hover {
+  background: #f0f0f0;
+}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="app">
-      <div class="logo">EduExam</div>
-      <h1>منصة الامتحانات — من الصف الرابع الابتدائي حتى الصف الأول الثانوي</h1>
-      <p>اختر صفك لعرض امتحاناته — عند الضغط على "ابدأ الامتحان" النموذج يفتح داخل المنصة.</p>
-    </header>
 
-    <!-- العرض الرئيسي للصفوف -->
-    <section id="homePage" class="page active">
-      <div class="grid" id="gradesGrid">
-        <!-- بطاقات الصفوف ستُولَّد ديناميكياً -->
-      </div>
-    </section>
+<header>منصة امتحانات طلاب منشأة الدهب القبلية</header>
 
-    <!-- صفحة قائمة الامتحانات لصف محدد -->
-    <section id="examsPage" class="page">
-      <button class="back-btn" id="backToHome">
-        ← رجوع للصفحة الرئيسية
-      </button>
+<div class="container" id="grades">
+  <div class="grade-card" data-grade="4">الصف الرابع الابتدائي</div>
+  <div class="grade-card" data-grade="5">الصف الخامس الابتدائي</div>
+  <div class="grade-card" data-grade="6">الصف السادس الابتدائي</div>
+  <div class="grade-card" data-grade="7">الصف الأول الإعدادي</div>
+  <div class="grade-card" data-grade="8">الصف الثاني الإعدادي</div>
+  <div class="grade-card" data-grade="9">الصف الثالث الإعدادي</div>
+  <div class="grade-card" data-grade="10">الصف الأول الثانوي</div>
+</div>
 
-      <h2 id="examsPageTitle">امتحانات الصف</h2>
-      <div class="exams-grid" id="examsGrid">
-        <!-- بطاقات الامتحانات ستُولَّد ديناميكياً -->
-      </div>
-    </section>
-
-    <!-- صفحة عرض الامتحان داخل iframe -->
-    <section id="examView" class="page exam-view">
-      <button class="back-btn" id="backAfterExam">
-        ← رجوع للصفحة الرئيسية
-      </button>
-      <h2 id="examViewTitle">عرض الامتحان</h2>
-
-      <div class="iframe-wrap" id="iframeWrap">
-        <iframe id="examIframe" class="exam-iframe" src="" title="Exam"></iframe>
-      </div>
-    </section>
-
-    <footer>تم التصميم بواسطة EduExam • عدل روابط Google Forms في بيانات الامتحانات</footer>
+<div class="exams-page" id="examPage">
+  <div class="exam-container">
+    <div class="exam-header" id="examTitle">امتحان</div>
+    <iframe id="examFrame" src=""></iframe>
   </div>
+  <button class="back-btn" id="backBtn">رجوع للصفحة الرئيسية</button>
+</div>
 
-  <script>
-    /*******************************
-     * DATA: عدل روابط النماذج هنا
-     * استخدم روابط embed لنماذج جوجل بصيغة:
-     * https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true
-     *******************************/
-    const examsData = {
-      // 4: الصف الرابع ابتدائي
-      4: [
-        { title: "اللغة العربية - الفصل الأول", desc: "قراءة + نحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات - الفصل الأول", desc: "عمليات ومسائل", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_MATH/viewform?embedded=true" },
-        { title: "الدراسات - الفصل الأول", desc: "تاريخ وجغرافيا", time: "30 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_SOC/viewform?embedded=true" }
-      ],
-      // 5: الصف الخامس ابتدائي
-      5: [
-        { title: "اللغة العربية", desc: "فهم ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وعمليات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_MATH/viewform?embedded=true" },
-        { title: "العلوم", desc: "مفاهيم أساسية", time: "40 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_SCI/viewform?embedded=true" }
-      ],
-      // 6: الصف السادس ابتدائي
-      6: [
-        { title: "اللغة العربية", desc: "نصوص ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "مسائل وتطبيقات", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_MATH/viewform?embedded=true" },
-        { title: "الدراسات الاجتماعية", desc: "تاريخ وحضارات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_SOC/viewform?embedded=true" }
-      ],
-      // 7: الصف الأول الإعدادي
-      7: [
-        { title: "اللغة العربية", desc: "تعبير ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وهندسة", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_MATH/viewform?embedded=true" },
-        { title: "العلوم", desc: "أساسيات العلوم", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_SCI/viewform?embedded=true" }
-      ],
-      // 8: الصف الثاني الإعدادي
-      8: [
-        { title: "اللغة العربية", desc: "قراءة وتحليل", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "معادلات ومسائل", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_MATH/viewform?embedded=true" },
-        { title: "اللغة الإنجليزية", desc: "قواعد ومفردات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ENG/viewform?embedded=true" }
-      ],
-      // 9: الصف الثالث الإعدادي
-      9: [
-        { title: "اللغة العربية", desc: "نصوص وأدب", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وهندسة متقدمة", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_MATH/viewform?embedded=true" },
-        { title: "الدراسات الاجتماعية", desc: "قضايا وطنية", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_SOC/viewform?embedded=true" }
-      ],
-      // 10: الصف الأول الثانوي
-      10: [
-        { title: "اللغة العربية", desc: "أدب ونصوص", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ARABIC/viewform?embedded=true" },
-        { title: "التاريخ / الجغرافيا", desc: "مفاهيم أساسية", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_SOC/viewform?embedded=true" },
-        { title: "الإنجليزي", desc: "قراءة وقواعد", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ENG/viewform?embedded=true" }
-      ]
-    };
+<script>
+const exams = {
+  4: {title: "امتحان الدراسات الصف الرابع الابتدائي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY1/viewform"},
+  5: {title: "امتحان الدراسات الصف الخامس الابتدائي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY2/viewform"},
+  6: {title: "امتحان الدراسات الصف السادس الابتدائي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY3/viewform"},
+  7: {title: "امتحان الدراسات الصف الأول الإعدادي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY4/viewform"},
+  8: {title: "امتحان الدراسات الصف الثاني الإعدادي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY5/viewform"},
+  9: {title: "امتحان الدراسات الصف الثالث الإعدادي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY6/viewform"},
+  10: {title: "امتحان الدراسات الصف الأول الثانوي", url: "https://docs.google.com/forms/d/e/1FAIpQLSdUMMY7/viewform"}
+};
 
-    /*******************************
-     * DOM elements
-     *******************************/
-    const homePage = document.getElementById('homePage');
-    const gradesGrid = document.getElementById('gradesGrid');
-    const examsPage = document.getElementById('examsPage');
-    const examsGrid = document.getElementById('examsGrid');
-    const examsPageTitle = document.getElementById('examsPageTitle');
-    const backToHome = document.getElementById('backToHome');
-    const examView = document.getElementById('examView');
-    const examIframe = document.getElementById('examIframe');
-    const examViewTitle = document.getElementById('examViewTitle');
-    const backAfterExam = document.getElementById('backAfterExam');
+const gradeCards = document.querySelectorAll(".grade-card");
+const examPage = document.getElementById("examPage");
+const examFrame = document.getElementById("examFrame");
+const examTitle = document.getElementById("examTitle");
+const backBtn = document.getElementById("backBtn");
 
-    // تعريف الصفوف المراد عرضها بالترتيب المطلوب
-    const gradesList = [
-      { id: 4, title: "الصف الرابع الابتدائي", badge: "ابتدائي" },
-      { id: 5, title: "الصف الخامس الابتدائي", badge: "ابتدائي" },
-      { id: 6, title: "الصف السادس الابتدائي", badge: "ابتدائي" },
-      { id: 7, title: "الصف الأول الإعدادي", badge: "إعدادي" },
-      { id: 8, title: "الصف الثاني الإعدادي", badge: "إعدادي" },
-      { id: 9, title: "الصف الثالث الإعدادي", badge: "إعدادي" },
-      { id: 10, title: "الصف الأول الثانوي", badge: "ثانوي" }
-    ];
-
-    /*******************************
-     * وظائف مساعدة
-     *******************************/
-    function showPage(pageElement){
-      // اخفاء كل الصفحات ثم اظهار المطلوبة
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      pageElement.classList.add('active');
-      // إعادة ضبط iframe لو انتقلنا بعيدًا
-      if(pageElement !== examView){
-        examIframe.src = "";
-      }
-      // scroll top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+gradeCards.forEach(card => {
+  card.addEventListener("click", () => {
+    const grade = card.getAttribute("data-grade");
+    const exam = exams[grade];
+    if (exam) {
+      examTitle.textContent = exam.title;
+      examFrame.src = exam.url;
+      examPage.classList.add("active");
     }
+  });
+});
 
-    /*******************************
-     * بناء بطاقات الصفوف في الصفحة الرئيسية
-     *******************************/
-    function renderGrades(){
-      gradesGrid.innerHTML = "";
-      gradesList.forEach(g => {
-        const card = document.createElement('div');
-        card.className = 'grade-card';
-        card.setAttribute('data-grade', g.id);
-        card.innerHTML = `
-          <div class="grade-badge">${g.badge}</div>
-          <div class="grade-icon">🎒</div>
-          <div class="grade-title">${g.title}</div>
-          <div class="grade-desc">اضغط لعرض امتحانات ${g.title}</div>
-        `;
-        card.addEventListener('click', () => openExamsForGrade(g.id, g.title));
-        gradesGrid.appendChild(card);
-      });
-    }
+backBtn.addEventListener("click", () => {
+  examPage.classList.remove("active");
+  examFrame.src = "";
+});
+</script>
 
-    /*******************************
-     * فتح صفحة امتحانات لصف معين
-     *******************************/
-    function openExamsForGrade(gradeId, gradeTitle){
-      // تعيين عنوان الصفحة
-      examsPageTitle.textContent = `امتحانات ${gradeTitle}`;
-      examsGrid.innerHTML = "";
-
-      const exams = examsData[gradeId] || [];
-      if(exams.length === 0){
-        examsGrid.innerHTML = `<p style="color:var(--muted)">لا توجد امتحانات مضافة لهذا الصف بعد.</p>`;
-      } else {
-        exams.forEach((ex, idx) => {
-          const exCard = document.createElement('div');
-          exCard.className = 'exam-card';
-          exCard.innerHTML = `
-            <div>
-              <h3>${ex.title}</h3>
-              <p>${ex.desc} — <strong>${ex.time}</strong></p>
-            </div>
-            <div class="exam-actions">
-              <button class="start-btn" data-url="${ex.formUrl}" data-title="${ex.title}">ابدأ الامتحان</button>
-              <div class="info-btn">مادة ${idx+1}</div>
-            </div>
-          `;
-          // عند الضغط على ابدأ — نعرض iframe داخل المنصة
-          exCard.querySelector('.start-btn').addEventListener('click', (ev) => {
-            const url = ev.currentTarget.getAttribute('data-url');
-            const title = ev.currentTarget.getAttribute('data-title');
-            openExamInIframe(url, title);
-          });
-
-          examsGrid.appendChild(exCard);
-        });
-      }
-
-      showPage(examsPage);
-    }
-
-    /*******************************
-     * فتح الامتحان داخل iframe
-     *******************************/
-    function openExamInIframe(url, title){
-      if(!url || url.includes("FORM_ID")){
-        // إنذار للمطور: لم تُستبدل روابط الـ FORM_ID
-        alert("لم تُضبط رابط نموذج جوجل لهذا الامتحان. تأكد من تعديل حقل formUrl في الكود برابط الـ Google Form بصيغة embed.");
-        return;
-      }
-
-      // تعيين src للإطار وتهيئة العرض
-      examIframe.src = url;
-      examViewTitle.textContent = `الآن: ${title}`;
-      showPage(examView);
-    }
-
-    /*******************************
-     * زر الرجوع للصفحة الرئيسية
-     *******************************/
-    backToHome.addEventListener('click', () => {
-      showPage(homePage);
-    });
-    backAfterExam.addEventListener('click', () => {
-      // شرطك: لما يضغط بعد الامتحان يرجع للصفحة الرئيسية
-      showPage(homePage);
-    });
-
-    /*******************************
-     * تهيئة أولية
-     *******************************/
-    renderGrades();
-
-    // ملاحظة: لو عايز أضيف تسجيل اسم الطالب قبل الدخول أقدر أعمل فورم بسيط وحفظ الاسم في localStorage ثم تمريره للـ Google Form (pre-fill) — لو تحب نضيفها.
-  </script>
 </body>
 </html>
