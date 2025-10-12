@@ -1,735 +1,422 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduExam - منصة الامتحانات التعليمية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0c151f 100%);
-            color: var(--light);
-            line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 0;
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        .logo {
-            font-size: 3rem;
-            color: #3498db;
-            margin-bottom: 15px;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        header h1 {
-            font-size: 3.2rem;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        header p {
-            font-size: 1.4rem;
-            color: #bdc3c7;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .grades-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .grade-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            height: 320px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-        }
-        
-        .grade-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .grade-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .grade-card:hover::before {
-            opacity: 1;
-        }
-        
-        .grade-icon {
-            font-size: 4rem;
-            margin-bottom: 25px;
-            z-index: 2;
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .grade-card:hover .grade-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-        
-        .grade-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            z-index: 2;
-            position: relative;
-        }
-        
-        .grade-desc {
-            font-size: 1.1rem;
-            z-index: 2;
-            position: relative;
-            opacity: 0.8;
-        }
-        
-        .grade-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            z-index: 3;
-        }
-        
-        /* صفحة الامتحانات - معدلة للتمرير */
-        .exams-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* تغيير من center إلى flex-start */
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
-            overflow-y: auto; /* إضافة التمرير العمودي */
-            padding: 40px 20px; /* إضافة padding */
-        }
-        
-        .exams-page.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .exams-container {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0c151f 100%);
-            width: 90%;
-            max-width: 1000px;
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            transform: scale(0.9);
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 40px 0; /* إضافة margin للتمرير */
-            max-height: 85vh; /* تحديد أقصى ارتفاع */
-            overflow-y: auto; /* إضافة التمرير الداخلي */
-        }
-        
-        .exams-page.active .exams-container {
-            transform: scale(1);
-        }
-        
-        /* تخصيص شريط التمرير */
-        .exams-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .exams-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .exams-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #3498db, #2ecc71);
-            border-radius: 10px;
-        }
-        
-        .exams-container::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #2980b9, #27ae60);
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            background: linear-gradient(135deg, #1a2a3a 0%, #0c151f 100%);
-            z-index: 10;
-            padding: 20px 0;
-            margin: -20px 0 40px -20px;
-            width: calc(100% + 40px);
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .close-button {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .close-button:hover {
-            background: rgba(231, 76, 60, 0.8);
-            transform: rotate(90deg);
-        }
-        
-        .exams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        
-        .exam-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .exam-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(52, 152, 219, 0.5);
-        }
-        
-        .exam-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-        }
-        
-        .exam-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #3498db;
-        }
-        
-        .exam-card p {
-            color: #bdc3c7;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        
-        .start-exam {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .start-exam:hover {
-            background: linear-gradient(90deg, #2980b9, #3498db);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            margin-top: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .footer-links a {
-            color: #bdc3c7;
-            margin: 0 15px;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: #3498db;
-        }
-        
-        /* تخصيص الألوان لكل صف دراسي */
-        .grade-4 { background: linear-gradient(135deg, #ff6b6b 0%, #c0392b 100%); }
-        .grade-5 { background: linear-gradient(135deg, #48cae4 0%, #0096c7 100%); }
-        .grade-6 { background: linear-gradient(135deg, #ffd166 0%, #ff9e00 100%); }
-        .grade-7 { background: linear-gradient(135deg, #06d6a0 0%, #048a64 100%); }
-        .grade-8 { background: linear-gradient(135deg, #118ab2 0%, #073b4c 100%); }
-        .grade-9 { background: linear-gradient(135deg, #9d4edd 0%, #5a189a 100%); }
-        .grade-10 { background: linear-gradient(135deg, #f72585 0%, #7209b7 100%); }
-        
-        /* تأثيرات إضافية */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-        
-        @media (max-width: 768px) {
-            .grades-container {
-                grid-template-columns: 1fr;
-            }
-            
-            header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .exams-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .exams-container {
-                padding: 25px;
-                margin: 20px 0;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EduExam - منصة الامتحانات (رابع -> أول ثانوي)</title>
+
+  <!-- خط Cairo من جوجل -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#0c1520;
+      --bg2:#142a3a;
+      --card: rgba(255,255,255,0.06);
+      --accent: #2ea3ff;
+      --glass: rgba(255,255,255,0.04);
+      --text:#e6eef8;
+      --muted:#b8c6d6;
+      --radius:16px;
+      --transition: all .35s cubic-bezier(.2,.9,.3,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Cairo",sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      direction:rtl;
+    }
+
+    .wrap{max-width:1200px;margin:30px auto;padding:20px;}
+
+    header.app{
+      text-align:center;
+      margin-bottom:22px;
+    }
+    .logo{
+      font-size:2.6rem;
+      color:var(--accent);
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:12px;
+      background:linear-gradient(90deg, rgba(46,163,255,0.12), rgba(46,163,255,0.04));
+      box-shadow: 0 6px 20px rgba(11,22,35,0.35);
+    }
+    header.app h1{
+      margin:12px 0 6px;
+      font-size:1.9rem;
+      letter-spacing:0.5px;
+    }
+    header.app p{color:var(--muted); margin:0 0 8px;}
+
+    /* layout */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+      gap:18px;
+    }
+
+    .grade-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius);
+      padding:20px;
+      box-shadow: 0 8px 30px rgba(2,6,12,0.45);
+      transition: var(--transition);
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      min-height:140px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .grade-card:hover{ transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(2,6,12,0.6); }
+
+    .grade-badge{
+      position:absolute; top:12px; left:12px;
+      background:var(--glass); padding:6px 12px; border-radius:999px; font-size:0.9rem; color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .grade-icon{ font-size:2.6rem; margin-bottom:8px; }
+    .grade-title{ font-size:1.25rem; font-weight:700; margin-bottom:6px; }
+    .grade-desc{ color:var(--muted); font-size:0.95rem; }
+
+    /* page views */
+    .page{
+      display:none;
+      margin-top:18px;
+    }
+    .page.active{ display:block; }
+
+    .back-btn{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 16px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:999px;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+      transition:var(--transition);
+      margin-bottom:14px;
+    }
+    .back-btn:hover{ transform:translateY(-3px); }
+
+    /* exams grid */
+    .exams-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+      margin-top:10px;
+    }
+    .exam-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:16px;
+      box-shadow: 0 8px 24px rgba(2,6,12,0.5);
+      transition:var(--transition);
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:120px;
+    }
+    .exam-card h3{ margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
+    .exam-card p{ margin:0; color:var(--muted); font-size:0.95rem; }
+
+    .exam-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
+    .start-btn{
+      padding:9px 14px;
+      border-radius:999px;
+      border:none;
+      background: linear-gradient(90deg,var(--accent), #27c0ff);
+      color:#042032;
+      font-weight:700;
+      cursor:pointer;
+      transition:var(--transition);
+      box-shadow: 0 8px 20px rgba(46,163,255,0.12);
+    }
+    .start-btn:hover{ transform:translateY(-3px); }
+
+    .info-btn{
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background:transparent;
+      color:var(--muted);
+      cursor:default;
+      font-size:0.9rem;
+    }
+
+    /* iframe exam view */
+    .exam-view{
+      display:none;
+      margin-top:10px;
+    }
+    .exam-view.active{ display:block; }
+
+    .iframe-wrap{
+      background:var(--card);
+      border-radius:12px;
+      padding:10px;
+      height:75vh;
+      max-height:820px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+    }
+    .exam-iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      border-radius:8px;
+      background:#fff;
+    }
+
+    /* footer small */
+    footer{ margin-top:26px; text-align:center; color:var(--muted); font-size:0.9rem; }
+
+    @media (max-width:720px){
+      .iframe-wrap{ height:66vh; }
+      header.app h1{ font-size:1.3rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <h1>EduExam - منصة الامتحانات</h1>
-            <p>منصة تعليمية متكاملة لجميع المراحل الدراسية من الصف الرابع الابتدائي إلى الأول الثانوي</p>
-        </header>
-        
-        <div class="grades-container">
-            <!-- الصف الرابع -->
-            <div class="grade-card grade-4" data-grade="4">
-                <div class="grade-badge">ابتدائي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-pencil-alt"></i>
-                </div>
-                <h2 class="grade-title">الصف الرابع</h2>
-                <p class="grade-desc">المرحلة الابتدائية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الصف الخامس -->
-            <div class="grade-card grade-5" data-grade="5">
-                <div class="grade-badge">ابتدائي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h2 class="grade-title">الصف الخامس</h2>
-                <p class="grade-desc">المرحلة الابتدائية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الصف السادس -->
-            <div class="grade-card grade-6" data-grade="6">
-                <div class="grade-badge">ابتدائي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h2 class="grade-title">الصف السادس</h2>
-                <p class="grade-desc">المرحلة الابتدائية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الأول الإعدادي -->
-            <div class="grade-card grade-7" data-grade="7">
-                <div class="grade-badge">إعدادي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <h2 class="grade-title">الأول الإعدادي</h2>
-                <p class="grade-desc">المرحلة الإعدادية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الثاني الإعدادي -->
-            <div class="grade-card grade-8" data-grade="8">
-                <div class="grade-badge">إعدادي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <h2 class="grade-title">الثاني الإعدادي</h2>
-                <p class="grade-desc">المرحلة الإعدادية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الثالث الإعدادي -->
-            <div class="grade-card grade-9" data-grade="9">
-                <div class="grade-badge">إعدادي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-atom"></i>
-                </div>
-                <h2 class="grade-title">الثالث الإعدادي</h2>
-                <p class="grade-desc">المرحلة الإعدادية - الفصلين الدراسيين</p>
-            </div>
-            
-            <!-- الأول الثانوي -->
-            <div class="grade-card grade-10" data-grade="10">
-                <div class="grade-badge">ثانوي</div>
-                <div class="grade-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <h2 class="grade-title">الأول الثانوي</h2>
-                <p class="grade-desc">المرحلة الثانوية - الفصلين الدراسيين</p>
-            </div>
-        </div>
-        
-        <footer>
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-graduation-cap"></i> EduExam
-                </div>
-                <div class="footer-links">
-                    <a href="#">الرئيسية</a>
-                    <a href="#">عن المنصة</a>
-                    <a href="#">اتصل بنا</a>
-                    <a href="#">الدعم الفني</a>
-                </div>
-                <div class="footer-copyright">
-                    جميع الحقوق محفوظة &copy; 2023 منصة EduExam التعليمية
-                </div>
-            </div>
-        </footer>
-    </div>
-    
-    <!-- صفحة الامتحانات -->
-    <div class="exams-page" id="examsPage">
-        <div class="exams-container">
-            <div class="page-header">
-                <h2 class="page-title" id="pageTitle">امتحانات الصف الرابع</h2>
-                <button class="close-button" id="closeButton">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="exams-grid" id="examsGrid">
-                <!-- سيتم ملؤها ديناميكياً -->
-            </div>
-        </div>
-    </div>
+  <div class="wrap">
+    <header class="app">
+      <div class="logo">EduExam</div>
+      <h1>منصة الامتحانات — من الصف الرابع الابتدائي حتى الصف الأول الثانوي</h1>
+      <p>اختر صفك لعرض امتحاناته — عند الضغط على "ابدأ الامتحان" النموذج يفتح داخل المنصة.</p>
+    </header>
 
-    <script>
-        // بيانات الامتحانات لكل صف
-        const examsData = {
-            4: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "التربية الدينية", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            5: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "التربية الدينية", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            6: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "التربية الدينية", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            7: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الحاسب الآلي", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            8: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "التربية الفنية", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            9: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الدراسات الاجتماعية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "التربية الفنية", desc: "امتحان الفصل الدراسي الأول", time: "30 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "العلوم", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ],
-            10: [
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الأول", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الفيزياء", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الكيمياء", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "الأحياء", desc: "امتحان الفصل الدراسي الأول", time: "45 دقيقة" },
-                { title: "اللغة العربية", desc: "امتحان الفصل الدراسي الثاني", time: "60 دقيقة" },
-                { title: "الرياضيات", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "اللغة الإنجليزية", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "الفيزياء", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "الكيمياء", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" },
-                { title: "الأحياء", desc: "امتحان الفصل الدراسي الثاني", time: "45 دقيقة" }
-            ]
-        };
+    <!-- العرض الرئيسي للصفوف -->
+    <section id="homePage" class="page active">
+      <div class="grid" id="gradesGrid">
+        <!-- بطاقات الصفوف ستُولَّد ديناميكياً -->
+      </div>
+    </section>
 
-        // عناصر DOM
-        const examsPage = document.getElementById('examsPage');
-        const closeButton = document.getElementById('closeButton');
-        const pageTitle = document.getElementById('pageTitle');
-        const examsGrid = document.getElementById('examsGrid');
-        const gradeCards = document.querySelectorAll('.grade-card');
+    <!-- صفحة قائمة الامتحانات لصف محدد -->
+    <section id="examsPage" class="page">
+      <button class="back-btn" id="backToHome">
+        ← رجوع للصفحة الرئيسية
+      </button>
 
-        // إضافة تأثير الجسيمات
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 6 + 2;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 10;
-                const duration = Math.random() * 20 + 10;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
+      <h2 id="examsPageTitle">امتحانات الصف</h2>
+      <div class="exams-grid" id="examsGrid">
+        <!-- بطاقات الامتحانات ستُولَّد ديناميكياً -->
+      </div>
+    </section>
 
-        // فتح صفحة الامتحانات
-        function openExamsPage(gradeId, gradeName) {
-            pageTitle.textContent = `امتحانات ${gradeName}`;
-            examsGrid.innerHTML = '';
-            
-            const exams = examsData[gradeId];
-            exams.forEach(exam => {
-                const examCard = document.createElement('div');
-                examCard.classList.add('exam-card');
-                examCard.innerHTML = `
-                    <h3>${exam.title}</h3>
-                    <p>${exam.desc}</p>
-                    <p><i class="far fa-clock"></i> ${exam.time}</p>
-                    <button class="start-exam" data-exam="${exam.title}">
-                        <i class="fas fa-play-circle"></i> بدء الامتحان
-                    </button>
-                `;
-                examsGrid.appendChild(examCard);
-            });
-            
-            examsPage.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // التمرير إلى الأعلى عند فتح الصفحة
-            examsPage.scrollTop = 0;
-            examsContainer.scrollTop = 0;
-        }
+    <!-- صفحة عرض الامتحان داخل iframe -->
+    <section id="examView" class="page exam-view">
+      <button class="back-btn" id="backAfterExam">
+        ← رجوع للصفحة الرئيسية
+      </button>
+      <h2 id="examViewTitle">عرض الامتحان</h2>
 
-        // إغلاق صفحة الامتحانات
-        function closeExamsPage() {
-            examsPage.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
+      <div class="iframe-wrap" id="iframeWrap">
+        <iframe id="examIframe" class="exam-iframe" src="" title="Exam"></iframe>
+      </div>
+    </section>
 
-        // بدء الامتحان
-        function startExam(examName) {
-            alert(`سيتم بدء امتحان ${examName}\nسيتم توجيهك إلى صفحة الامتحان الآن`);
-            // هنا يمكن إضافة التوجيه الفعلي إلى صفحة الامتحان
-        }
+    <footer>تم التصميم بواسطة EduExam • عدل روابط Google Forms في بيانات الامتحانات</footer>
+  </div>
 
-        // إضافة event listeners
-        gradeCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const gradeId = card.getAttribute('data-grade');
-                const gradeName = card.querySelector('.grade-title').textContent;
-                openExamsPage(gradeId, gradeName);
-            });
+  <script>
+    /*******************************
+     * DATA: عدل روابط النماذج هنا
+     * استخدم روابط embed لنماذج جوجل بصيغة:
+     * https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true
+     *******************************/
+    const examsData = {
+      // 4: الصف الرابع ابتدائي
+      4: [
+        { title: "اللغة العربية - الفصل الأول", desc: "قراءة + نحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات - الفصل الأول", desc: "عمليات ومسائل", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_MATH/viewform?embedded=true" },
+        { title: "الدراسات - الفصل الأول", desc: "تاريخ وجغرافيا", time: "30 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_SOC/viewform?embedded=true" }
+      ],
+      // 5: الصف الخامس ابتدائي
+      5: [
+        { title: "اللغة العربية", desc: "فهم ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات", desc: "جبر وعمليات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_MATH/viewform?embedded=true" },
+        { title: "العلوم", desc: "مفاهيم أساسية", time: "40 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_SCI/viewform?embedded=true" }
+      ],
+      // 6: الصف السادس ابتدائي
+      6: [
+        { title: "اللغة العربية", desc: "نصوص ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات", desc: "مسائل وتطبيقات", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_MATH/viewform?embedded=true" },
+        { title: "الدراسات الاجتماعية", desc: "تاريخ وحضارات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_SOC/viewform?embedded=true" }
+      ],
+      // 7: الصف الأول الإعدادي
+      7: [
+        { title: "اللغة العربية", desc: "تعبير ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات", desc: "جبر وهندسة", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_MATH/viewform?embedded=true" },
+        { title: "العلوم", desc: "أساسيات العلوم", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_SCI/viewform?embedded=true" }
+      ],
+      // 8: الصف الثاني الإعدادي
+      8: [
+        { title: "اللغة العربية", desc: "قراءة وتحليل", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات", desc: "معادلات ومسائل", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_MATH/viewform?embedded=true" },
+        { title: "اللغة الإنجليزية", desc: "قواعد ومفردات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ENG/viewform?embedded=true" }
+      ],
+      // 9: الصف الثالث الإعدادي
+      9: [
+        { title: "اللغة العربية", desc: "نصوص وأدب", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_ARABIC/viewform?embedded=true" },
+        { title: "الرياضيات", desc: "جبر وهندسة متقدمة", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_MATH/viewform?embedded=true" },
+        { title: "الدراسات الاجتماعية", desc: "قضايا وطنية", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_SOC/viewform?embedded=true" }
+      ],
+      // 10: الصف الأول الثانوي
+      10: [
+        { title: "اللغة العربية", desc: "أدب ونصوص", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ARABIC/viewform?embedded=true" },
+        { title: "التاريخ / الجغرافيا", desc: "مفاهيم أساسية", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_SOC/viewform?embedded=true" },
+        { title: "الإنجليزي", desc: "قراءة وقواعد", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ENG/viewform?embedded=true" }
+      ]
+    };
+
+    /*******************************
+     * DOM elements
+     *******************************/
+    const homePage = document.getElementById('homePage');
+    const gradesGrid = document.getElementById('gradesGrid');
+    const examsPage = document.getElementById('examsPage');
+    const examsGrid = document.getElementById('examsGrid');
+    const examsPageTitle = document.getElementById('examsPageTitle');
+    const backToHome = document.getElementById('backToHome');
+    const examView = document.getElementById('examView');
+    const examIframe = document.getElementById('examIframe');
+    const examViewTitle = document.getElementById('examViewTitle');
+    const backAfterExam = document.getElementById('backAfterExam');
+
+    // تعريف الصفوف المراد عرضها بالترتيب المطلوب
+    const gradesList = [
+      { id: 4, title: "الصف الرابع الابتدائي", badge: "ابتدائي" },
+      { id: 5, title: "الصف الخامس الابتدائي", badge: "ابتدائي" },
+      { id: 6, title: "الصف السادس الابتدائي", badge: "ابتدائي" },
+      { id: 7, title: "الصف الأول الإعدادي", badge: "إعدادي" },
+      { id: 8, title: "الصف الثاني الإعدادي", badge: "إعدادي" },
+      { id: 9, title: "الصف الثالث الإعدادي", badge: "إعدادي" },
+      { id: 10, title: "الصف الأول الثانوي", badge: "ثانوي" }
+    ];
+
+    /*******************************
+     * وظائف مساعدة
+     *******************************/
+    function showPage(pageElement){
+      // اخفاء كل الصفحات ثم اظهار المطلوبة
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      pageElement.classList.add('active');
+      // إعادة ضبط iframe لو انتقلنا بعيدًا
+      if(pageElement !== examView){
+        examIframe.src = "";
+      }
+      // scroll top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /*******************************
+     * بناء بطاقات الصفوف في الصفحة الرئيسية
+     *******************************/
+    function renderGrades(){
+      gradesGrid.innerHTML = "";
+      gradesList.forEach(g => {
+        const card = document.createElement('div');
+        card.className = 'grade-card';
+        card.setAttribute('data-grade', g.id);
+        card.innerHTML = `
+          <div class="grade-badge">${g.badge}</div>
+          <div class="grade-icon">🎒</div>
+          <div class="grade-title">${g.title}</div>
+          <div class="grade-desc">اضغط لعرض امتحانات ${g.title}</div>
+        `;
+        card.addEventListener('click', () => openExamsForGrade(g.id, g.title));
+        gradesGrid.appendChild(card);
+      });
+    }
+
+    /*******************************
+     * فتح صفحة امتحانات لصف معين
+     *******************************/
+    function openExamsForGrade(gradeId, gradeTitle){
+      // تعيين عنوان الصفحة
+      examsPageTitle.textContent = `امتحانات ${gradeTitle}`;
+      examsGrid.innerHTML = "";
+
+      const exams = examsData[gradeId] || [];
+      if(exams.length === 0){
+        examsGrid.innerHTML = `<p style="color:var(--muted)">لا توجد امتحانات مضافة لهذا الصف بعد.</p>`;
+      } else {
+        exams.forEach((ex, idx) => {
+          const exCard = document.createElement('div');
+          exCard.className = 'exam-card';
+          exCard.innerHTML = `
+            <div>
+              <h3>${ex.title}</h3>
+              <p>${ex.desc} — <strong>${ex.time}</strong></p>
+            </div>
+            <div class="exam-actions">
+              <button class="start-btn" data-url="${ex.formUrl}" data-title="${ex.title}">ابدأ الامتحان</button>
+              <div class="info-btn">مادة ${idx+1}</div>
+            </div>
+          `;
+          // عند الضغط على ابدأ — نعرض iframe داخل المنصة
+          exCard.querySelector('.start-btn').addEventListener('click', (ev) => {
+            const url = ev.currentTarget.getAttribute('data-url');
+            const title = ev.currentTarget.getAttribute('data-title');
+            openExamInIframe(url, title);
+          });
+
+          examsGrid.appendChild(exCard);
         });
+      }
 
-        closeButton.addEventListener('click', closeExamsPage);
+      showPage(examsPage);
+    }
 
-        examsPage.addEventListener('click', (e) => {
-            if (e.target === examsPage) {
-                closeExamsPage();
-            }
-        });
+    /*******************************
+     * فتح الامتحان داخل iframe
+     *******************************/
+    function openExamInIframe(url, title){
+      if(!url || url.includes("FORM_ID")){
+        // إنذار للمطور: لم تُستبدل روابط الـ FORM_ID
+        alert("لم تُضبط رابط نموذج جوجل لهذا الامتحان. تأكد من تعديل حقل formUrl في الكود برابط الـ Google Form بصيغة embed.");
+        return;
+      }
 
-        // استخدام event delegation لأزرار بدء الامتحان
-        examsGrid.addEventListener('click', (e) => {
-            if (e.target.classList.contains('start-exam')) {
-                const examName = e.target.getAttribute('data-exam');
-                startExam(examName);
-            }
-        });
+      // تعيين src للإطار وتهيئة العرض
+      examIframe.src = url;
+      examViewTitle.textContent = `الآن: ${title}`;
+      showPage(examView);
+    }
 
-        // تهيئة الصفحة
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-        });
-    </script>
+    /*******************************
+     * زر الرجوع للصفحة الرئيسية
+     *******************************/
+    backToHome.addEventListener('click', () => {
+      showPage(homePage);
+    });
+    backAfterExam.addEventListener('click', () => {
+      // شرطك: لما يضغط بعد الامتحان يرجع للصفحة الرئيسية
+      showPage(homePage);
+    });
+
+    /*******************************
+     * تهيئة أولية
+     *******************************/
+    renderGrades();
+
+    // ملاحظة: لو عايز أضيف تسجيل اسم الطالب قبل الدخول أقدر أعمل فورم بسيط وحفظ الاسم في localStorage ثم تمريره للـ Google Form (pre-fill) — لو تحب نضيفها.
+  </script>
 </body>
 </html>
