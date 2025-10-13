@@ -1,127 +1,318 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html>
+
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>🎯 لعبة الامتحان - من سيربح المليون 🎯</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لعبة الكويز - ستايل ألعاب تفاعلية</title>
   <style>
-    body {
-      font-family: "Cairo", sans-serif;
-      background: radial-gradient(circle at center, #001f3f, #000);
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    .container {
-      max-width: 700px;
-      margin: 60px auto;
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 25px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
-    }
-    h1 {
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD700;
-    }
-    button {
-      display: block;
-      width: 80%;
-      margin: 10px auto;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #0047ab, #0074D9);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #FFD700, #FFA500);
-      color: black;
-      font-weight: bold;
-    }
-    #startBtn {
-      background: linear-gradient(90deg, #FFD700, #FF851B);
-      color: black;
-      font-weight: bold;
-    }
+    :root{--bg:#0b1020;--card:#0f1724;--accent:#ffb86b;--good:#4ade80;--bad:#ff6b6b;--glass: rgba(255,255,255,0.03)}
+    *{box-sizing:border-box;font-family: 'Segoe UI', Tahoma, Arial, sans-serif}
+    html,body{height:100%;margin:0;background: radial-gradient(circle at 10% 10%, rgba(255,184,107,0.06), transparent 8%), radial-gradient(circle at 90% 90%, rgba(74,222,128,0.03), transparent 8%), var(--bg);color:#e6eef8}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .stage{width:100%;max-width:900px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:16px;padding:18px;box-shadow:0 10px 30px rgba(2,6,23,0.6);position:relative;overflow:hidden}/* header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.title{font-size:20px;font-weight:700;display:flex;gap:12px;align-items:center}
+.badge{background:linear-gradient(90deg,var(--accent),#ffd48a);color:#111;padding:6px 10px;border-radius:999px;font-weight:700}
+
+/* intro */
+.intro{display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:center}
+@media(max-width:780px){.intro{grid-template-columns:1fr}}
+.panel{background:var(--card);padding:16px;border-radius:12px}
+label{display:block;margin-bottom:6px;color:#a3b3c8}
+input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.settings{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{cursor:pointer;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),#ffaa4d);color:#08101a;font-weight:800}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#cde0ff}
+
+/* quiz area */
+.quiz{display:none;gap:18px;align-items:start}
+.left{flex:1}
+.question-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));padding:18px;border-radius:12px;margin-bottom:12px;position:relative;overflow:hidden}
+.q-number{font-size:13px;color:#9fb3d6}
+.q-text{font-size:20px;font-weight:700;margin-top:8px}
+.answers{display:grid;gap:10px;margin-top:12px}
+.answer{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:var(--glass);cursor:pointer;transition:transform .15s, box-shadow .15s}
+.answer:hover{transform:translateY(-4px)}
+.answer.disabled{cursor:default;opacity:0.9}
+
+/* right panel */
+.right{width:260px}
+.panel.small{padding:12px}
+.progress{height:12px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+.progress > i{display:block;height:100%;background:linear-gradient(90deg,#6ee7b7, #60a5fa);width:0%}
+
+.score{font-size:28px;font-weight:800;text-align:center;padding:10px 6px}
+
+/* result */
+.result{display:none;padding:22px;text-align:center}
+.result h2{margin:8px 0 6px}
+.confetti{pointer-events:none;position:absolute;inset:0}
+
+/* animations */
+.pop{animation:pop .45s cubic-bezier(.2,.9,.3,1)}
+@keyframes pop{0%{transform:scale(.96)}50%{transform:scale(1.03)}100%{transform:scale(1)} }
+
+/* small footer */
+.small-muted{font-size:12px;color:#9fb3d6;margin-top:8px}
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💡 لعبة الامتحان التفاعلية 💡</h1>
-    <div id="game">
-      <button id="startBtn" onclick="startGame()">ابدأ اللعبة</button>
+  <div class="wrap">
+    <div class="stage">
+      <canvas id="confettiCanvas" class="confetti"></canvas>
+      <div class="top">
+        <div class="title">لعبة الامتحان <span class="badge">ستايل ألعاب</span></div>
+        <div class="small-muted">مرن - اختيارات متعددة - يظهر الدرجة فورًا بعد آخر سؤال</div>
+      </div><div class="intro">
+    <div class="panel">
+      <div id="introCard">
+        <label>اسم الطالب</label>
+        <input id="playerName" type="text" placeholder="اكتب اسمك هنا..." />
+
+        <div class="settings">
+          <div>
+            <label>عدد الأسئلة (اترك 0 لاستخدام كل الأسئلة)</label>
+            <input id="numQuestions" type="number" min="0" value="0" style="width:120px;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit" />
+          </div>
+          <div>
+            <label>عرض ترتيب الأسئلة</label>
+            <select id="orderSelect" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit">
+              <option value="fixed">ثابت</option>
+              <option value="shuffle">عشوائي</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button id="startBtn" class="btn">ابدأ اللعبة</button>
+          <button id="demoBtn" class="btn-ghost">نماذج أسئلة</button>
+        </div>
+
+        <p class="small-muted">يمكنك تعديل مجموعة الأسئلة داخل ملف الـ HTML — كل سؤال = نص + 4 اختيارات + رقم الإجابة الصحيحة.</p>
+      </div>
+    </div>
+
+    <div class="panel small">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="score" id="liveScore">0 نقطة</div>
+        <div>
+          <div class="progress"><i id="progBar"></i></div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+          <div class="btn-ghost" id="restartBtn" style="padding:8px 10px;border-radius:8px">إعادة ضبط</div>
+          <div class="btn-ghost" id="saveBtn" style="padding:8px 10px;border-radius:8px">حفظ نتيجة (محلي)</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script>
-    // 🧠 الأسئلة (يمكنك تعديلها أو زيادتها بحرية)
-    const questions = [
-      {q: "من أول من رفع راية التوحيد في مكة؟", a: ["عبد المطلب", "عبد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"], c: 2},
-      {q: "أين تقع جبال أطلس؟", a: ["مصر", "المغرب", "العراق", "السودان"], c: 1},
-      {q: "ما عاصمة اليابان؟", a: ["بكين", "طوكيو", "سيول", "مانيلا"], c: 1},
-      {q: "من الذي بنى السد العالي؟", a: ["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"], c: 0}
+  <!-- QUIZ -->
+  <div class="quiz" id="quizArea">
+    <div class="left">
+      <div class="question-card pop" id="questionCard">
+        <div class="q-number" id="qNumber">السؤال 1 من 10</div>
+        <div class="q-text" id="qText">ما هو نص السؤال؟</div>
+        <div class="answers" id="answers">
+          <!-- answer buttons injected here -->
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="nextBtn" class="btn-ghost">السؤال التالي</button>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="panel small">
+        <div style="text-align:center">النتيجة الحية</div>
+        <div class="score" id="scorePanel">0</div>
+        <div style="font-size:13px;color:#9fb3d6;text-align:center">اسم الطالب: <span id="playerLabel">-</span></div>
+        <div style="margin-top:10px;font-size:13px;color:#9fb3d6;text-align:center">الأسئلة المتبقية: <span id="leftCount">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result panel" id="resultArea">
+    <h2 id="resultTitle">مبروك!</h2>
+    <div id="resultScore" style="font-size:22px;font-weight:800">لقد حصلت على 0 من 0</div>
+    <p id="resultMessage" style="color:#bcd3f7;margin-top:8px"></p>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+      <button id="playAgain" class="btn">اللعب مرة أخرى</button>
+      <button id="downloadBtn" class="btn-ghost">تحميل نتيجة (TXT)</button>
+    </div>
+  </div>
+
+</div>
+
+  </div>  <script>
+    /**********************
+     *  مجموعة الأسئلة  <-- هنا عدل الأسئلة بسهولة
+     * كل عنصر: {q: 'النص', options: ['A','B','C','D'], answer: indexOfCorrect(0..3), points: integer}
+     **********************/
+    const QUESTIONS = [
+      {q: 'ما عاصمة مصر؟', options: ['الإسكندرية','القاهرة','أسوان','الأقصر'], answer:1, points:10},
+      {q: 'كم عدد قارات العالم؟', options: ['5','6','7','8'], answer:2, points:10},
+      {q: 'ما أكبر محيط في العالم؟', options: ['المحيط الأطلسي','المحيط الهندي','المحيط الهادئ','المحيط المتجمد الشمالي'], answer:2, points:10},
+      {q: 'من هو صاحِب شهادة "ابن بطوطة"؟', options: ['مستشرق','رحالة مغاربي','شاعر','تاجر'], answer:1, points:10}
     ];
 
-    let player = "";
-    let index = 0;
+    // عنصر واجهة
+    const playerNameEl = document.getElementById('playerName');
+    const startBtn = document.getElementById('startBtn');
+    const demoBtn = document.getElementById('demoBtn');
+    const quizArea = document.getElementById('quizArea');
+    const introCard = document.getElementById('introCard');
+    const qNumber = document.getElementById('qNumber');
+    const qText = document.getElementById('qText');
+    const answersEl = document.getElementById('answers');
+    const scorePanel = document.getElementById('scorePanel');
+    const liveScore = document.getElementById('liveScore');
+    const progBar = document.getElementById('progBar');
+    const resultArea = document.getElementById('resultArea');
+    const resultScore = document.getElementById('resultScore');
+    const resultMessage = document.getElementById('resultMessage');
+    const resultTitle = document.getElementById('resultTitle');
+    const playerLabel = document.getElementById('playerLabel');
+    const leftCount = document.getElementById('leftCount');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const playAgain = document.getElementById('playAgain');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const numQuestionsInput = document.getElementById('numQuestions');
+    const orderSelect = document.getElementById('orderSelect');
+
+    // حالة اللعبة
+    let pool = []; // final questions
+    let currentIndex = 0;
     let score = 0;
+    let player = '';
+    let answered = false;
 
-    const gameDiv = document.getElementById("game");
+    // init canvas size
+    function resizeCanvas(){ confettiCanvas.width = confettiCanvas.clientWidth; confettiCanvas.height = confettiCanvas.clientHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    function startGame() {
-      player = prompt("👤 من فضلك اكتب اسمك للبدء:");
-      if (!player) return alert("لا يمكنك البدء بدون كتابة اسمك!");
-      index = 0;
+    // Simple confetti implementation
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiPieces = [];
+    function makeConfetti(){ confettiPieces = []; for(let i=0;i<80;i++){ confettiPieces.push({x:Math.random()*confettiCanvas.width,y:Math.random()*confettiCanvas.height- confettiCanvas.height,vy:2+Math.random()*4, size:6+Math.random()*8, rot:Math.random()*360, vr:2- Math.random()*4, color: ['#ff6b6b','#ffd86b','#6ee7b7','#60a5fa'][Math.floor(Math.random()*4)] }) } }
+    function runConfetti(){ confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); for(const p of confettiPieces){ p.y += p.vy; p.rot += p.vr; confettiCtx.save(); confettiCtx.translate(p.x,p.y); confettiCtx.rotate(p.rot*Math.PI/180); confettiCtx.fillStyle = p.color; confettiCtx.fillRect(-p.size/2,-p.size/2,p.size,p.size); confettiCtx.restore(); if(p.y>confettiCanvas.height+20) p.y = -40; } requestAnimationFrame(runConfetti); }
+
+    // helper shuffle
+    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+    function buildPool(){
+      const n = parseInt(numQuestionsInput.value) || 0;
+      pool = JSON.parse(JSON.stringify(QUESTIONS)); // deep copy
+      if(orderSelect.value === 'shuffle') pool = shuffle(pool);
+      if(n>0 && n < pool.length) pool = pool.slice(0,n);
+    }
+
+    function startGame(){
+      player = playerNameEl.value.trim() || 'طالب مجهول';
+      playerLabel.textContent = player;
+      buildPool();
+      currentIndex = 0;
       score = 0;
-      nextQuestion();
+      answered = false;
+      updateUIForQuestion();
+      introCard.style.display = 'none';
+      quizArea.style.display = 'flex';
+      resultArea.style.display = 'none';
+      updateLiveScore();
+      makeConfetti(); runConfetti();
     }
 
-    function nextQuestion() {
-      if (index >= questions.length) return endGame();
+    function updateLiveScore(){ scorePanel.textContent = score; liveScore.textContent = score + ' نقطة'; leftCount.textContent = Math.max(0, pool.length - currentIndex - (answered?1:0)); const percent = pool.length?((currentIndex + (answered?1:0))/pool.length)*100:0; progBar.style.width = percent + '%'; }
 
-      const q = questions[index];
-      gameDiv.innerHTML = `
-        <h2>السؤال ${index + 1} من ${questions.length}</h2>
-        <p style="font-size:20px">${q.q}</p>
-        ${q.a.map((ans, i) => `<button onclick="checkAnswer(${i})">${ans}</button>`).join("")}
-      `;
-    }
+    function renderAnswers(q){ answersEl.innerHTML = ''; q.options.forEach((opt,i)=>{
+      const btn = document.createElement('div'); btn.className='answer'; btn.tabIndex=0; btn.innerHTML = `<div style="font-weight:700">${String.fromCharCode(65+i)}.</div><div style="margin-top:6px">${opt}</div>`;
+      btn.addEventListener('click',()=>selectAnswer(i,btn,q));
+      answersEl.appendChild(btn);
+    }) }
 
-    function checkAnswer(choice) {
-      const q = questions[index];
-      if (choice === q.c) {
-        score++;
-        alert("✅ إجابة صحيحة!");
-      } else {
-        alert("❌ إجابة خاطئة!");
+    function updateUIForQuestion(){
+      if(currentIndex >= pool.length){ // نهاية
+        showResult(); return;
       }
-      index++;
-      nextQuestion();
+      const q = pool[currentIndex];
+      qNumber.textContent = `السؤال ${currentIndex+1} من ${pool.length}`;
+      qText.textContent = q.q;
+      renderAnswers(q);
+      answered = false;
+      updateLiveScore();
     }
 
-    function endGame() {
-      gameDiv.innerHTML = `
-        <h2>🏆 انتهى الامتحان!</h2>
-        <p>النتيجة: <strong>${score}</strong> من ${questions.length}</p>
-        <p>شكرًا يا ${player} على مشاركتك!</p>
-        <button onclick="startGame()">إعادة اللعب</button>
-      `;
+    function selectAnswer(idx,btn,q){
+      if(answered) return; answered = true;
+      // أغلق كل الأزرار
+      document.querySelectorAll('.answer').forEach(a=>a.classList.add('disabled'));
+      // تحقق
+      if(idx === q.answer){
+        btn.style.borderColor = 'rgba(0,0,0,0)';
+        btn.style.boxShadow = '0 8px 30px rgba(0,0,0,0.4)';
+        btn.classList.add('pop');
+        score += (q.points||1);
+        btn.style.background = 'linear-gradient(90deg, rgba(110,231,183,0.12), rgba(96,165,250,0.06))';
+      } else {
+        btn.style.background = 'rgba(255,107,107,0.08)';
+        // ضع علامة على الإجابة الصحيحة
+        const correct = answersEl.children[q.answer];
+        if(correct) correct.style.background = 'linear-gradient(90deg, rgba(110,231,183,0.12), rgba(96,165,250,0.06))';
+      }
 
-      // 🔗 إرسال النتيجة إلى Google Sheet
-      fetch("https://script.google.com/macros/s/EXAMPLE_TEST_URL/exec", {
-        method: "POST",
-        body: JSON.stringify({
-          name: player,
-          score: score,
-          total: questions.length
-        })
-      });
+      updateLiveScore();
+      // إذا كان هذا آخر سؤال، اعرض النتيجة فورًا
+      if(currentIndex === pool.length-1){
+        setTimeout(showResult, 800);
+      }
     }
-  </script>
-</body>
+
+    nextBtn.addEventListener('click',()=>{
+      if(!answered){ // إذا لم يجب يفرض أنه تخطى بدون نقاط
+        // نسمح بالتخطي
+      }
+      currentIndex++; answered=false; updateUIForQuestion();
+    });
+
+    function showResult(){
+      quizArea.style.display = 'none';
+      resultArea.style.display = 'block';
+      resultScore.textContent = `حصلت على ${score} نقطة من مجموع ${pool.reduce((s,q)=>s+ (q.points||1),0)} نقطة`;
+      resultMessage.textContent = score > (pool.reduce((s,q)=>s+ (q.points||1),0)/2) ? 'أداء ممتاز! مبروك 🎉' : 'تمام — حاول المرة الجاية وتقدر تصلح مستواك 💪';
+      resultTitle.textContent = score > 0 ? 'انتهت اللعبة' : 'انتهت اللعبة';
+    }
+
+    // حفظ محلي (localStorage)
+    saveBtn.addEventListener('click',()=>{
+      const rec = {player,score,total:pool.reduce((s,q)=>s+ (q.points||1),0),date:new Date().toISOString()};
+      const arr = JSON.parse(localStorage.getItem('quiz_records')||'[]'); arr.push(rec); localStorage.setItem('quiz_records', JSON.stringify(arr)); alert('تم حفظ النتيجة محليًا');
+    });
+
+    restartBtn.addEventListener('click',()=>{ location.reload(); });
+
+    startBtn.addEventListener('click', ()=>{ startGame(); });
+
+    demoBtn.addEventListener('click', ()=>{ alert('مثال: يمكنك تغيير مجموعة QUESTIONS داخل الكود. حالياً هناك '+QUESTIONS.length+' سؤالاً.'); });
+
+    playAgain.addEventListener('click', ()=>{ location.reload(); });
+
+    downloadBtn.addEventListener('click', ()=>{
+      const text = `النتيجة\nالاسم: ${player}\nالنقاط: ${score}\nالتاريخ: ${new Date().toLocaleString()}`;
+      const blob = new Blob([text], {type:'text/plain'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${player}_result.txt`; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // Accessibility: allow Enter to start
+    playerNameEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter') startBtn.click(); });
+
+    // عند التحميل: اضبط canvas
+    window.addEventListener('load', ()=>{ resizeCanvas(); });
+  </script></body>
 </html>
