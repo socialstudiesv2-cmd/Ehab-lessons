@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 من سيربح المليون - النسخة التفاعلية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .game-content {
+            padding: 30px;
+        }
+
+        .welcome-screen, .question-screen, .result-screen {
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-icon {
+            font-size: 5rem;
+            color: #4A00E0;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+            font-weight: 600;
+            min-width: 200px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
+        }
+
+        .btn-start:hover {
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.6);
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #FF512F, #F09819);
+            box-shadow: 0 5px 15px rgba(255, 81, 47, 0.4);
+        }
+
+        .btn-restart:hover {
+            box-shadow: 0 8px 20px rgba(255, 81, 47, 0.6);
+        }
+
+        .question-container {
+            margin: 20px 0;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4A00E0;
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00b09b;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin: 25px 0;
+            line-height: 1.5;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        @media (min-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 18px 15px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            border-color: #8E2DE2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: white;
+            border-color: #00b09b;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, #FF512F, #F09819);
+            color: white;
+            border-color: #FF512F;
+        }
+
+        .progress-container {
+            margin: 25px 0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .result-container {
+            padding: 20px;
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            margin: 20px 0;
+        }
+
+        .success .result-icon {
+            color: #00b09b;
+        }
+
+        .average .result-icon {
+            color: #F09819;
+        }
+
+        .fail .result-icon {
+            color: #FF512F;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            margin: 15px 0;
+            color: #4A00E0;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .player-name {
+            font-weight: 700;
+            color: #4A00E0;
+        }
+
+        .loading-bar {
+            height: 4px;
+            width: 100%;
+            background: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            animation: loading 1.5s infinite ease-in-out;
+            border-radius: 2px;
+        }
+
+        @keyframes loading {
+            0% { left: -30%; }
+            100% { left: 100%; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: #f5f7fa;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-trophy"></i> من سيربح المليون</h1>
+            <p>اختبر معلوماتك واربح نقاط المعرفة!</p>
+        </div>
+
+        <div class="game-content">
+            <!-- شاشة الترحيب -->
+            <div id="welcomeScreen" class="welcome-screen">
+                <div class="welcome-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h2>مرحباً بك في لعبة المعرفة!</h2>
+                <p>اختر الإجابات الصحيحة وارفع من مستوى معرفتك</p>
+                <p>كل إجابة صحيحة تمنحك نقطة، والعبة تنتهي بعد الإجابة على جميع الأسئلة</p>
+                <button class="btn btn-start" id="startBtn">ابدأ اللعبة</button>
+            </div>
+
+            <!-- شاشة الأسئلة -->
+            <div id="questionScreen" class="question-screen hidden">
+                <div class="question-header">
+                    <div class="question-number" id="questionNumber">السؤال 1 من 4</div>
+                    <div class="score-display" id="scoreDisplay">النقاط: 0</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progressBar"></div>
+                    </div>
+                </div>
+                
+                <div class="question-text" id="questionText">من أول من رفع راية التوحيد في مكة؟</div>
+                
+                <div class="options-container" id="optionsContainer">
+                    <!-- سيتم تعبئة الخيارات ديناميكياً -->
+                </div>
+                
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+
+            <!-- شاشة النتائج -->
+            <div id="resultScreen" class="result-screen hidden">
+                <div class="result-container">
+                    <div class="result-icon">
+                        <i class="fas fa-award" id="resultIcon"></i>
+                    </div>
+                    <h2 class="result-title" id="resultTitle">مبروك! لقد أنهيت الاختبار</h2>
+                    <div class="result-score" id="resultScore">3/4</div>
+                    <p class="result-message" id="resultMessage">أداء رائع يا <span class="player-name" id="playerName">اللاعب</span>! لقد أظهرت معرفة واسعة.</p>
+                    <button class="btn btn-restart" id="restartBtn">العب مرة أخرى</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2023 | لعبة من سيربح المليون التفاعلية</p>
+        </div>
+    </div>
+
+    <script>
+        // الأسئلة
+        const questions = [
+            {
+                q: "من أول من رفع راية التوحيد في مكة؟",
+                a: ["عبد المطلب", "عبد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"],
+                c: 2
+            },
+            {
+                q: "أين تقع جبال أطلس؟",
+                a: ["مصر", "المغرب", "العراق", "السودان"],
+                c: 1
+            },
+            {
+                q: "ما عاصمة اليابان؟",
+                a: ["بكين", "طوكيو", "سيول", "مانيلا"],
+                c: 1
+            },
+            {
+                q: "من الذي بنى السد العالي؟",
+                a: ["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"],
+                c: 0
+            },
+            {
+                q: "ما هو أطول نهر في العالم؟",
+                a: ["نهر النيل", "نهر الأمازون", "نهر المسيسيبي", "نهر اليانغتسي"],
+                c: 0
+            },
+            {
+                q: "في أي عام هاجر النبي محمد ﷺ إلى المدينة؟",
+                a: ["620 م", "621 م", "622 م", "623 م"],
+                c: 2
+            }
+        ];
+
+        // عناصر DOM
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const questionScreen = document.getElementById('questionScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const startBtn = document.getElementById('startBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const questionNumber = document.getElementById('questionNumber');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const progressBar = document.getElementById('progressBar');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const resultIcon = document.getElementById('resultIcon');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultScore = document.getElementById('resultScore');
+        const resultMessage = document.getElementById('resultMessage');
+        const playerName = document.getElementById('playerName');
+        const loadingBar = document.getElementById('loadingBar');
+
+        // متغيرات اللعبة
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let player = "";
+
+        // بدء اللعبة
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            player = prompt("👤 من فضلك اكتب اسمك للبدء:") || "اللاعب";
+            if (!player) {
+                alert("لا يمكنك البدء بدون كتابة اسمك!");
+                return;
+            }
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            welcomeScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            questionScreen.classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endGame();
+                return;
+            }
+            
+            const question = questions[currentQuestionIndex];
+            
+            // تحديث واجهة السؤال
+            questionNumber.textContent = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+            scoreDisplay.textContent = `النقاط: ${score}`;
+            questionText.textContent = question.q;
+            
+            // تحديث شريط التقدم
+            const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            
+            // إنشاء الخيارات
+            optionsContainer.innerHTML = '';
+            question.a.forEach((option, index) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn';
+                optionBtn.textContent = option;
+                optionBtn.addEventListener('click', () => checkAnswer(index));
+                optionsContainer.appendChild(optionBtn);
+            });
+            
+            // إظهار شريط التحميل لفترة وجيزة
+            loadingBar.style.display = 'block';
+            setTimeout(() => {
+                loadingBar.style.display = 'none';
+            }, 500);
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const optionButtons = document.querySelectorAll('.option-btn');
+            
+            // تعطيل جميع الأزرار بعد الاختيار
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // تحديد الإجابة الصحيحة والخاطئة
+            if (selectedIndex === question.c) {
+                optionButtons[selectedIndex].classList.add('correct');
+                score++;
+                scoreDisplay.textContent = `النقاط: ${score}`;
+            } else {
+                optionButtons[selectedIndex].classList.add('incorrect');
+                optionButtons[question.c].classList.add('correct');
+            }
+            
+            // الانتقال للسؤال التالي بعد تأخير
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        function endGame() {
+            // حساب النتيجة
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            // تحديد مستوى الأداء
+            let resultClass = '';
+            let icon = '';
+            let title = '';
+            let message = '';
+            
+            if (percentage >= 90) {
+                resultClass = 'success';
+                icon = 'fas fa-trophy';
+                title = 'أداء متميز!';
+                message = 'مذهل! لقد أظهرت معرفة استثنائية. أنت تستحق جائزة المعرفة الكبرى!';
+            } else if (percentage >= 70) {
+                resultClass = 'success';
+                icon = 'fas fa-award';
+                title = 'أداء رائع!';
+                message = 'أحسنت! لديك معرفة جيدة في العديد من المجالات. استمر في التعلم!';
+            } else if (percentage >= 50) {
+                resultClass = 'average';
+                icon = 'fas fa-star';
+                title = 'أداء جيد!';
+                message = 'ليس سيئاً! لديك معرفة أساسية جيدة، ويمكنك تحسينها بالمزيد من الدراسة.';
+            } else {
+                resultClass = 'fail';
+                icon = 'fas fa-redo';
+                title = 'حاول مرة أخرى!';
+                message = 'لا بأس! المعرفة تحتاج إلى مزيد من الجهد. حاول مرة أخرى لتحسين نتيجتك.';
+            }
+            
+            // تحديث واجهة النتائج
+            resultScreen.className = `result-screen ${resultClass}`;
+            resultIcon.className = icon;
+            resultTitle.textContent = title;
+            resultScore.textContent = `${score}/${questions.length}`;
+            resultMessage.innerHTML = message.replace('اللاعب', `<span class="player-name">${player}</span>`);
+            playerName.textContent = player;
+            
+            // الانتقال إلى شاشة النتائج
+            questionScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            // إرسال النتائج إلى Google Sheets
+            sendToGoogleSheets(player, score, questions.length, percentage);
+        }
+
+        function sendToGoogleSheets(name, score, total, percentage) {
+            // استبدل EXAMPLE_TEST_URL برابط Google Apps Script الخاص بك
+            const scriptURL = 'https://script.google.com/macros/s/EXAMPLE_TEST_URL/exec';
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    score: score,
+                    total: total,
+                    percentage: percentage,
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('تم إرسال النتيجة بنجاح:', data);
+            })
+            .catch(error => {
+                console.error('خطأ في إرسال النتيجة:', error);
+            });
+        }
+    </script>
+</body>
+</html>
