@@ -330,6 +330,16 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        .debug-info {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #666;
+            border-right: 4px solid #007bff;
+        }
     </style>
 </head>
 <body>
@@ -382,6 +392,12 @@
                     <h2 class="result-title" id="resultTitle">مبروك! لقد أنهيت الاختبار</h2>
                     <div class="result-score" id="resultScore">3/4</div>
                     <p class="result-message" id="resultMessage">أداء رائع يا <span class="player-name" id="playerName">اللاعب</span>! لقد أظهرت معرفة واسعة.</p>
+                    
+                    <!-- معلومات التصحيح -->
+                    <div class="debug-info" id="debugInfo">
+                        جاري إرسال النتائج إلى Google Sheets...
+                    </div>
+                    
                     <button class="btn btn-restart" id="restartBtn">العب مرة أخرى</button>
                 </div>
             </div>
@@ -397,7 +413,7 @@
         const questions = [
             {
                 q: "من أول من رفع راية التوحيد في مكة؟",
-                a: ["عبد المطلب", "عبد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"],
+                a: ["عبد المطلب", "عبـد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"],
                 c: 2
             },
             {
@@ -414,16 +430,6 @@
                 q: "من الذي بنى السد العالي؟",
                 a: ["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"],
                 c: 0
-            },
-            {
-                q: "ما هو أطول نهر في العالم؟",
-                a: ["نهر النيل", "نهر الأمازون", "نهر المسيسيبي", "نهر اليانغتسي"],
-                c: 0
-            },
-            {
-                q: "في أي عام هاجر النبي محمد ﷺ إلى المدينة؟",
-                a: ["620 م", "621 م", "622 م", "623 م"],
-                c: 2
             }
         ];
 
@@ -444,6 +450,7 @@
         const resultMessage = document.getElementById('resultMessage');
         const playerName = document.getElementById('playerName');
         const loadingBar = document.getElementById('loadingBar');
+        const debugInfo = document.getElementById('debugInfo');
 
         // متغيرات اللعبة
         let currentQuestionIndex = 0;
@@ -580,30 +587,60 @@
         }
 
         function sendToGoogleSheets(name, score, total, percentage) {
-            // 🔗 رابط Google Apps Script الخاص بك
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbz5SJ2mSl8TvFb_UvSUsHg5r1CSc7CxcinT0hOTM5gqAMkUQ-svq-8vrc7Ff9w8p0ULMg/exec';
+            // 🔗 الرابط الجديد الصحيح
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyiZXYJULS1tt6DAOXOls8Z2xc1qjQi19GUJfcQL5yj7yGZdzr_GrZBM8tc1YQPji-MaQ/exec';
+            
+            debugInfo.innerHTML = '⏳ جاري إرسال النتائج إلى Google Sheets...';
+            
+            const data = {
+                name: name,
+                score: score,
+                total: total,
+                percentage: percentage,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('بيانات الإرسال:', data);
             
             fetch(scriptURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'text/plain;charset=utf-8',
                 },
-                body: JSON.stringify({
-                    name: name,
-                    score: score,
-                    total: total,
-                    percentage: percentage,
-                    timestamp: new Date().toISOString()
-                })
+                body: JSON.stringify(data)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('الاستجابة:', response);
+                return response.json();
+            })
             .then(data => {
                 console.log('تم إرسال النتيجة بنجاح:', data);
+                debugInfo.innerHTML = '✅ تم إرسال النتائج بنجاح إلى Google Sheets!';
+                debugInfo.style.borderRightColor = '#28a745';
             })
             .catch(error => {
                 console.error('خطأ في إرسال النتيجة:', error);
+                debugInfo.innerHTML = '❌ خطأ في إرسال النتائج: ' + error.message;
+                debugInfo.style.borderRightColor = '#dc3545';
             });
         }
+
+        // اختبار الاتصال عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            console.log('الصفحة محملة، جاري اختبار الاتصال...');
+            debugInfo.innerHTML = '🔗 جاري اختبار الاتصال بـ Google Sheets...';
+            
+            fetch('https://script.google.com/macros/s/AKfycbyiZXYJULS1tt6DAOXOls8Z2xc1qjQi19GUJfcQL5yj7yGZdzr_GrZBM8tc1YQPji-MaQ/exec')
+                .then(response => response.json())
+                .then(text => {
+                    console.log('اختبار الاتصال:', text);
+                    debugInfo.innerHTML = '✅ الاتصال بـ Google Sheets يعمل بشكل صحيح';
+                })
+                .catch(error => {
+                    console.error('فشل اختبار الاتصال:', error);
+                    debugInfo.innerHTML = '❌ فشل الاتصال بـ Google Sheets: ' + error.message;
+                });
+        });
     </script>
 </body>
 </html>
