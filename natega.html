@@ -1,616 +1,127 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EduExam - منصة الامتحانات (رابع -> أول ثانوي)</title>
-
-  <!-- خط Cairo من جوجل -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>🎯 لعبة الامتحان - من سيربح المليون 🎯</title>
   <style>
-    :root{
-      --bg1:#0c1520;
-      --bg2:#142a3a;
-      --bg3:#1a3a52;
-      --card: rgba(255,255,255,0.06);
-      --accent: #2ea3ff;
-      --accent-glow: rgba(46, 163, 255, 0.2);
-      --glass: rgba(255,255,255,0.04);
-      --text:#e6eef8;
-      --muted:#b8c6d6;
-      --radius:16px;
-      --transition: all .35s cubic-bezier(.2,.9,.3,1);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Cairo",sans-serif;
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-      direction:rtl;
-      position: relative;
-    }
-
-    /* خلفية متطورة مع تدرجات وتأثيرات */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(46, 163, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(20, 42, 58, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(26, 58, 82, 0.1) 0%, transparent 50%),
-        linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 30%, var(--bg3) 70%, var(--bg1) 100%);
-      z-index: -2;
-    }
-
-    /* تأثير شبكي خفيف */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(46, 163, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(46, 163, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* تأثير جزيئات متحركة */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(46, 163, 255, 0.1);
-      animation: float 15s infinite linear;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) translateX(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) translateX(100px);
-        opacity: 0;
-      }
-    }
-
-    .wrap{
-      max-width:1200px;
-      margin:30px auto;
-      padding:20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    header.app{
-      text-align:center;
-      margin-bottom:22px;
-      position: relative;
-    }
-    
-    /* شعار جديد بدون خلفية */
-    .logo{
-      font-size: 3.5rem;
-      font-weight: 800;
+    body {
+      font-family: "Cairo", sans-serif;
+      background: radial-gradient(circle at center, #001f3f, #000);
+      color: white;
+      text-align: center;
       margin: 0;
-      background: linear-gradient(90deg, #2ea3ff, #27c0ff, #6ee2ff, #2ea3ff);
-      background-size: 300% 300%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 4s ease infinite;
-      text-shadow: 0 0 20px rgba(46, 163, 255, 0.3);
-      letter-spacing: -1px;
-    }
-
-    @keyframes gradientShift {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    header.app h1{
-      margin:12px 0 6px;
-      font-size:1.9rem;
-      letter-spacing:0.5px;
-      background: linear-gradient(90deg, var(--text), var(--muted));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    header.app p{color:var(--muted); margin:0 0 8px;}
-
-    /* layout */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-      gap:18px;
-    }
-
-    .grade-card{
-      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-      border-radius: var(--radius);
-      padding:20px;
-      box-shadow: 0 8px 30px rgba(2,6,12,0.45);
-      transition: var(--transition);
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      min-height:140px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-    }
-
-    .grade-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    }
-
-    .grade-card:hover{ 
-      transform: translateY(-6px) scale(1.01); 
-      box-shadow: 0 18px 40px rgba(2,6,12,0.6), 0 0 20px var(--accent-glow);
-      border-color: rgba(46, 163, 255, 0.2);
-    }
-
-    .grade-badge{
-      position:absolute; 
-      top:12px; 
-      left:12px;
-      background:var(--glass); 
-      padding:6px 12px; 
-      border-radius:999px; 
-      font-size:0.9rem; 
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .grade-icon{ 
-      font-size:2.6rem; 
-      margin-bottom:8px; 
-      filter: drop-shadow(0 0 5px rgba(46, 163, 255, 0.3));
-    }
-    .grade-title{ font-size:1.25rem; font-weight:700; margin-bottom:6px; }
-    .grade-desc{ color:var(--muted); font-size:0.95rem; }
-
-    /* page views */
-    .page{
-      display:none;
-      margin-top:18px;
-    }
-    .page.active{ display:block; }
-
-    .back-btn{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding:10px 16px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border-radius:999px;
-      color:var(--text);
-      border:1px solid rgba(255,255,255,0.03);
-      cursor:pointer;
-      transition:var(--transition);
-      margin-bottom:14px;
-      backdrop-filter: blur(5px);
-    }
-    .back-btn:hover{ 
-      transform:translateY(-3px); 
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    /* exams grid */
-    .exams-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-      margin-top:10px;
-    }
-    .exam-card{
-      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-      border-radius:12px;
-      padding:16px;
-      box-shadow: 0 8px 24px rgba(2,6,12,0.5);
-      transition:var(--transition);
-      border:1px solid rgba(255,255,255,0.03);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-height:120px;
-      backdrop-filter: blur(10px);
-    }
-
-    .exam-card:hover {
-      box-shadow: 0 12px 30px rgba(2,6,12,0.6), 0 0 15px rgba(46, 163, 255, 0.1);
-      border-color: rgba(255,255,255,0.05);
-    }
-
-    .exam-card h3{ margin:0 0 8px; color:var(--accent); font-size:1.05rem; }
-    .exam-card p{ margin:0; color:var(--muted); font-size:0.95rem; }
-
-    .exam-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; justify-content:flex-start; flex-wrap:wrap; }
-    .start-btn{
-      padding:9px 14px;
-      border-radius:999px;
-      border:none;
-      background: linear-gradient(90deg,var(--accent), #27c0ff);
-      color:#042032;
-      font-weight:700;
-      cursor:pointer;
-      transition:var(--transition);
-      box-shadow: 0 8px 20px rgba(46,163,255,0.12);
-      position: relative;
+      padding: 0;
       overflow: hidden;
     }
-
-    .start-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: all 0.5s;
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
     }
-
-    .start-btn:hover{ 
-      transform:translateY(-3px); 
-      box-shadow: 0 12px 25px rgba(46,163,255,0.25);
+    h1 {
+      color: #FFD700;
+      text-shadow: 0 0 10px #FFD700;
     }
-
-    .start-btn:hover::before {
-      left: 100%;
+    button {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #0047ab, #0074D9);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
     }
-
-    .info-btn{
-      padding:8px 12px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.04);
-      background:transparent;
-      color:var(--muted);
-      cursor:default;
-      font-size:0.9rem;
+    button:hover {
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      color: black;
+      font-weight: bold;
     }
-
-    /* iframe exam view */
-    .exam-view{
-      display:none;
-      margin-top:10px;
-    }
-    .exam-view.active{ display:block; }
-
-    .iframe-wrap{
-      background:var(--card);
-      border-radius:12px;
-      padding:10px;
-      height:75vh;
-      max-height:820px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-    }
-    .exam-iframe{
-      width:100%;
-      height:100%;
-      border:0;
-      border-radius:8px;
-      background:#fff;
-    }
-
-    /* footer small */
-    footer{ 
-      margin-top:26px; 
-      text-align:center; 
-      color:var(--muted); 
-      font-size:0.9rem; 
-      padding: 15px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    @media (max-width:720px){
-      .iframe-wrap{ height:66vh; }
-      header.app h1{ font-size:1.3rem; }
-      .logo { font-size: 2.8rem; }
+    #startBtn {
+      background: linear-gradient(90deg, #FFD700, #FF851B);
+      color: black;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <!-- تأثير الجزيئات المتحركة -->
-  <div class="particles" id="particles"></div>
-
-  <div class="wrap">
-    <header class="app">
-      <div class="logo">MrEhab</div>
-      <h1>منصة الامتحانات — من الصف الرابع الابتدائي حتى الصف الأول الثانوي</h1>
-      <p>اختر صفك لعرض امتحاناته — عند الضغط على "ابدأ الامتحان" النموذج يفتح داخل المنصة.</p>
-    </header>
-
-    <!-- العرض الرئيسي للصفوف -->
-    <section id="homePage" class="page active">
-      <div class="grid" id="gradesGrid">
-        <!-- بطاقات الصفوف ستُولَّد ديناميكياً -->
-      </div>
-    </section>
-
-    <!-- صفحة قائمة الامتحانات لصف محدد -->
-    <section id="examsPage" class="page">
-      <button class="back-btn" id="backToHome">
-        ← رجوع للصفحة الرئيسية
-      </button>
-
-      <h2 id="examsPageTitle">امتحانات الصف</h2>
-      <div class="exams-grid" id="examsGrid">
-        <!-- بطاقات الامتحانات ستُولَّد ديناميكياً -->
-      </div>
-    </section>
-
-    <!-- صفحة عرض الامتحان داخل iframe -->
-    <section id="examView" class="page exam-view">
-      <button class="back-btn" id="backAfterExam">
-        ← رجوع للصفحة الرئيسية
-      </button>
-      <h2 id="examViewTitle">عرض الامتحان</h2>
-
-      <div class="iframe-wrap" id="iframeWrap">
-        <iframe id="examIframe" class="exam-iframe" src="" title="Exam"></iframe>
-      </div>
-    </section>
-
-    <footer>تم التصميم بواسطة MrEhab • عدل روابط Google Forms في بيانات الامتحانات</footer>
+  <div class="container">
+    <h1>💡 لعبة الامتحان التفاعلية 💡</h1>
+    <div id="game">
+      <button id="startBtn" onclick="startGame()">ابدأ اللعبة</button>
+    </div>
   </div>
 
   <script>
-    /*******************************
-     * DATA: عدل روابط النماذج هنا
-     * استخدم روابط embed لنماذج جوجل بصيغة:
-     * https://docs.google.com/forms/d/e/FORM_ID/viewform?embedded=true
-     *******************************/
-    const examsData = {
-      // 4: الصف الرابع ابتدائي
-      4: [
-        { title: "اللغة العربية - الفصل الأول", desc: "قراءة + نحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات - الفصل الأول", desc: "عمليات ومسائل", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_MATH/viewform?embedded=true" },
-        { title: "الدراسات - الفصل الأول", desc: "تاريخ وجغرافيا", time: "30 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_4_SOC/viewform?embedded=true" }
-      ],
-      // 5: الصف الخامس ابتدائي
-      5: [
-        { title: "اللغة العربية", desc: "فهم ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وعمليات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_MATH/viewform?embedded=true" },
-        { title: "العلوم", desc: "مفاهيم أساسية", time: "40 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_5_SCI/viewform?embedded=true" }
-      ],
-      // 6: الصف السادس ابتدائي
-      6: [
-        { title: "اللغة العربية", desc: "نصوص ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "مسائل وتطبيقات", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_MATH/viewform?embedded=true" },
-        { title: "الدراسات الاجتماعية", desc: "تاريخ وحضارات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_6_SOC/viewform?embedded=true" }
-      ],
-      // 7: الصف الأول الإعدادي
-      7: [
-        { title: "اللغة العربية", desc: "تعبير ونحو", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وهندسة", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_MATH/viewform?embedded=true" },
-        { title: "العلوم", desc: "أساسيات العلوم", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_7_SCI/viewform?embedded=true" }
-      ],
-      // 8: الصف الثاني الإعدادي
-      8: [
-        { title: "اللغة العربية", desc: "قراءة وتحليل", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "معادلات ومسائل", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_MATH/viewform?embedded=true" },
-        { title: "اللغة الإنجليزية", desc: "قواعد ومفردات", time: "45 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_8_ENG/viewform?embedded=true" }
-      ],
-      // 9: الصف الثالث الإعدادي
-      9: [
-        { title: "اللغة العربية", desc: "نصوص وأدب", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_ARABIC/viewform?embedded=true" },
-        { title: "الرياضيات", desc: "جبر وهندسة متقدمة", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_MATH/viewform?embedded=true" },
-        { title: "الدراسات الاجتماعية", desc: "قضايا وطنية", time: "50 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_9_SOC/viewform?embedded=true" }
-      ],
-      // 10: الصف الأول الثانوي
-      10: [
-        { title: "اللغة العربية", desc: "أدب ونصوص", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ARABIC/viewform?embedded=true" },
-        { title: "التاريخ / الجغرافيا", desc: "مفاهيم أساسية", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_SOC/viewform?embedded=true" },
-        { title: "الإنجليزي", desc: "قراءة وقواعد", time: "60 دقيقة", formUrl: "https://docs.google.com/forms/d/e/FORM_ID_10_ENG/viewform?embedded=true" }
-      ]
-    };
-
-    /*******************************
-     * DOM elements
-     *******************************/
-    const homePage = document.getElementById('homePage');
-    const gradesGrid = document.getElementById('gradesGrid');
-    const examsPage = document.getElementById('examsPage');
-    const examsGrid = document.getElementById('examsGrid');
-    const examsPageTitle = document.getElementById('examsPageTitle');
-    const backToHome = document.getElementById('backToHome');
-    const examView = document.getElementById('examView');
-    const examIframe = document.getElementById('examIframe');
-    const examViewTitle = document.getElementById('examViewTitle');
-    const backAfterExam = document.getElementById('backAfterExam');
-    const particlesContainer = document.getElementById('particles');
-
-    // تعريف الصفوف المراد عرضها بالترتيب المطلوب
-    const gradesList = [
-      { id: 4, title: "الصف الرابع الابتدائي", badge: "ابتدائي" },
-      { id: 5, title: "الصف الخامس الابتدائي", badge: "ابتدائي" },
-      { id: 6, title: "الصف السادس الابتدائي", badge: "ابتدائي" },
-      { id: 7, title: "الصف الأول الإعدادي", badge: "إعدادي" },
-      { id: 8, title: "الصف الثاني الإعدادي", badge: "إعدادي" },
-      { id: 9, title: "الصف الثالث الإعدادي", badge: "إعدادي" },
-      { id: 10, title: "الصف الأول الثانوي", badge: "ثانوي" }
+    // 🧠 الأسئلة (يمكنك تعديلها أو زيادتها بحرية)
+    const questions = [
+      {q: "من أول من رفع راية التوحيد في مكة؟", a: ["عبد المطلب", "عبد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"], c: 2},
+      {q: "أين تقع جبال أطلس؟", a: ["مصر", "المغرب", "العراق", "السودان"], c: 1},
+      {q: "ما عاصمة اليابان؟", a: ["بكين", "طوكيو", "سيول", "مانيلا"], c: 1},
+      {q: "من الذي بنى السد العالي؟", a: ["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"], c: 0}
     ];
 
-    /*******************************
-     * وظائف مساعدة
-     *******************************/
-    function showPage(pageElement){
-      // اخفاء كل الصفحات ثم اظهار المطلوبة
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      pageElement.classList.add('active');
-      // إعادة ضبط iframe لو انتقلنا بعيدًا
-      if(pageElement !== examView){
-        examIframe.src = "";
-      }
-      // scroll top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    let player = "";
+    let index = 0;
+    let score = 0;
+
+    const gameDiv = document.getElementById("game");
+
+    function startGame() {
+      player = prompt("👤 من فضلك اكتب اسمك للبدء:");
+      if (!player) return alert("لا يمكنك البدء بدون كتابة اسمك!");
+      index = 0;
+      score = 0;
+      nextQuestion();
     }
 
-    /*******************************
-     * بناء بطاقات الصفوف في الصفحة الرئيسية
-     *******************************/
-    function renderGrades(){
-      gradesGrid.innerHTML = "";
-      gradesList.forEach(g => {
-        const card = document.createElement('div');
-        card.className = 'grade-card';
-        card.setAttribute('data-grade', g.id);
-        card.innerHTML = `
-          <div class="grade-badge">${g.badge}</div>
-          <div class="grade-icon">🎒</div>
-          <div class="grade-title">${g.title}</div>
-          <div class="grade-desc">اضغط لعرض امتحانات ${g.title}</div>
-        `;
-        card.addEventListener('click', () => openExamsForGrade(g.id, g.title));
-        gradesGrid.appendChild(card);
+    function nextQuestion() {
+      if (index >= questions.length) return endGame();
+
+      const q = questions[index];
+      gameDiv.innerHTML = `
+        <h2>السؤال ${index + 1} من ${questions.length}</h2>
+        <p style="font-size:20px">${q.q}</p>
+        ${q.a.map((ans, i) => `<button onclick="checkAnswer(${i})">${ans}</button>`).join("")}
+      `;
+    }
+
+    function checkAnswer(choice) {
+      const q = questions[index];
+      if (choice === q.c) {
+        score++;
+        alert("✅ إجابة صحيحة!");
+      } else {
+        alert("❌ إجابة خاطئة!");
+      }
+      index++;
+      nextQuestion();
+    }
+
+    function endGame() {
+      gameDiv.innerHTML = `
+        <h2>🏆 انتهى الامتحان!</h2>
+        <p>النتيجة: <strong>${score}</strong> من ${questions.length}</p>
+        <p>شكرًا يا ${player} على مشاركتك!</p>
+        <button onclick="startGame()">إعادة اللعب</button>
+      `;
+
+      // 🔗 إرسال النتيجة إلى Google Sheet
+      fetch("https://script.google.com/macros/s/EXAMPLE_TEST_URL/exec", {
+        method: "POST",
+        body: JSON.stringify({
+          name: player,
+          score: score,
+          total: questions.length
+        })
       });
     }
-
-    /*******************************
-     * فتح صفحة امتحانات لصف معين
-     *******************************/
-    function openExamsForGrade(gradeId, gradeTitle){
-      // تعيين عنوان الصفحة
-      examsPageTitle.textContent = `امتحانات ${gradeTitle}`;
-      examsGrid.innerHTML = "";
-
-      const exams = examsData[gradeId] || [];
-      if(exams.length === 0){
-        examsGrid.innerHTML = `<p style="color:var(--muted)">لا توجد امتحانات مضافة لهذا الصف بعد.</p>`;
-      } else {
-        exams.forEach((ex, idx) => {
-          const exCard = document.createElement('div');
-          exCard.className = 'exam-card';
-          exCard.innerHTML = `
-            <div>
-              <h3>${ex.title}</h3>
-              <p>${ex.desc} — <strong>${ex.time}</strong></p>
-            </div>
-            <div class="exam-actions">
-              <button class="start-btn" data-url="${ex.formUrl}" data-title="${ex.title}">ابدأ الامتحان</button>
-              <div class="info-btn">مادة ${idx+1}</div>
-            </div>
-          `;
-          // عند الضغط على ابدأ — نعرض iframe داخل المنصة
-          exCard.querySelector('.start-btn').addEventListener('click', (ev) => {
-            const url = ev.currentTarget.getAttribute('data-url');
-            const title = ev.currentTarget.getAttribute('data-title');
-            openExamInIframe(url, title);
-          });
-
-          examsGrid.appendChild(exCard);
-        });
-      }
-
-      showPage(examsPage);
-    }
-
-    /*******************************
-     * فتح الامتحان داخل iframe
-     *******************************/
-    function openExamInIframe(url, title){
-      if(!url || url.includes("FORM_ID")){
-        // إنذار للمطور: لم تُستبدل روابط الـ FORM_ID
-        alert("لم تُضبط رابط نموذج جوجل لهذا الامتحان. تأكد من تعديل حقل formUrl في الكود برابط الـ Google Form بصيغة embed.");
-        return;
-      }
-
-      // تعيين src للإطار وتهيئة العرض
-      examIframe.src = url;
-      examViewTitle.textContent = `الآن: ${title}`;
-      showPage(examView);
-    }
-
-    /*******************************
-     * إنشاء تأثير الجزيئات المتحركة
-     *******************************/
-    function createParticles() {
-      for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // خصائص عشوائية للجزيئات
-        const size = Math.random() * 5 + 2;
-        const left = Math.random() * 100;
-        const animationDuration = Math.random() * 20 + 10;
-        const animationDelay = Math.random() * 10;
-        
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${left}%`;
-        particle.style.animationDuration = `${animationDuration}s`;
-        particle.style.animationDelay = `${animationDelay}s`;
-        
-        particlesContainer.appendChild(particle);
-      }
-    }
-
-    /*******************************
-     * زر الرجوع للصفحة الرئيسية
-     *******************************/
-    backToHome.addEventListener('click', () => {
-      showPage(homePage);
-    });
-    backAfterExam.addEventListener('click', () => {
-      // شرطك: لما يضغط بعد الامتحان يرجع للصفحة الرئيسية
-      showPage(homePage);
-    });
-
-    /*******************************
-     * تهيئة أولية
-     *******************************/
-    renderGrades();
-    createParticles();
-
-    // ملاحظة: لو عايز أضيف تسجيل اسم الطالب قبل الدخول أقدر أعمل فورم بسيط وحفظ الاسم في localStorage ثم تمريره للـ Google Form (pre-fill) — لو تحب نضيفها.
   </script>
 </body>
 </html>
