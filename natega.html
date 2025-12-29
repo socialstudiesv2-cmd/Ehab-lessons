@@ -1,127 +1,437 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>🎯 لعبة الامتحان - من سيربح المليون 🎯</title>
-  <style>
-    body {
-      font-family: "Cairo", sans-serif;
-      background: radial-gradient(circle at center, #001f3f, #000);
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    .container {
-      max-width: 700px;
-      margin: 60px auto;
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 25px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
-    }
-    h1 {
-      color: #FFD700;
-      text-shadow: 0 0 10px #FFD700;
-    }
-    button {
-      display: block;
-      width: 80%;
-      margin: 10px auto;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #0047ab, #0074D9);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #FFD700, #FFA500);
-      color: black;
-      font-weight: bold;
-    }
-    #startBtn {
-      background: linear-gradient(90deg, #FFD700, #FF851B);
-      color: black;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدغال التاريخ | عبق الأجداد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --jungle-green: #2e8b57;
+            --dark-bg: #1a1a1a;
+            --papyrus: #f4e4bc;
+            --accent-blue: #1e3f66;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); /* صورة خلفية معبرة */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* الهيدر */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(180deg, rgba(46,139,87,0.9) 0%, rgba(26,26,26,0) 100%);
+            border-bottom: 3px solid var(--primary-gold);
+        }
+
+        h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            color: var(--primary-gold);
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--papyrus);
+        }
+
+        /* الحاويات */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* قسم الصفوف الدراسية */
+        .grades-section {
+            margin-top: 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            color: var(--papyrus);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "𓀀 𓀁 𓀂"; /* رموز هيروغليفية للزينة */
+            display: block;
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-top: 10px;
+        }
+
+        .grades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .grade-card {
+            background: rgba(30, 63, 102, 0.8);
+            border: 2px solid var(--primary-gold);
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-10px);
+            background: rgba(46, 139, 87, 0.9); /* يتحول للأخضر عند المرور */
+        }
+
+        .grade-card h3 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: var(--papyrus);
+        }
+
+        .grade-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        /* النافذة المنبثقة (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--papyrus);
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            border: 5px solid var(--primary-gold);
+            text-align: center;
+            position: relative;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        .links-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .links-list li {
+            margin: 15px 0;
+        }
+
+        .links-list a {
+            display: block;
+            padding: 10px;
+            background: var(--accent-blue);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .links-list a:hover {
+            background: var(--jungle-green);
+        }
+
+        /* قسم الألعاب (المتاهة) */
+        .games-section {
+            margin-top: 80px;
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        #maze-container {
+            display: inline-block;
+            background: #000;
+            padding: 10px;
+            border: 4px solid var(--primary-gold);
+            margin-top: 20px;
+        }
+        
+        canvas {
+            background: #fff;
+            display: block;
+        }
+
+        .controls {
+            margin-top: 10px;
+        }
+        
+        button.game-btn {
+            background: var(--primary-gold);
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #000;
+        }
+
+        footer {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--primary-gold);
+        }
+
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💡 لعبة الامتحان التفاعلية 💡</h1>
-    <div id="game">
-      <button id="startBtn" onclick="startGame()">ابدأ اللعبة</button>
+
+    <header>
+        <h1>أدغال التاريخ</h1>
+        <p class="subtitle">رحلة في أعماق الجغرافيا وعبق التاريخ المصري العريق</p>
+    </header>
+
+    <div class="container">
+        <section class="grades-section">
+            <h2 class="section-title">اختر صفك الدراسي</h2>
+            <div class="grades-grid">
+                <div class="grade-card" onclick="openModal('g4')">
+                    <div class="grade-icon">📜</div>
+                    <h3>الصف الرابع الابتدائي</h3>
+                    <p>المرحلة الابتدائية</p>
+                </div>
+                <div class="grade-card" onclick="openModal('g5')">
+                    <div class="grade-icon">🏺</div>
+                    <h3>الصف الخامس الابتدائي</h3>
+                    <p>المرحلة الابتدائية</p>
+                </div>
+                <div class="grade-card" onclick="openModal('g6')">
+                    <div class="grade-icon">🏛️</div>
+                    <h3>الصف السادس الابتدائي</h3>
+                    <p>المرحلة الابتدائية</p>
+                </div>
+
+                <div class="grade-card" onclick="openModal('g7')">
+                    <div class="grade-icon">⚔️</div>
+                    <h3>الصف الأول الإعدادي</h3>
+                    <p>المرحلة الإعدادية</p>
+                </div>
+                <div class="grade-card" onclick="openModal('g8')">
+                    <div class="grade-icon">🌍</div>
+                    <h3>الصف الثاني الإعدادي</h3>
+                    <p>المرحلة الإعدادية</p>
+                </div>
+                <div class="grade-card" onclick="openModal('g9')">
+                    <div class="grade-icon">👑</div>
+                    <h3>الصف الثالث الإعدادي</h3>
+                    <p>المرحلة الإعدادية</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="games-section">
+            <h2 class="section-title">متاهة وادي الملوك</h2>
+            <p>ساعد المستكشف للوصول إلى الكنز (المربع الأخضر) وتجنب الجدران!</p>
+            <p>استخدم الأسهم في لوحة المفاتيح للحركة</p>
+            <div id="maze-container">
+                <canvas id="mazeCanvas" width="300" height="300"></canvas>
+            </div>
+            <div class="controls">
+                <button class="game-btn" onclick="initMaze()">إعادة اللعبة</button>
+            </div>
+        </section>
     </div>
-  </div>
 
-  <script>
-    // 🧠 الأسئلة (يمكنك تعديلها أو زيادتها بحرية)
-    const questions = [
-      {q: "من أول من رفع راية التوحيد في مكة؟", a: ["عبد المطلب", "عبد الله بن الزبير", "محمد ﷺ", "عمر بن الخطاب"], c: 2},
-      {q: "أين تقع جبال أطلس؟", a: ["مصر", "المغرب", "العراق", "السودان"], c: 1},
-      {q: "ما عاصمة اليابان؟", a: ["بكين", "طوكيو", "سيول", "مانيلا"], c: 1},
-      {q: "من الذي بنى السد العالي؟", a: ["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"], c: 0}
-    ];
+    <div id="fileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">الملفات الدراسية</h2>
+            <ul class="links-list" id="linksContainer">
+                </ul>
+        </div>
+    </div>
 
-    let player = "";
-    let index = 0;
-    let score = 0;
+    <footer>
+        <p>جميع الحقوق محفوظة © 2024 - منصة أدغال التاريخ التعليمية</p>
+    </footer>
 
-    const gameDiv = document.getElementById("game");
+    <script>
+        // --- بيانات الروابط (يمكنك تعديل الروابط هنا) ---
+        const gradeData = {
+            'g4': [
+                { title: 'ملخص التاريخ - الترم الأول', url: '#' },
+                { title: 'خريطة مصر الجغرافية', url: '#' }
+            ],
+            'g5': [
+                { title: 'شخصيات تاريخية - pdf', url: '#' },
+                { title: 'أسئلة وتدريبات', url: '#' }
+            ],
+            'g6': [
+                { title: 'مراجعة نهائية', url: '#' }
+            ],
+            'g7': [
+                { title: 'تاريخ الفراعنة - الجزء 1', url: '#' }
+            ],
+            'g8': [
+                { title: 'جغرافيا الوطن العربي', url: '#' }
+            ],
+            'g9': [
+                { title: 'الحروب والمعاهدات', url: '#' },
+                { title: 'نماذج امتحانات', url: '#' }
+            ]
+        };
 
-    function startGame() {
-      player = prompt("👤 من فضلك اكتب اسمك للبدء:");
-      if (!player) return alert("لا يمكنك البدء بدون كتابة اسمك!");
-      index = 0;
-      score = 0;
-      nextQuestion();
-    }
+        // --- وظائف النافذة المنبثقة ---
+        const modal = document.getElementById('fileModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const linksContainer = document.getElementById('linksContainer');
 
-    function nextQuestion() {
-      if (index >= questions.length) return endGame();
+        function openModal(gradeKey) {
+            // مسح المحتوى القديم
+            linksContainer.innerHTML = '';
+            
+            // تحديد العنوان بناءً على الصف
+            let titleText = "";
+            switch(gradeKey) {
+                case 'g4': titleText = "الصف الرابع الابتدائي"; break;
+                case 'g5': titleText = "الصف الخامس الابتدائي"; break;
+                case 'g6': titleText = "الصف السادس الابتدائي"; break;
+                case 'g7': titleText = "الصف الأول الإعدادي"; break;
+                case 'g8': titleText = "الصف الثاني الإعدادي"; break;
+                case 'g9': titleText = "الصف الثالث الإعدادي"; break;
+            }
+            modalTitle.innerText = titleText;
 
-      const q = questions[index];
-      gameDiv.innerHTML = `
-        <h2>السؤال ${index + 1} من ${questions.length}</h2>
-        <p style="font-size:20px">${q.q}</p>
-        ${q.a.map((ans, i) => `<button onclick="checkAnswer(${i})">${ans}</button>`).join("")}
-      `;
-    }
+            // إضافة الروابط
+            const links = gradeData[gradeKey];
+            if (links && links.length > 0) {
+                links.forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.innerText = "📥 " + link.title;
+                    a.target = "_blank"; // يفتح في نافذة جديدة
+                    li.appendChild(a);
+                    linksContainer.appendChild(li);
+                });
+            } else {
+                linksContainer.innerHTML = "<li>لا توجد ملفات حالياً</li>";
+            }
 
-    function checkAnswer(choice) {
-      const q = questions[index];
-      if (choice === q.c) {
-        score++;
-        alert("✅ إجابة صحيحة!");
-      } else {
-        alert("❌ إجابة خاطئة!");
-      }
-      index++;
-      nextQuestion();
-    }
+            modal.style.display = 'flex';
+        }
 
-    function endGame() {
-      gameDiv.innerHTML = `
-        <h2>🏆 انتهى الامتحان!</h2>
-        <p>النتيجة: <strong>${score}</strong> من ${questions.length}</p>
-        <p>شكرًا يا ${player} على مشاركتك!</p>
-        <button onclick="startGame()">إعادة اللعب</button>
-      `;
+        function closeModal() {
+            modal.style.display = 'none';
+        }
 
-      // 🔗 إرسال النتيجة إلى Google Sheet
-      fetch("https://script.google.com/macros/s/EXAMPLE_TEST_URL/exec", {
-        method: "POST",
-        body: JSON.stringify({
-          name: player,
-          score: score,
-          total: questions.length
-        })
-      });
-    }
-  </script>
+        // إغلاق النافذة عند الضغط خارجها
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // --- لعبة المتاهة البسيطة ---
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        let player = { x: 0, y: 0 };
+        const cellSize = 30;
+        // 1 = جدار، 0 = مسار، 2 = هدف
+        const mazeMap = [
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 0, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+            [1, 0, 1, 0, 0, 0, 1, 0, 2, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+
+        function drawMaze() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let r = 0; r < mazeMap.length; r++) {
+                for (let c = 0; c < mazeMap[r].length; c++) {
+                    if (mazeMap[r][c] === 1) {
+                        ctx.fillStyle = "#d4af37"; // جدار ذهبي
+                        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+                    } else if (mazeMap[r][c] === 2) {
+                        ctx.fillStyle = "#2e8b57"; // الهدف أخضر
+                        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+            // رسم اللاعب
+            ctx.fillStyle = "#fff"; // اللاعب أبيض
+            ctx.beginPath();
+            ctx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/3, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function initMaze() {
+            player = { x: 0, y: 0 };
+            drawMaze();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            let newX = player.x;
+            let newY = player.y;
+
+            if (e.key === "ArrowRight" || e.key === "d") newX++;
+            if (e.key === "ArrowLeft" || e.key === "a") newX--;
+            if (e.key === "ArrowDown" || e.key === "s") newY++;
+            if (e.key === "ArrowUp" || e.key === "w") newY--;
+
+            // التحقق من الحدود والجدران
+            if (newY >= 0 && newY < mazeMap.length && newX >= 0 && newX < mazeMap[0].length) {
+                if (mazeMap[newY][newX] !== 1) {
+                    player.x = newX;
+                    player.y = newY;
+                    drawMaze();
+                    if (mazeMap[newY][newX] === 2) {
+                        setTimeout(() => alert("🎉 أحسنت! لقد وجدت الكنز!"), 100);
+                    }
+                }
+            }
+        });
+
+        initMaze();
+    </script>
 </body>
 </html>
